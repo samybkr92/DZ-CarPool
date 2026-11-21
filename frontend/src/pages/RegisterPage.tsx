@@ -44,15 +44,15 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full bg-white rounded-2xl border border-[#E7E2DA] p-8 shadow-card space-y-6">
+      <div className="max-w-md w-full bg-white rounded-2xl border border-slate-200 p-8 shadow-md space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-forest-700 text-[#FAF8F5] flex items-center justify-center mx-auto shadow-subtle">
-            <Car className="w-6 h-6 text-[#FAF8F5]" />
+          <div className="w-12 h-12 rounded-xl bg-emerald-700 text-white flex items-center justify-center mx-auto shadow-sm">
+            <Car className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-black text-ink-900 tracking-tight">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
             Rejoindre DZ-CarPool
           </h1>
-          <p className="text-xs text-ink-500">
+          <p className="text-xs text-slate-500">
             Créez votre profil vérifié pour voyager ou proposer des places à travers l'Algérie.
           </p>
         </div>
@@ -66,54 +66,54 @@ export const RegisterPage: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-ink-700">Nom et prénom complets</label>
+            <label className="block text-xs font-bold text-slate-700">Nom et prénom complets</label>
             <div className="relative">
-              <User className="w-4 h-4 text-ink-400 absolute left-3 top-3.5" />
+              <User className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Ex: Amine Benali"
                 required
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#DED7CE] bg-[#FAF8F5] text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600 transition-colors"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-ink-700">Adresse email</label>
+            <label className="block text-xs font-bold text-slate-700">Adresse email</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-ink-400 absolute left-3 top-3.5" />
+              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="amine.benali@dz-carpool.dz"
                 required
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#DED7CE] bg-[#FAF8F5] text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600 transition-colors"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-ink-700">Numéro mobile algérien</label>
+            <label className="block text-xs font-bold text-slate-700">Numéro mobile algérien</label>
             <div className="relative">
-              <Phone className="w-4 h-4 text-ink-400 absolute left-3 top-3.5" />
+              <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="0550123456"
                 required
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#DED7CE] bg-[#FAF8F5] text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600 transition-colors"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-ink-700">Mot de passe</label>
+            <label className="block text-xs font-bold text-slate-700">Mot de passe</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-ink-400 absolute left-3 top-3.5" />
+              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
               <input
                 type="password"
                 value={password}
@@ -121,18 +121,18 @@ export const RegisterPage: React.FC = () => {
                 placeholder="Minimum 6 caractères"
                 required
                 minLength={6}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#DED7CE] bg-[#FAF8F5] text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600 transition-colors"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Rôle principal</label>
+              <label className="block text-xs font-bold text-slate-700">Rôle principal</label>
               <select
                 value={role}
                 onChange={(e: any) => setRole(e.target.value)}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] py-2.5 px-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
               >
                 <option value="both">Conducteur & Passager</option>
                 <option value="driver">Conducteur</option>
@@ -141,7 +141,7 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Wilaya de résidence</label>
+              <label className="block text-xs font-bold text-slate-700">Wilaya de résidence</label>
               <select
                 value={wilayaCode}
                 onChange={(e) => {
@@ -153,7 +153,7 @@ export const RegisterPage: React.FC = () => {
                   else if (code === 19) setWilayaName('Sétif');
                   else setWilayaName(`Wilaya ${code}`);
                 }}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] py-2.5 px-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
               >
                 <option value={16}>16 - Alger</option>
                 <option value={31}>31 - Oran</option>
@@ -170,15 +170,15 @@ export const RegisterPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-4 bg-forest-700 hover:bg-forest-800 disabled:bg-ink-200 text-[#FAF8F5] font-bold text-xs rounded-xl shadow-subtle hover:shadow-card transition-all"
+            className="w-full py-3.5 px-4 bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold text-xs rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.99]"
           >
             {loading ? 'Création en cours...' : 'Créer mon profil'}
           </button>
         </form>
 
-        <div className="text-center text-xs text-ink-500 pt-3 border-t border-[#F4EFEB]">
+        <div className="text-center text-xs text-slate-500 pt-3 border-t border-slate-100">
           Déjà inscrit sur DZ-CarPool ?{' '}
-          <Link to="/login" className="font-bold text-forest-700 hover:underline">
+          <Link to="/login" className="font-bold text-emerald-700 hover:underline">
             Se connecter
           </Link>
         </div>

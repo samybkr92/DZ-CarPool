@@ -87,7 +87,7 @@ export const TripChatPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="h-96 rounded-2xl bg-white border border-[#E7E2DA] animate-pulse p-8" />
+        <div className="h-96 rounded-2xl bg-white border border-slate-200 animate-pulse p-8" />
       </div>
     );
   }
@@ -104,7 +104,7 @@ export const TripChatPage: React.FC = () => {
         </div>
         <button
           onClick={() => navigate('/search')}
-          className="text-xs font-bold text-forest-700 hover:underline"
+          className="text-xs font-bold text-emerald-700 hover:underline"
         >
           Retourner aux recherches
         </button>
@@ -116,25 +116,25 @@ export const TripChatPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-4">
       {/* Route context header */}
       {trip && (
-        <div className="bg-white rounded-2xl border border-[#E7E2DA] p-4 sm:p-5 shadow-subtle flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-xs font-bold text-forest-700 uppercase tracking-wide">
-              <ShieldCheck className="w-4 h-4 text-forest-700" />
+            <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 uppercase tracking-wide">
+              <ShieldCheck className="w-4 h-4 text-emerald-700" />
               <span>Messagerie Interne de Coordination</span>
             </div>
-            <h1 className="text-lg font-black text-ink-900 flex items-center gap-2">
+            <h1 className="text-lg font-black text-slate-900 flex items-center gap-2">
               <span>{trip.origin_city}</span>
-              <ArrowRight className="w-4 h-4 text-forest-700" />
+              <ArrowRight className="w-4 h-4 text-emerald-700" />
               <span>{trip.destination_city}</span>
             </h1>
-            <p className="text-xs text-ink-500">
+            <p className="text-xs text-slate-500">
               Départ : {new Date(trip.departure_datetime).toLocaleString('fr-DZ')} • Conducteur : <strong>{trip.driver?.full_name}</strong>
             </p>
           </div>
 
           <button
             onClick={() => navigate(`/trips/${trip.id}`)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#DED7CE] bg-[#FAF8F5] text-xs font-bold text-ink-800 hover:border-forest-600 hover:text-forest-700 transition-colors shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-xs font-bold text-slate-800 hover:border-emerald-600 hover:text-emerald-700 transition-colors shadow-2xs"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>Fiche trajet</span>
@@ -143,13 +143,13 @@ export const TripChatPage: React.FC = () => {
       )}
 
       {/* Messages Scroll Area */}
-      <div className="bg-white rounded-2xl border border-[#E7E2DA] shadow-subtle p-4 sm:p-6 h-[500px] flex flex-col justify-between">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-6 h-[500px] flex flex-col justify-between">
         <div className="overflow-y-auto space-y-4 pr-2">
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center text-ink-400 py-20 space-y-2">
-              <MessageCircle className="w-10 h-10 text-ink-300" />
-              <p className="text-sm font-bold text-ink-700">Aucun message pour l'instant</p>
-              <p className="text-xs text-ink-500 max-w-sm">
+            <div className="h-full flex flex-col items-center justify-center text-center text-slate-400 py-20 space-y-2">
+              <MessageCircle className="w-10 h-10 text-slate-300" />
+              <p className="text-sm font-bold text-slate-700">Aucun message pour l'instant</p>
+              <p className="text-xs text-slate-500 max-w-sm">
                 Utilisez cette messagerie pour coordonner le point de rendez-vous exact, les bagages ou l'heure de départ.
               </p>
             </div>
@@ -166,15 +166,15 @@ export const TripChatPage: React.FC = () => {
                   key={msg.id}
                   className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} space-y-1`}
                 >
-                  <span className="text-[10px] font-semibold text-ink-400 px-1">
+                  <span className="text-[10px] font-semibold text-slate-400 px-1">
                     {msg.sender?.full_name || 'Utilisateur'} • {timeString}
                   </span>
 
                   <div
                     className={`max-w-md rounded-2xl px-4 py-2.5 text-xs font-medium leading-relaxed ${
                       isMe
-                        ? 'bg-forest-700 text-[#FAF8F5] rounded-br-none shadow-xs'
-                        : 'bg-[#FAF8F5] text-ink-900 border border-[#E7E2DA] rounded-bl-none'
+                        ? 'bg-emerald-700 text-white rounded-br-none shadow-xs'
+                        : 'bg-slate-50 text-slate-900 border border-slate-200 rounded-bl-none'
                     }`}
                   >
                     {msg.content}
@@ -187,18 +187,18 @@ export const TripChatPage: React.FC = () => {
         </div>
 
         {/* Composer Form */}
-        <form onSubmit={handleSendMessage} className="pt-4 border-t border-[#F4EFEB] flex gap-2">
+        <form onSubmit={handleSendMessage} className="pt-4 border-t border-slate-100 flex gap-2">
           <input
             type="text"
             value={inputContent}
             onChange={(e) => setInputContent(e.target.value)}
             placeholder="Écrivez un message de coordination..."
-            className="flex-1 rounded-xl border border-[#DED7CE] bg-[#FAF8F5] px-4 py-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600 transition-colors"
+            className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
           />
           <button
             type="submit"
             disabled={sending || !inputContent.trim()}
-            className="px-5 py-3 rounded-xl bg-forest-700 hover:bg-forest-800 disabled:bg-ink-200 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs"
+            className="px-5 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-200 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs"
           >
             <Send className="w-3.5 h-3.5" />
             <span>Envoyer</span>

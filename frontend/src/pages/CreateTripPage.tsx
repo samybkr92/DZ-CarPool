@@ -122,126 +122,126 @@ export const CreateTripPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Editorial Header */}
-      <div className="space-y-2 pb-6 border-b border-[#E7E2DA]">
+      <div className="space-y-2 pb-6 border-b border-slate-200">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-forest-700 bg-forest-50 px-2.5 py-0.5 rounded border border-forest-200/60">
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">
             Espace Conducteur
           </span>
-          <span className="text-xs text-ink-400">•</span>
-          <span className="text-xs font-medium text-ink-500">
+          <span className="text-xs text-slate-400">•</span>
+          <span className="text-xs font-medium text-slate-500">
             Publication sécurisée
           </span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-black text-ink-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
           {t('create_trip.title', 'Publier un trajet inter-wilayas')}
         </h1>
-        <p className="text-xs sm:text-sm text-ink-600 leading-relaxed max-w-2xl">
-          Proposez vos places libres, estimez vos frais de carburant Naftal et voyagez en toute légalité en partageant les coûts réels de votre déplacement.
+        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
+          Proposez vos places libres, estimez vos frais de carburant Naftal et voyagez en toute sérénité en partageant les coûts réels de votre déplacement.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Step 1: Itinerary & Route details */}
-        <div className="bg-white rounded-2xl border border-[#E7E2DA] p-6 sm:p-7 shadow-subtle space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-[#F4EFEB]">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-900 flex items-center gap-2">
-              <span className="w-5 h-5 rounded-full bg-forest-700 text-white text-xs flex items-center justify-center font-bold">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-sm space-y-5">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-emerald-700 text-white text-xs flex items-center justify-center font-bold">
                 1
               </span>
               <span>Itinéraire & Horaires de Départ</span>
             </h2>
-            <span className="text-xs font-semibold text-ink-500">Étape 1 sur 3</span>
+            <span className="text-xs font-semibold text-slate-500">Étape 1 sur 3</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Ville de départ</label>
+              <label className="block text-xs font-bold text-slate-700">Ville de départ</label>
               <input
                 type="text"
                 value={originCity}
                 onChange={(e) => setOriginCity(e.target.value)}
                 placeholder="Ex: Alger"
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Point de rassemblement exact</label>
+              <label className="block text-xs font-bold text-slate-700">Point de rassemblement exact</label>
               <input
                 type="text"
                 value={originAddress}
                 onChange={(e) => setOriginAddress(e.target.value)}
                 placeholder="Ex: Station Tafourah, Rue d'Isly"
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-medium text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Ville d'arrivée</label>
+              <label className="block text-xs font-bold text-slate-700">Ville d'arrivée</label>
               <input
                 type="text"
                 value={destCity}
                 onChange={(e) => setDestCity(e.target.value)}
                 placeholder="Ex: Oran"
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Point d'arrivée exact</label>
+              <label className="block text-xs font-bold text-slate-700">Point d'arrivée exact</label>
               <input
                 type="text"
                 value={destAddress}
                 onChange={(e) => setDestAddress(e.target.value)}
                 placeholder="Ex: Place d'Armes, Centre-Ville"
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-medium text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Date du trajet</label>
+              <label className="block text-xs font-bold text-slate-700">Date du trajet</label>
               <input
                 type="date"
                 value={departureDate}
                 onChange={(e) => setDepartureDate(e.target.value)}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Heure de départ</label>
+              <label className="block text-xs font-bold text-slate-700">Heure de départ</label>
               <input
                 type="time"
                 value={departureTime}
                 onChange={(e) => setDepartureTime(e.target.value)}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Distance estimée (km)</label>
+              <label className="block text-xs font-bold text-slate-700">Distance estimée (km)</label>
               <input
                 type="number"
                 value={distanceKm}
                 onChange={(e) => setDistanceKm(parseFloat(e.target.value) || 0)}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Durée du trajet (minutes)</label>
+              <label className="block text-xs font-bold text-slate-700">Durée du trajet (minutes)</label>
               <input
                 type="number"
                 value={durationMin}
                 onChange={(e) => setDurationMin(parseInt(e.target.value, 10) || 0)}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
             </div>
@@ -256,10 +256,10 @@ export const CreateTripPage: React.FC = () => {
         </div>
 
         {/* Step 2: Fuel Advisory & Transparent Pricing */}
-        <div className="bg-white rounded-2xl border border-[#E7E2DA] p-6 sm:p-7 shadow-subtle space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F4EFEB]">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-900 flex items-center gap-2">
-              <span className="w-5 h-5 rounded-full bg-forest-700 text-white text-xs flex items-center justify-center font-bold">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-sm space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-emerald-700 text-white text-xs flex items-center justify-center font-bold">
                 2
               </span>
               <span>Calculateur de Carburant Naftal & Tarification</span>
@@ -268,38 +268,38 @@ export const CreateTripPage: React.FC = () => {
               type="button"
               onClick={handleEstimateFuel}
               disabled={fuelLoading}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-forest-50 hover:bg-forest-100 text-forest-800 text-xs font-bold border border-forest-200/60 transition-colors self-start sm:self-auto"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 transition-colors self-start sm:self-auto"
             >
-              <Fuel className="w-3.5 h-3.5 text-forest-700" />
+              <Fuel className="w-3.5 h-3.5 text-emerald-700" />
               <span>{fuelLoading ? 'Calcul...' : 'Estimer barème officiel (8L/100km)'}</span>
             </button>
           </div>
 
           {/* Fuel Estimate Advisory Banner */}
           {fuelEstimate && (
-            <div className="p-4 bg-forest-50/80 border border-forest-200 rounded-xl space-y-1.5 text-xs text-forest-950">
+            <div className="p-4 bg-emerald-50/80 border border-emerald-200 rounded-xl space-y-1.5 text-xs text-emerald-950">
               <div className="flex items-center justify-between">
                 <span className="font-bold flex items-center gap-1.5">
-                  <Fuel className="w-4 h-4 text-forest-700" />
+                  <Fuel className="w-4 h-4 text-emerald-700" />
                   Barème officiel carburant ({fuelEstimate.fuel_type.toUpperCase()}) :
                 </span>
-                <span className="text-[11px] font-semibold text-forest-700">
+                <span className="text-[11px] font-semibold text-emerald-700">
                   {fuelEstimate.fuel_price_per_litre} DA / Litre
                 </span>
               </div>
-              <p className="text-forest-800">
+              <p className="text-emerald-800">
                 • Volume estimé : <strong>{fuelEstimate.estimated_fuel_litres} L</strong> ({fuelEstimate.distance_km} km à 8L/100km)
               </p>
-              <p className="text-forest-800">
+              <p className="text-emerald-800">
                 • Coût total carburant : <strong>{fuelEstimate.total_fuel_cost_dzd} DA</strong>
               </p>
-              <div className="pt-1 border-t border-forest-200/80 flex items-center justify-between font-bold text-forest-900">
+              <div className="pt-1 border-t border-emerald-200 flex items-center justify-between font-bold text-emerald-900">
                 <span>Contribution indicative suggérée par place :</span>
-                <span className="text-sm tabular-nums text-forest-800">
+                <span className="text-sm tabular-nums text-emerald-800">
                   {fuelEstimate.suggested_seat_price_dzd} DA
                 </span>
               </div>
-              <span className="text-[10px] text-forest-700/80 block italic">
+              <span className="text-[10px] text-emerald-700 block italic">
                 * Note consultative : le conducteur fixe librement son prix de base final selon l'usure et le trajet.
               </span>
             </div>
@@ -307,11 +307,11 @@ export const CreateTripPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Type de carburant</label>
+              <label className="block text-xs font-bold text-slate-700">Type de carburant</label>
               <select
                 value={fuelType}
                 onChange={(e) => setFuelType(e.target.value)}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
               >
                 <option value="essence">Essence (45.62 DA/L)</option>
                 <option value="diesel">Gasoil / Diesel (29.01 DA/L)</option>
@@ -320,11 +320,11 @@ export const CreateTripPage: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">Places passagers offertes</label>
+              <label className="block text-xs font-bold text-slate-700">Places passagers offertes</label>
               <select
                 value={totalSeats}
                 onChange={(e) => setTotalSeats(parseInt(e.target.value, 10))}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
               >
                 <option value={2}>2 places</option>
                 <option value={3}>3 places</option>
@@ -333,26 +333,26 @@ export const CreateTripPage: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-ink-700">
+              <label className="block text-xs font-bold text-slate-700">
                 Votre Prix de Base / Siège (DA)
               </label>
               <input
                 type="number"
                 value={baseSeatPrice}
                 onChange={(e) => setBaseSeatPrice(parseFloat(e.target.value) || 0)}
-                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-sm font-black text-forest-700 focus:bg-white focus:outline-none focus:border-forest-600"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm font-black text-emerald-700 focus:bg-white focus:outline-none focus:border-emerald-600"
                 required
               />
-              <span className="text-[10px] text-ink-400">Net conducteur perçu par place</span>
+              <span className="text-[10px] text-slate-400">Net conducteur perçu par place</span>
             </div>
           </div>
 
           {/* Trajet Confort Toggle */}
-          <div className="p-4 bg-citrus-50/70 rounded-xl border border-citrus-200 space-y-2">
+          <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 space-y-2">
             <label className="flex items-center justify-between cursor-pointer">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-citrus-600" />
-                <span className="text-xs font-bold text-citrus-950">
+                <Sparkles className="w-4 h-4 text-amber-600" />
+                <span className="text-xs font-bold text-amber-950">
                   Activer l'option « Trajet Confort » (+30%)
                 </span>
               </div>
@@ -360,17 +360,17 @@ export const CreateTripPage: React.FC = () => {
                 type="checkbox"
                 checked={comfortEnabled}
                 onChange={(e) => setComfortEnabled(e.target.checked)}
-                className="rounded text-citrus-600 focus:ring-citrus-500 h-4 w-4 border-[#DED7CE]"
+                className="rounded text-amber-600 focus:ring-amber-500 h-4 w-4 border-slate-300"
               />
             </label>
-            <p className="text-xs text-citrus-900/90 leading-relaxed">
+            <p className="text-xs text-amber-900 leading-relaxed">
               Permet à un voyageur de réserver le siège avant spacieux en payant un supplément de 30% ({Math.round(baseSeatPrice * 0.30)} DA) qui vous sera intégralement reversé.
             </p>
           </div>
 
           {/* Live Preview of Price Breakdown */}
           <div className="pt-2">
-            <span className="text-[11px] font-bold text-ink-500 uppercase tracking-wider block mb-2">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">
               Aperçu en direct du tarif passager et de votre gain net :
             </span>
             <PriceBreakdown
@@ -383,19 +383,19 @@ export const CreateTripPage: React.FC = () => {
         </div>
 
         {/* Step 3: Vehicle notes & Submit */}
-        <div className="bg-white rounded-2xl border border-[#E7E2DA] p-6 sm:p-7 shadow-subtle space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-[#F4EFEB]">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-900 flex items-center gap-2">
-              <span className="w-5 h-5 rounded-full bg-forest-700 text-white text-xs flex items-center justify-center font-bold">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-sm space-y-5">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-emerald-700 text-white text-xs flex items-center justify-center font-bold">
                 3
               </span>
               <span>Consignes & Confirmation</span>
             </h2>
-            <span className="text-xs font-semibold text-ink-500">Étape 3 sur 3</span>
+            <span className="text-xs font-semibold text-slate-500">Étape 3 sur 3</span>
           </div>
 
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-ink-700">
+            <label className="block text-xs font-bold text-slate-700">
               Consignes du voyage (bagages, ponctualité, pauses)
             </label>
             <textarea
@@ -403,7 +403,7 @@ export const CreateTripPage: React.FC = () => {
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
               placeholder="Ex: Bagages moyens acceptés dans le coffre, départ à l'heure pile..."
-              className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-600"
             />
           </div>
 
@@ -418,14 +418,14 @@ export const CreateTripPage: React.FC = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-4 px-6 rounded-xl font-black text-sm text-[#FAF8F5] bg-forest-700 hover:bg-forest-800 disabled:bg-ink-200 disabled:text-ink-400 shadow-subtle hover:shadow-card transition-all active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-forest-700/30 flex items-center justify-center gap-2"
+              className="w-full py-4 px-6 rounded-xl font-black text-sm text-white bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-200 disabled:text-slate-400 shadow-xs hover:shadow-md transition-all active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-emerald-700/30 flex items-center justify-center gap-2"
             >
-              <Car className="w-4 h-4 text-citrus-300" />
+              <Car className="w-4 h-4 text-amber-300" />
               <span>
                 {submitting ? 'Publication en cours...' : 'Publier ce trajet sur DZ-CarPool'}
               </span>
             </button>
-            <p className="text-[10px] text-center text-ink-400 mt-2">
+            <p className="text-[10px] text-center text-slate-400 mt-2">
               En publiant, vous vous engagez à respecter le code de la route algérien et les pauses de sécurité prescrites.
             </p>
           </div>

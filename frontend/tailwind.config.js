@@ -7,74 +7,80 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Art Direction: Algerian Mobility Brand
+        // Art Direction: Premium Algerian Mobility Brand (Luminous, crisp, confident)
         ivory: {
-          DEFAULT: '#FAF8F5', // Warm ivory canvas
-          50: '#FDFCFB',
-          100: '#FAF8F5',
-          200: '#F4EFEB',
-          300: '#EBE3DA',
-          400: '#DECFC1',
+          DEFAULT: '#FFFFFF',
+          50: '#FFFFFF',
+          100: '#FAFAFA',
+          200: '#F4F4F5',
+          300: '#E4E4E7',
+          400: '#D4D4D8',
         },
         forest: {
-          50: '#F0F6F2',
-          100: '#DEECE4',
-          200: '#BFDBCB',
-          300: '#94C3AD',
-          400: '#5FA386',
-          500: '#2F8562',
-          600: '#156B48',
-          700: '#0C4A32', // Primary deep Algerian forest green
-          800: '#083725',
-          900: '#052317', // Deepest forest ink
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857', // Algerian Emerald
+          800: '#065F46', // Deep Algerian Cedar Forest
+          900: '#064E3B', // Deepest forest ink
+          950: '#022C22',
         },
         ink: {
-          50: '#F8F9FA',
-          100: '#F1F4F6',
-          200: '#E4E9EC',
-          300: '#CBD5DC',
-          400: '#9EABB4',
-          500: '#6E7D88',
-          600: '#4F5E68',
-          700: '#34414A',
-          800: '#202A30',
-          900: '#111827', // Near-black obsidian ink
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A', // Deepest obsidian ink
+          950: '#020617',
         },
         citrus: {
-          50: '#FFFDF5',
+          50: '#FFFBEB',
           100: '#FEF3C7',
           200: '#FDE68A',
           300: '#FCD34D',
           400: '#FBBF24',
           500: '#F59E0B',
-          600: '#D97706', // Restrained warm Algerian ochre/citrus
+          600: '#D97706', // Warm Algerian ochre / desert gold
           700: '#B45309',
           800: '#92400E',
           900: '#78350F',
         },
         // Backward compatibility mappings
         brand: {
-          50: '#F0F6F2',
-          100: '#DEECE4',
-          200: '#BFDBCB',
-          300: '#94C3AD',
-          400: '#5FA386',
-          500: '#2F8562',
-          600: '#0C4A32',
-          700: '#083725',
-          800: '#052317',
-          900: '#03170F',
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#047857',
+          700: '#065F46',
+          800: '#064E3B',
+          900: '#022C22',
         },
-        canvas: '#FAF8F5',
+        canvas: '#F8FAFC',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Noto Sans Arabic', 'sans-serif'],
-        arabic: ['Noto Sans Arabic', 'Cairo', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        arabic: ['"Noto Sans Arabic"', 'Cairo', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'subtle': '0 1px 3px 0 rgba(17, 24, 39, 0.04), 0 1px 2px -1px rgba(17, 24, 39, 0.04)',
-        'card': '0 2px 8px -1px rgba(17, 24, 39, 0.05), 0 1px 3px -1px rgba(17, 24, 39, 0.03)',
-        'elevated': '0 8px 24px -4px rgba(17, 24, 39, 0.08), 0 4px 12px -2px rgba(17, 24, 39, 0.04)',
+        'subtle': '0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05)',
+        'card': '0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05)',
+        'floating': '0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1)',
+        'elevated': '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
+      },
+      borderRadius: {
+        'pill': '9999px',
       },
     },
   },
