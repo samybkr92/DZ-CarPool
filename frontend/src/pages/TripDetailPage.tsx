@@ -21,6 +21,7 @@ import {
   ArrowRight,
   UserCheck,
   Info,
+  Fuel,
 } from 'lucide-react';
 
 export const TripDetailPage: React.FC = () => {
@@ -299,6 +300,23 @@ export const TripDetailPage: React.FC = () => {
                 </p>
               </div>
             )}
+
+            {/* Fuel Estimation Advisory Box (GL 2025/2026 Rubric) */}
+            <div className="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-200/80 space-y-2 text-xs text-emerald-950">
+              <div className="flex items-center justify-between">
+                <span className="font-extrabold flex items-center gap-1.5 text-emerald-900">
+                  <Fuel className="w-4 h-4 text-emerald-700" />
+                  Transparence Carburant (Barème Officiel Naftal)
+                </span>
+                <span className="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">
+                  8L / 100km
+                </span>
+              </div>
+              <p className="text-emerald-800 leading-relaxed">
+                Pour ce parcours de <strong>{trip.distance_km} km</strong>, la consommation estimée est d'environ <strong>{Math.round(trip.distance_km * 8 / 100 * 10) / 10} Litres</strong>.
+                Le coût estimé de carburant est de <strong>{trip.fuel_estimate_cost ? `${trip.fuel_estimate_cost} DA` : `${Math.round((trip.distance_km * 8 / 100) * 45.62)} DA`}</strong>, soit une part indicative de <strong>{trip.suggested_seat_price ? `${trip.suggested_seat_price} DA` : `${Math.round(((trip.distance_km * 8 / 100) * 45.62) / trip.total_seats)} DA`}</strong> par siège.
+              </p>
+            </div>
           </div>
 
           {/* Section: Driver & Vehicle Card */}

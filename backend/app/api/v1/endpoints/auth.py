@@ -1,5 +1,5 @@
-from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security import hash_password, verify_password, create_access_token
@@ -42,10 +42,47 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=Token)
-def login_user(login_data: UserLogin, db: Session = Depends(get_db)):
-    """Authenticates a user and returns a signed JWT."""
-    user = db.query(User).filter(User.email == login_data.email.lower()).first()
-    if not user or not verify_password(login_data.password, user.password_hash):
+async def login_user(request: Request, db: Session = Depends(get_db)):
+    """Authenticates a user and returns a signed JWT. Supports JSON and Form data."""
+    email = None
+    password = None
+
+    content_type = request.headers.get("content-type", "")
+    if "application/json" in content_type:
+        try:
+            body = await request.json()
+            email = body.get("email") or body.get("username")
+            password = body.get("password")
+        except Exception:
+            pass
+    elif "multipart/form-data" in content_type or "application/x-www-form-urlencoded" in content_type:
+        try:
+            form = await request.form()
+            email = form.get("email") or form.get("username")
+            password = form.get("password")
+        except Exception:
+            pass
+    else:
+        try:
+            body = await request.json()
+            email = body.get("email") or body.get("username")
+            password = body.get("password")
+        except Exception:
+            try:
+                form = await request.form()
+                email = form.get("email") or form.get("username")
+                password = form.get("password")
+            except Exception:
+                pass
+
+    if not email or not password:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Email et mot de passe requis.",
+        )
+
+    user = db.query(User).filter(User.email == str(email).lower().strip()).first()
+    if not user or not verify_password(str(password), user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Identifiants incorrects (email ou mot de passe invalide).",

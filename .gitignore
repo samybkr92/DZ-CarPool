@@ -40,6 +40,8 @@ frontend/node_modules.nosync/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
+backend/*.log
 dist/
 frontend/dist/
 frontend/dist-ssr/
