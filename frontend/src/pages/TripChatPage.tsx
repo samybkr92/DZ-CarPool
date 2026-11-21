@@ -12,6 +12,8 @@ import {
   Calendar,
   AlertCircle,
   User,
+  Clock,
+  ExternalLink,
 } from 'lucide-react';
 
 export const TripChatPage: React.FC = () => {
@@ -85,24 +87,26 @@ export const TripChatPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="h-64 rounded-2xl bg-gray-100 animate-pulse" />
+        <div className="h-96 rounded-2xl bg-white border border-[#E7E2DA] animate-pulse p-8" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="max-w-xl mx-auto px-4 py-16 text-center space-y-4">
-        <div className="p-4 bg-rose-50 text-rose-800 rounded-2xl border border-rose-200">
-          <AlertCircle className="w-8 h-8 text-rose-600 mx-auto mb-2" />
-          <h2 className="text-base font-bold">{t('chat.not_authorized')}</h2>
-          <p className="text-xs text-rose-600 mt-1">{error}</p>
+      <div className="max-w-md mx-auto px-4 py-20 text-center space-y-4">
+        <div className="p-6 bg-rose-50 text-rose-800 rounded-2xl border border-rose-200 space-y-2">
+          <AlertCircle className="w-8 h-8 text-rose-700 mx-auto" />
+          <h2 className="text-base font-bold">{t('chat.not_authorized', 'Accès restreint aux membres du trajet')}</h2>
+          <p className="text-xs text-rose-700 leading-relaxed">
+            Seuls le conducteur et les passagers ayant une réservation confirmée pour ce trajet peuvent accéder à ce fil de discussion.
+          </p>
         </div>
         <button
           onClick={() => navigate('/search')}
-          className="text-xs font-bold text-emerald-700 underline"
+          className="text-xs font-bold text-forest-700 hover:underline"
         >
-          Retourner aux trajets
+          Retourner aux recherches
         </button>
       </div>
     );
@@ -112,44 +116,47 @@ export const TripChatPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-4">
       {/* Route context header */}
       {trip && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-wide">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>Coordination sécurisée du trajet</span>
+        <div className="bg-white rounded-2xl border border-[#E7E2DA] p-4 sm:p-5 shadow-subtle flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-xs font-bold text-forest-700 uppercase tracking-wide">
+              <ShieldCheck className="w-4 h-4 text-forest-700" />
+              <span>Messagerie Interne de Coordination</span>
             </div>
-            <h1 className="text-lg font-extrabold text-gray-900 mt-0.5 flex items-center gap-2">
+            <h1 className="text-lg font-black text-ink-900 flex items-center gap-2">
               <span>{trip.origin_city}</span>
-              <ArrowRight className="w-4 h-4 text-emerald-600" />
+              <ArrowRight className="w-4 h-4 text-forest-700" />
               <span>{trip.destination_city}</span>
             </h1>
-            <p className="text-xs text-gray-500">
-              Départ : {new Date(trip.departure_datetime).toLocaleString()} • Conducteur : {trip.driver?.full_name}
+            <p className="text-xs text-ink-500">
+              Départ : {new Date(trip.departure_datetime).toLocaleString('fr-DZ')} • Conducteur : <strong>{trip.driver?.full_name}</strong>
             </p>
           </div>
 
           <button
             onClick={() => navigate(`/trips/${trip.id}`)}
-            className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#DED7CE] bg-[#FAF8F5] text-xs font-bold text-ink-800 hover:border-forest-600 hover:text-forest-700 transition-colors shadow-xs"
           >
-            Fiche trajet
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>Fiche trajet</span>
           </button>
         </div>
       )}
 
       {/* Messages Scroll Area */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 h-[480px] flex flex-col justify-between">
+      <div className="bg-white rounded-2xl border border-[#E7E2DA] shadow-subtle p-4 sm:p-6 h-[500px] flex flex-col justify-between">
         <div className="overflow-y-auto space-y-4 pr-2">
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center text-gray-400 py-16 space-y-2">
-              <MessageCircle className="w-10 h-10 text-gray-300" />
-              <p className="text-sm font-semibold">{t('chat.empty')}</p>
+            <div className="h-full flex flex-col items-center justify-center text-center text-ink-400 py-20 space-y-2">
+              <MessageCircle className="w-10 h-10 text-ink-300" />
+              <p className="text-sm font-bold text-ink-700">Aucun message pour l'instant</p>
+              <p className="text-xs text-ink-500 max-w-sm">
+                Utilisez cette messagerie pour coordonner le point de rendez-vous exact, les bagages ou l'heure de départ.
+              </p>
             </div>
           ) : (
             messages.map((msg) => {
               const isMe = msg.sender_id === user?.id;
-              const isTripDriver = trip && msg.sender_id === trip.driver_id;
-              const formattedTime = new Date(msg.created_at).toLocaleTimeString([], {
+              const timeString = new Date(msg.created_at).toLocaleTimeString('fr-DZ', {
                 hour: '2-digit',
                 minute: '2-digit',
               });
@@ -157,25 +164,17 @@ export const TripChatPage: React.FC = () => {
               return (
                 <div
                   key={msg.id}
-                  className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}
+                  className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} space-y-1`}
                 >
-                  <div className="flex items-center gap-1.5 mb-1 px-1">
-                    <span className="text-[11px] font-bold text-gray-700">
-                      {isMe ? 'Vous' : msg.sender?.full_name || 'Participant'}
-                    </span>
-                    {isTripDriver && (
-                      <span className="text-[9px] font-extrabold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">
-                        Conducteur
-                      </span>
-                    )}
-                    <span className="text-[10px] text-gray-400">{formattedTime}</span>
-                  </div>
+                  <span className="text-[10px] font-semibold text-ink-400 px-1">
+                    {msg.sender?.full_name || 'Utilisateur'} • {timeString}
+                  </span>
 
                   <div
-                    className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                    className={`max-w-md rounded-2xl px-4 py-2.5 text-xs font-medium leading-relaxed ${
                       isMe
-                        ? 'bg-emerald-600 text-white rounded-tr-none'
-                        : 'bg-gray-100 text-gray-900 rounded-tl-none'
+                        ? 'bg-forest-700 text-[#FAF8F5] rounded-br-none shadow-xs'
+                        : 'bg-[#FAF8F5] text-ink-900 border border-[#E7E2DA] rounded-bl-none'
                     }`}
                   >
                     {msg.content}
@@ -187,22 +186,22 @@ export const TripChatPage: React.FC = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Message Input Form */}
-        <form onSubmit={handleSendMessage} className="pt-4 border-t border-gray-100 flex items-center gap-2">
+        {/* Composer Form */}
+        <form onSubmit={handleSendMessage} className="pt-4 border-t border-[#F4EFEB] flex gap-2">
           <input
             type="text"
             value={inputContent}
             onChange={(e) => setInputContent(e.target.value)}
-            placeholder={t('chat.placeholder')}
-            className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:bg-white focus:border-emerald-600 transition-colors"
+            placeholder="Écrivez un message de coordination..."
+            className="flex-1 rounded-xl border border-[#DED7CE] bg-[#FAF8F5] px-4 py-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600 transition-colors"
           />
           <button
             type="submit"
             disabled={sending || !inputContent.trim()}
-            className="p-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 text-white rounded-xl shadow-md transition-all flex items-center justify-center"
-            title={t('chat.send')}
+            className="px-5 py-3 rounded-xl bg-forest-700 hover:bg-forest-800 disabled:bg-ink-200 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-3.5 h-3.5" />
+            <span>Envoyer</span>
           </button>
         </form>
       </div>

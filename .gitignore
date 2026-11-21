@@ -67,3 +67,4 @@ test_*.db
 .vercel
 node_modules
 *.tsbuildinfo
+.env*

@@ -1,39 +1,49 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Coffee, ShieldAlert } from 'lucide-react';
+import { Coffee, ShieldCheck } from 'lucide-react';
 
 interface RestStopAlertProps {
   distanceKm: number;
   cityName?: string;
+  compact?: boolean;
 }
 
-export const RestStopAlert: React.FC<RestStopAlertProps> = ({ distanceKm, cityName }) => {
+export const RestStopAlert: React.FC<RestStopAlertProps> = ({ distanceKm, cityName, compact = false }) => {
   const { t } = useTranslation();
 
   if (distanceKm <= 300.0) {
     return null;
   }
 
+  if (compact) {
+    return (
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-[#FFFBEB] text-[#92400E] border border-[#FDE68A]">
+        <Coffee className="w-3.5 h-3.5 text-citrus-600" />
+        <span>Pause 15 min obligatoire (&gt; 300 km)</span>
+      </span>
+    );
+  }
+
   return (
-    <div className="rounded-xl bg-amber-50/80 border border-amber-200 p-4 text-amber-900 shadow-sm flex items-start gap-3">
-      <div className="p-2 rounded-lg bg-amber-100 text-amber-800 flex-shrink-0 mt-0.5">
-        <Coffee className="w-5 h-5" />
+    <div className="rounded-xl bg-[#FFFDF5] border border-[#FDE68A] p-4 text-ink-900 shadow-subtle flex items-start gap-3.5">
+      <div className="w-9 h-9 rounded-lg bg-citrus-100 text-citrus-700 flex items-center justify-center flex-shrink-0 mt-0.5 border border-citrus-200">
+        <Coffee className="w-4 h-4 text-citrus-700" />
       </div>
-      <div>
-        <div className="flex items-center gap-2">
-          <h4 className="text-sm font-bold text-amber-950">
-            {t('trip.mandatory_rest_title')}
+      <div className="flex-1 space-y-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <h4 className="text-xs font-bold text-ink-900 tracking-tight">
+            {t('trip.mandatory_rest_title', 'Pause de sécurité obligatoire (15 minutes)')}
           </h4>
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-200 text-amber-900">
-            <ShieldAlert className="w-3 h-3" />
-            Règle Sécurité DZ
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-citrus-100 text-citrus-800 border border-citrus-300/80">
+            <ShieldCheck className="w-3 h-3 text-citrus-700" />
+            Règle Sécurité Routière &gt; 300 km
           </span>
         </div>
-        <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-          {t('trip.mandatory_rest_desc')}
+        <p className="text-xs text-ink-600 leading-relaxed">
+          Pour ce trajet de <strong className="text-ink-900">{distanceKm} km</strong>, une pause minimale de 15 minutes est programmée à mi-parcours (station-service Naftal) pour le repos du conducteur et le confort des passagers.
           {cityName && (
-            <span className="font-semibold block mt-1">
-              📍 Arrêt programmé au point médian vers {cityName} (Station-Service Naftal).
+            <span className="font-semibold text-citrus-800 block mt-0.5">
+              Arrêt prévu vers : {cityName}.
             </span>
           )}
         </p>

@@ -3,11 +3,70 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-canvas: #FAF8F5;
+    --text-ink: #111827;
+  }
+
+  html {
+    background-color: #FAF8F5;
+    color: #111827;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    font-family: 'Inter', 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Arabic', sans-serif;
+    background-color: #FAF8F5;
+    color: #111827;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  /* Numeric legibility */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
   }
 }
 
+/* Arabic RTL intentional typographic hierarchy */
 [dir="rtl"] {
-  font-family: 'Noto Sans Arabic', 'Inter', system-ui, sans-serif;
+  font-family: 'Noto Sans Arabic', 'Cairo', 'Inter', system-ui, sans-serif;
+  letter-spacing: normal;
+}
+
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6 {
+  line-height: 1.35;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom travel marketplace scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5DC;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9EABB4;
 }

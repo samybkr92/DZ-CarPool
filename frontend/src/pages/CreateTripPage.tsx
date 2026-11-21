@@ -16,6 +16,10 @@ import {
   Info,
   CheckCircle2,
   AlertCircle,
+  Coffee,
+  ArrowRight,
+  ShieldCheck,
+  Clock,
 } from 'lucide-react';
 
 export const CreateTripPage: React.FC = () => {
@@ -30,7 +34,7 @@ export const CreateTripPage: React.FC = () => {
 
   const [destWilayaCode, setDestWilayaCode] = useState<number>(31);
   const [destCity, setDestCity] = useState<string>('Oran');
-  const [destAddress, setDestAddress] = useState<string>("Place d'Armes, Oran Centre");
+  const [destAddress, setDestAddress] = useState<string>("Place du 1er Novembre (Place d'Armes), Oran");
 
   const [departureDate, setDepartureDate] = useState<string>('');
   const [departureTime, setDepartureTime] = useState<string>('08:00');
@@ -40,7 +44,8 @@ export const CreateTripPage: React.FC = () => {
   const [totalSeats, setTotalSeats] = useState<number>(4);
   const [baseSeatPrice, setBaseSeatPrice] = useState<number>(1600);
   const [comfortEnabled, setComfortEnabled] = useState<boolean>(true);
-  const [notes, setNotes] = useState<string>('Voyage calme, bagages moyens acceptés.');
+  const [fuelType, setFuelType] = useState<string>('essence');
+  const [notes, setNotes] = useState<string>('Voyage calme et courtois. Bagages moyens acceptés.');
 
   // Fuel Estimate State
   const [fuelEstimate, setFuelEstimate] = useState<FuelEstimateResult | null>(null);
@@ -57,14 +62,14 @@ export const CreateTripPage: React.FC = () => {
         distance_km: distanceKm,
         total_seats: totalSeats,
         wilaya_code: originWilayaCode,
-        fuel_type: 'essence',
+        fuel_type: fuelType,
       });
       setFuelEstimate(result);
       if (result.suggested_seat_price_dzd) {
         setBaseSeatPrice(Math.round(result.suggested_seat_price_dzd));
       }
     } catch {
-      // Graceful fallback
+      // Graceful fallback handled by backend
     } finally {
       setFuelLoading(false);
     }
@@ -78,7 +83,7 @@ export const CreateTripPage: React.FC = () => {
     }
 
     if (!departureDate) {
-      setError('Veuillez renseigner la date de départ');
+      setError('Veuillez sélectionner une date de départ valide');
       return;
     }
 
@@ -116,147 +121,210 @@ export const CreateTripPage: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      <div>
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-          {t('create_trip.title')}
+      {/* Editorial Header */}
+      <div className="space-y-2 pb-6 border-b border-[#E7E2DA]">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold uppercase tracking-wider text-forest-700 bg-forest-50 px-2.5 py-0.5 rounded border border-forest-200/60">
+            Espace Conducteur
+          </span>
+          <span className="text-xs text-ink-400">•</span>
+          <span className="text-xs font-medium text-ink-500">
+            Publication sécurisée
+          </span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-ink-900 tracking-tight">
+          {t('create_trip.title', 'Publier un trajet inter-wilayas')}
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Proposez vos places libres, respectez les pauses de sécurité et partagez vos frais de carburant Naftal.
+        <p className="text-xs sm:text-sm text-ink-600 leading-relaxed max-w-2xl">
+          Proposez vos places libres, estimez vos frais de carburant Naftal et voyagez en toute légalité en partageant les coûts réels de votre déplacement.
         </p>
       </div>
 
-      {/* Mandatory Rest Stop Alert if > 300km */}
-      <RestStopAlert distanceKm={distanceKm} />
-
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Step 1: Itinerary */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm space-y-4">
-          <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-2">
-            1. Itinéraire & Horaires
-          </h2>
+        {/* Step 1: Itinerary & Route details */}
+        <div className="bg-white rounded-2xl border border-[#E7E2DA] p-6 sm:p-7 shadow-subtle space-y-5">
+          <div className="flex items-center justify-between pb-3 border-b border-[#F4EFEB]">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-forest-700 text-white text-xs flex items-center justify-center font-bold">
+                1
+              </span>
+              <span>Itinéraire & Horaires de Départ</span>
+            </h2>
+            <span className="text-xs font-semibold text-ink-500">Étape 1 sur 3</span>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Ville de départ</label>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Ville de départ</label>
               <input
                 type="text"
                 value={originCity}
                 onChange={(e) => setOriginCity(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm font-semibold"
+                placeholder="Ex: Alger"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
             </div>
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Point de rassemblement exact</label>
+
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Point de rassemblement exact</label>
               <input
                 type="text"
                 value={originAddress}
                 onChange={(e) => setOriginAddress(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm"
+                placeholder="Ex: Station Tafourah, Rue d'Isly"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-medium text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Ville de destination</label>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Ville d'arrivée</label>
               <input
                 type="text"
                 value={destCity}
                 onChange={(e) => setDestCity(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm font-semibold"
+                placeholder="Ex: Oran"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
             </div>
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Point d'arrivée exact</label>
+
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Point d'arrivée exact</label>
               <input
                 type="text"
                 value={destAddress}
                 onChange={(e) => setDestAddress(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm"
+                placeholder="Ex: Place d'Armes, Centre-Ville"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-medium text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Date de départ</label>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Date du trajet</label>
               <input
                 type="date"
                 value={departureDate}
                 onChange={(e) => setDepartureDate(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm font-semibold"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
             </div>
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Heure de départ</label>
+
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Heure de départ</label>
               <input
                 type="time"
                 value={departureTime}
                 onChange={(e) => setDepartureTime(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm font-semibold"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Distance (km)</label>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Distance estimée (km)</label>
               <input
                 type="number"
                 value={distanceKm}
                 onChange={(e) => setDistanceKm(parseFloat(e.target.value) || 0)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm font-semibold"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
             </div>
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Durée estimée (minutes)</label>
+
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Durée du trajet (minutes)</label>
               <input
                 type="number"
                 value={durationMin}
                 onChange={(e) => setDurationMin(parseInt(e.target.value, 10) || 0)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm font-semibold"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
             </div>
           </div>
+
+          {/* Mandatory Rest Alert if > 300km */}
+          {distanceKm > 300.0 && (
+            <div className="mt-2">
+              <RestStopAlert distanceKm={distanceKm} />
+            </div>
+          )}
         </div>
 
-        {/* Step 2: Fuel Advisory & Pricing */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm space-y-4">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-            <h2 className="text-base font-bold text-gray-900">
-              2. Estimation Carburant & Prix par Place
+        {/* Step 2: Fuel Advisory & Transparent Pricing */}
+        <div className="bg-white rounded-2xl border border-[#E7E2DA] p-6 sm:p-7 shadow-subtle space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F4EFEB]">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-forest-700 text-white text-xs flex items-center justify-center font-bold">
+                2
+              </span>
+              <span>Calculateur de Carburant Naftal & Tarification</span>
             </h2>
             <button
               type="button"
               onClick={handleEstimateFuel}
               disabled={fuelLoading}
-              className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-forest-50 hover:bg-forest-100 text-forest-800 text-xs font-bold border border-forest-200/60 transition-colors self-start sm:self-auto"
             >
-              <Fuel className="w-4 h-4" />
-              <span>{fuelLoading ? 'Calcul en cours...' : 'Calculer estimation Naftal (8L/100km)'}</span>
+              <Fuel className="w-3.5 h-3.5 text-forest-700" />
+              <span>{fuelLoading ? 'Calcul...' : 'Estimer barème officiel (8L/100km)'}</span>
             </button>
           </div>
 
+          {/* Fuel Estimate Advisory Banner */}
           {fuelEstimate && (
-            <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-1 text-xs text-emerald-950">
-              <p className="font-bold">Estimation Naftal pour {fuelEstimate.distance_km} km :</p>
-              <p>• Carburant estimé : <strong>{fuelEstimate.estimated_fuel_litres} L</strong> à {fuelEstimate.fuel_price_per_litre} DA/L</p>
-              <p>• Coût total carburant : <strong>{fuelEstimate.total_fuel_cost_dzd} DA</strong></p>
-              <p className="text-emerald-800 font-semibold mt-1">
-                💡 Prix indicatif conseillé par place : <strong>{fuelEstimate.suggested_seat_price_dzd} DA</strong> (le conducteur reste libre du prix final)
+            <div className="p-4 bg-forest-50/80 border border-forest-200 rounded-xl space-y-1.5 text-xs text-forest-950">
+              <div className="flex items-center justify-between">
+                <span className="font-bold flex items-center gap-1.5">
+                  <Fuel className="w-4 h-4 text-forest-700" />
+                  Barème officiel carburant ({fuelEstimate.fuel_type.toUpperCase()}) :
+                </span>
+                <span className="text-[11px] font-semibold text-forest-700">
+                  {fuelEstimate.fuel_price_per_litre} DA / Litre
+                </span>
+              </div>
+              <p className="text-forest-800">
+                • Volume estimé : <strong>{fuelEstimate.estimated_fuel_litres} L</strong> ({fuelEstimate.distance_km} km à 8L/100km)
               </p>
+              <p className="text-forest-800">
+                • Coût total carburant : <strong>{fuelEstimate.total_fuel_cost_dzd} DA</strong>
+              </p>
+              <div className="pt-1 border-t border-forest-200/80 flex items-center justify-between font-bold text-forest-900">
+                <span>Contribution indicative suggérée par place :</span>
+                <span className="text-sm tabular-nums text-forest-800">
+                  {fuelEstimate.suggested_seat_price_dzd} DA
+                </span>
+              </div>
+              <span className="text-[10px] text-forest-700/80 block italic">
+                * Note consultative : le conducteur fixe librement son prix de base final selon l'usure et le trajet.
+              </span>
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Nombre total de places</label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Type de carburant</label>
+              <select
+                value={fuelType}
+                onChange={(e) => setFuelType(e.target.value)}
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
+              >
+                <option value="essence">Essence (45.62 DA/L)</option>
+                <option value="diesel">Gasoil / Diesel (29.01 DA/L)</option>
+                <option value="gpl">GPL / Sirghaz (9.00 DA/L)</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">Places passagers offertes</label>
               <select
                 value={totalSeats}
                 onChange={(e) => setTotalSeats(parseInt(e.target.value, 10))}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm font-semibold"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs font-semibold text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
               >
                 <option value={2}>2 places</option>
                 <option value={3}>3 places</option>
@@ -264,80 +332,103 @@ export const CreateTripPage: React.FC = () => {
               </select>
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Votre Prix de Base / Place (DA)</label>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-ink-700">
+                Votre Prix de Base / Siège (DA)
+              </label>
               <input
                 type="number"
                 value={baseSeatPrice}
                 onChange={(e) => setBaseSeatPrice(parseFloat(e.target.value) || 0)}
-                className="w-full rounded-xl border border-gray-300 p-2.5 text-sm font-black text-emerald-700"
+                className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-sm font-black text-forest-700 focus:bg-white focus:outline-none focus:border-forest-600"
                 required
               />
-              <span className="text-[10px] text-gray-400">Ce montant net vous sera intégralement reversé.</span>
+              <span className="text-[10px] text-ink-400">Net conducteur perçu par place</span>
             </div>
           </div>
 
-          {/* Comfort Option Toggle */}
-          <div className="p-4 bg-amber-50/70 rounded-xl border border-amber-200 space-y-2">
+          {/* Trajet Confort Toggle */}
+          <div className="p-4 bg-citrus-50/70 rounded-xl border border-citrus-200 space-y-2">
             <label className="flex items-center justify-between cursor-pointer">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-600" />
-                <span className="text-xs font-bold text-amber-950">
-                  {t('create_trip.comfort_toggle')}
+                <Sparkles className="w-4 h-4 text-citrus-600" />
+                <span className="text-xs font-bold text-citrus-950">
+                  Activer l'option « Trajet Confort » (+30%)
                 </span>
               </div>
               <input
                 type="checkbox"
                 checked={comfortEnabled}
                 onChange={(e) => setComfortEnabled(e.target.checked)}
-                className="rounded text-amber-600 focus:ring-amber-500 h-4 w-4"
+                className="rounded text-citrus-600 focus:ring-citrus-500 h-4 w-4 border-[#DED7CE]"
               />
             </label>
-            <p className="text-xs text-amber-800 leading-relaxed">
-              Le passager confort paiera un supplément de 30% ({Math.round(baseSeatPrice * 0.30)} DA) qui vous sera également reversé.
+            <p className="text-xs text-citrus-900/90 leading-relaxed">
+              Permet à un voyageur de réserver le siège avant spacieux en payant un supplément de 30% ({Math.round(baseSeatPrice * 0.30)} DA) qui vous sera intégralement reversé.
             </p>
           </div>
 
-          {/* Live Pricing Breakdown Preview */}
-          <PriceBreakdown
-            basePrice={baseSeatPrice}
-            seatCount={1}
-            seatType={comfortEnabled ? 'comfort' : 'standard'}
-            showDriverPayout={true}
-          />
+          {/* Live Preview of Price Breakdown */}
+          <div className="pt-2">
+            <span className="text-[11px] font-bold text-ink-500 uppercase tracking-wider block mb-2">
+              Aperçu en direct du tarif passager et de votre gain net :
+            </span>
+            <PriceBreakdown
+              basePrice={baseSeatPrice}
+              seatCount={1}
+              seatType={comfortEnabled ? 'comfort' : 'standard'}
+              showDriverPayout={true}
+            />
+          </div>
         </div>
 
-        {/* Step 3: Notes & Publish */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm space-y-4">
-          <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-2">
-            3. Remarques & Validation
-          </h2>
+        {/* Step 3: Vehicle notes & Submit */}
+        <div className="bg-white rounded-2xl border border-[#E7E2DA] p-6 sm:p-7 shadow-subtle space-y-5">
+          <div className="flex items-center justify-between pb-3 border-b border-[#F4EFEB]">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-forest-700 text-white text-xs flex items-center justify-center font-bold">
+                3
+              </span>
+              <span>Consignes & Confirmation</span>
+            </h2>
+            <span className="text-xs font-semibold text-ink-500">Étape 3 sur 3</span>
+          </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Consignes pour les voyageurs</label>
+          <div className="space-y-1">
+            <label className="block text-xs font-bold text-ink-700">
+              Consignes du voyage (bagages, ponctualité, pauses)
+            </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
-              className="w-full rounded-xl border border-gray-300 p-2.5 text-sm"
-              placeholder="Ex: Bagages autorisés, ponctualité, véhicule non-fumeur..."
+              placeholder="Ex: Bagages moyens acceptés dans le coffre, départ à l'heure pile..."
+              className="w-full rounded-xl border border-[#DED7CE] bg-[#FAF8F5] p-3 text-xs text-ink-900 focus:bg-white focus:outline-none focus:border-forest-600"
             />
           </div>
 
           {error && (
-            <div className="p-3 bg-rose-50 text-rose-700 rounded-xl text-xs font-bold flex items-center gap-2">
-              <AlertCircle className="w-4 h-4" />
+            <div className="p-3.5 bg-rose-50 text-rose-800 rounded-xl border border-rose-200 text-xs font-bold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full py-4 px-6 rounded-xl font-black text-sm text-white bg-emerald-600 hover:bg-emerald-700 shadow-xl shadow-emerald-600/30 transition-all hover:scale-[1.01]"
-          >
-            {submitting ? 'Publication en cours...' : t('create_trip.publish_button')}
-          </button>
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full py-4 px-6 rounded-xl font-black text-sm text-[#FAF8F5] bg-forest-700 hover:bg-forest-800 disabled:bg-ink-200 disabled:text-ink-400 shadow-subtle hover:shadow-card transition-all active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-forest-700/30 flex items-center justify-center gap-2"
+            >
+              <Car className="w-4 h-4 text-citrus-300" />
+              <span>
+                {submitting ? 'Publication en cours...' : 'Publier ce trajet sur DZ-CarPool'}
+              </span>
+            </button>
+            <p className="text-[10px] text-center text-ink-400 mt-2">
+              En publiant, vous vous engagez à respecter le code de la route algérien et les pauses de sécurité prescrites.
+            </p>
+          </div>
         </div>
       </form>
     </div>
