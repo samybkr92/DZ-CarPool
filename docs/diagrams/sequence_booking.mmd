@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    actor P as Passager
+    participant FE as Frontend React
+    participant API as FastAPI Backend
+    participant BS as BookingService
+    participant DB as Base de Données
+
+    P->>FE: Sélectionne 1 place (Option Confort)
+    FE->>API: POST /api/v1/bookings/trips/1/book
+    Note over API: Vérification JWT & Droits (Passager != Conducteur)
+    API->>BS: create_booking(trip_id=1, seat_count=1, seat_type='comfort')
+    BS->>DB: Vérifie disponibilité (available_seats >= 1)
+    BS->>DB: INSERT INTO bookings (status='pending', quoted_total=1.45*B)
+    DB-->>BS: Réservation créée (#42)
+    BS-->>API: BookingOut (status='pending')
+    API-->>FE: 201 Created (Réservation en attente)
+    FE-->>P: Affiche "Demande envoyée au conducteur"
+
+    actor C as Conducteur
+    C->>FE: Accède à son Espace Conducteur
+    FE->>API: POST /api/v1/bookings/42/approve
+    Note over API: Vérification JWT (Est bien le conducteur du trajet)
+    API->>BS: approve_booking(booking_id=42)
+    BS->>DB: BEGIN TRANSACTION
+    BS->>DB: SELECT * FROM trips WHERE id=1 FOR UPDATE
+    BS->>DB: UPDATE trips SET available_seats = available_seats - 1
+    BS->>DB: UPDATE bookings SET status='confirmed' WHERE id=42
+    BS->>DB: COMMIT TRANSACTION
+    DB-->>BS: Succès
+    BS-->>API: BookingOut (status='confirmed')
+    API-->>FE: 200 OK (Place confirmée)
+    FE-->>C: Statut mis à jour sur l'Espace Conducteur
+    FE-->>P: Statut mis à jour sur l'Espace Passager

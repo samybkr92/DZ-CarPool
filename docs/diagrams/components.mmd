@@ -1,0 +1,46 @@
+flowchart TD
+    subgraph "Client Layer (Frontend SPA)"
+        UI["React 18 + Vite SPA"]
+        I18N["react-i18next (FR / AR RTL)"]
+        ROUTER["React Router v6"]
+        AUTH_CTX["Auth Context (JWT State)"]
+        API_CLIENT["Service Client API REST"]
+    end
+
+    subgraph "API Gateway & Security (FastAPI)"
+        ROUTERS["FastAPI Endpoints (/api/v1)"]
+        AUTH_MW["JWT Auth & Security Middleware"]
+        PYDANTIC["Validation des Schemas Pydantic V2"]
+    end
+
+    subgraph "Domain & Business Logic Layer"
+        PRICING_SRV["PricingService (Commission 15%, Confort 30%)"]
+        FUEL_SRV["FuelService (8L/100km & Naftal JSON)"]
+        TRIP_SRV["TripService (Pause obligatoire > 300 km)"]
+        BOOKING_SRV["BookingService (Concurrence & Machine a Etats)"]
+    end
+
+    subgraph "Data & Persistence Layer"
+        ORM["SQLAlchemy 2.0 ORM"]
+        DB[(PostgreSQL / SQLite 3NF/BCNF)]
+        FUEL_JSON[("Fichier prix_carburants.json")]
+    end
+
+    UI --> ROUTER
+    UI --> I18N
+    UI --> AUTH_CTX
+    AUTH_CTX --> API_CLIENT
+    API_CLIENT -->|HTTPS / JSON| ROUTERS
+
+    ROUTERS --> AUTH_MW
+    ROUTERS --> PYDANTIC
+    PYDANTIC --> PRICING_SRV
+    PYDANTIC --> FUEL_SRV
+    PYDANTIC --> TRIP_SRV
+    PYDANTIC --> BOOKING_SRV
+
+    PRICING_SRV --> ORM
+    FUEL_SRV --> FUEL_JSON
+    TRIP_SRV --> ORM
+    BOOKING_SRV --> ORM
+    ORM --> DB

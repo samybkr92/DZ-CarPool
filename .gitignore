@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv
+venv/
+venv.nosync
+venv.nosync/
+*.nosync
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+**/node_modules/
+node_modules.nosync/
+**/node_modules.nosync/
+frontend/node_modules/
+frontend/node_modules.nosync/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+frontend/dist/
+frontend/dist-ssr/
+*.local
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+dz_carpool.db
+test_*.db
+
+# Environment variables & secrets
+.env
+*.env
+!.env.example
+
+# IDEs & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+.nosync
+.vercel

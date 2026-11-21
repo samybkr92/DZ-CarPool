@@ -1,0 +1,35 @@
+flowchart LR
+    subgraph Acteurs
+        Visiteur["Visiteur Non Connecte"]
+        Passager["Passager Connecte"]
+        Conducteur["Conducteur Connecte"]
+    end
+
+    subgraph "Systeme DZ-CarPool"
+        UC1["Consulter les annonces publiques"]
+        UC2["Rechercher avec filtres (Wilayas, Date)"]
+        UC3["S'inscrire / Se connecter (JWT)"]
+        UC4["Publier une annonce de trajet"]
+        UC5["Calculer estimation carburant Naftal"]
+        UC6["Appliquer pause securite > 300 km"]
+        UC7["Demander une reservation (Standard/Confort)"]
+        UC8["Approuver ou Refuser une demande"]
+        UC9["Participer au chat securise du trajet"]
+        UC10["Consulter tableaux de bord et historiques"]
+    end
+
+    Visiteur --> UC1
+    Visiteur --> UC2
+    Visiteur --> UC3
+
+    Passager --> UC2
+    Passager --> UC7
+    Passager --> UC9
+    Passager --> UC10
+
+    Conducteur --> UC4
+    Conducteur --> UC5
+    Conducteur --> UC6
+    Conducteur --> UC8
+    Conducteur --> UC9
+    Conducteur --> UC10

@@ -1,0 +1,61 @@
+services:
+  # 1. Base de données Relationnelle PostgreSQL
+  db:
+    image: postgres:16-alpine
+    container_name: dz_carpool_db
+    restart: always
+    environment:
+      POSTGRES_USER: dz_user
+      POSTGRES_PASSWORD: dz_password_2026
+      POSTGRES_DB: dz_carpool
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dz_user -d dz_carpool"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. API Backend FastAPI
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: dz_carpool_api
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=False
+      - HOST=0.0.0.0
+      - PORT=8000
+      - SECRET_KEY=dz-carpool-super-secret-production-jwt-key-2026-algeria
+      - DATABASE_URL=postgresql://dz_user:dz_password_2026@db:5432/dz_carpool
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:3000,http://localhost
+      - PLATFORM_COMMISSION_RATE=0.15
+      - COMFORT_SURCHARGE_RATE=0.30
+      - REST_STOP_THRESHOLD_KM=300.0
+      - MANDATORY_REST_DURATION_MINUTES=15
+      - AVG_FUEL_CONSUMPTION_L_PER_100KM=8.0
+    ports:
+      - "8000:8000"
+
+  # 3. Client Frontend React Nginx
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: dz_carpool_web
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  pgdata:
+    driver: local

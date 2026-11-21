@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    actor U as Nouvel Utilisateur
+    participant FE as Frontend React
+    participant API as FastAPI Backend
+    participant SEC as Security Module (bcrypt/JWT)
+    participant DB as Base de Données
+
+    U->>FE: Remplit le formulaire d'inscription (Email, Téléphone DZ, Wilaya, Rôle)
+    FE->>API: POST /api/v1/auth/register
+    Note over API: Validation Pydantic V2 (Format Email, Mot de passe >= 6 car.)
+    API->>DB: SELECT * FROM users WHERE email = ?
+    alt Email déjà existant
+        DB-->>API: Utilisateur trouvé
+        API-->>FE: 400 Bad Request ("Cet email est déjà enregistré")
+        FE-->>U: Affiche message d'erreur explicite
+    else Email disponible
+        DB-->>API: Aucun résultat
+        API->>SEC: hash_password(password) via bcrypt (12 rounds)
+        SEC-->>API: password_hash
+        API->>DB: INSERT INTO users (email, phone, password_hash, wilaya_code, role)
+        DB-->>API: User Record (#101)
+        API->>SEC: create_access_token(sub=101, role='both')
+        SEC-->>API: signed_jwt_token
+        API-->>FE: 201 Created {access_token, token_type: "bearer", user}
+        FE->>FE: Stocke le token dans localStorage ('dz_token')
+        FE-->>U: Redirection vers le tableau de bord avec session active
+    end

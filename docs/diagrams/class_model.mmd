@@ -1,0 +1,110 @@
+classDiagram
+    class User {
+        +int id
+        +string email
+        +string phone_number
+        +string password_hash
+        +string full_name
+        +string role
+        +int wilaya_code
+        +string wilaya_name
+        +string bio
+        +string avatar_url
+        +decimal rating_avg
+        +int rating_count
+        +int trips_completed_count
+        +boolean is_active
+        +datetime created_at
+    }
+
+    class Vehicle {
+        +int id
+        +int user_id
+        +string make
+        +string model
+        +int year
+        +string color
+        +string license_plate
+        +string comfort_tier
+        +boolean air_conditioning
+    }
+
+    class Trip {
+        +int id
+        +int driver_id
+        +int vehicle_id
+        +int origin_wilaya_code
+        +string origin_wilaya_name
+        +string origin_city
+        +string origin_address
+        +int destination_wilaya_code
+        +string destination_wilaya_name
+        +string destination_city
+        +string destination_address
+        +datetime departure_datetime
+        +int estimated_duration_minutes
+        +decimal distance_km
+        +int total_seats
+        +int available_seats
+        +decimal base_seat_price
+        +boolean comfort_enabled
+        +boolean has_mandatory_rest
+        +decimal fuel_estimate_cost
+        +decimal suggested_seat_price
+        +string status
+    }
+
+    class TripStop {
+        +int id
+        +int trip_id
+        +int stop_order
+        +string location_name
+        +string city
+        +string wilaya_name
+        +boolean is_mandatory_rest
+        +int duration_minutes
+        +string notes
+    }
+
+    class Booking {
+        +int id
+        +int trip_id
+        +int passenger_id
+        +int seat_count
+        +string seat_type
+        +string status
+        +decimal quoted_base_price
+        +decimal quoted_commission
+        +decimal quoted_comfort_fee
+        +decimal quoted_total_price
+        +decimal driver_payout
+        +string rejection_or_cancellation_reason
+        +datetime created_at
+    }
+
+    class TripMessage {
+        +int id
+        +int trip_id
+        +int sender_id
+        +string content
+        +datetime created_at
+    }
+
+    class Review {
+        +int id
+        +int trip_id
+        +int author_id
+        +int target_id
+        +int rating
+        +string comment
+        +datetime created_at
+    }
+
+    User "1" -- "0..*" Vehicle : possède
+    User "1" -- "0..*" Trip : publie (driver)
+    User "1" -- "0..*" Booking : réserve (passenger)
+    User "1" -- "0..*" TripMessage : émet
+    Trip "1" -- "0..*" TripStop : contient
+    Trip "1" -- "0..*" Booking : enregistre
+    Trip "1" -- "0..*" TripMessage : cloisonne
+    Trip "1" -- "0..*" Review : reçoit
