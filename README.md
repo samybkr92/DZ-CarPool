@@ -1,4 +1,4 @@
-# DZ-CarPool — La Route, Partagée 🚗🇩🇿
+# DZ-CarPool — La Route, Partagée
 
 [![DZ-CarPool CI Pipeline](https://github.com/samybkr92/dz-carpool/actions/workflows/ci.yml/badge.svg)](https://github.com/samybkr92/dz-carpool/actions/workflows/ci.yml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -13,7 +13,7 @@
 
 ---
 
-## 🌟 Points Forts & Règles Métier Algériennes
+##  Points Forts & Règles Métier Algériennes
 
 - **Tarification Transparente en Dinars (DZD) :** Commission de plateforme fixe de 15% ($B \times 1.15$). Les montants sont calculés avec une précision décimale absolue (`Decimal`, aucun flottant binaire).
 - **Option "Trajet Confort" (+30%) :** Le passager peut réserver la place passager avant sans personne au milieu avec un supplément explicite de 30% sur le prix de base ($B \times 1.45$), intégralement reversé au conducteur ($B \times 1.30$).
@@ -55,7 +55,7 @@
 
 ---
 
-## 🚀 Démarrage Rapide (Développement Local)
+##  Démarrage Rapide (Développement Local)
 
 ### Prérequis
 - Python 3.11+
@@ -94,7 +94,7 @@ npm run dev
 
 ---
 
-## 🐳 Déploiement avec Docker Compose
+##  Déploiement avec Docker Compose
 
 Pour lancer l'ensemble de la pile applicative (PostgreSQL 16, API FastAPI et Frontend SPA) en un seul clic :
 ```bash
@@ -106,7 +106,7 @@ docker compose up -d --build
 
 ---
 
-## 🧪 Tests Automatisés
+##  Tests Automatisés
 
 ### Exécuter la Suite de Tests Backend (Unitaires & Intégration)
 ```bash
@@ -123,7 +123,7 @@ npx playwright test
 
 ---
 
-## 📚 Documentation & Livrables Projet
+##  Documentation & Livrables Projet
 
 L'ensemble de la documentation académique et technique requise est consultable dans le répertoire `docs/` et `database/` :
 - **[Dictionnaire des Données](file:///Users/macbookm3/Desktop/GL/database/data_dictionary.md)** : Spécification des 7 tables (3NF/BCNF) et index.
@@ -139,7 +139,7 @@ L'ensemble de la documentation académique et technique requise est consultable 
 
 ---
 
-## 👥 Comptes de Démonstration (Seed Data)
+##  Comptes de Démonstration (Seed Data)
 
 | Rôle | Nom | Email | Mot de Passe | Ville / Axe |
 | :--- | :--- | :--- | :--- | :--- |
