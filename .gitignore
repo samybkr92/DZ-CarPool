@@ -65,3 +65,5 @@ test_*.db
 .DS_Store
 .nosync
 .vercel
+node_modules
+*.tsbuildinfo
