@@ -25,8 +25,14 @@ import {
 
 export const CreateTripPage: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/login');
+    }
+  }, [user, authLoading, navigate]);
 
   // Wilaya and City state
   const [originWilayaCode, setOriginWilayaCode] = useState<number>(16);

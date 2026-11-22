@@ -7,10 +7,10 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   loading: boolean;
-  login: (email: string, pass: string) => Promise<void>;
-  loginAsDemoDriver: () => Promise<void>;
-  loginAsDemoPassenger: () => Promise<void>;
-  register: (data: Record<string, unknown>) => Promise<void>;
+  login: (email: string, pass: string) => Promise<User>;
+  loginAsDemoDriver: () => Promise<User>;
+  loginAsDemoPassenger: () => Promise<User>;
+  register: (data: Record<string, unknown>) => Promise<User>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -29,28 +29,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     return null;
   });
-  const [token, setToken] = useState<string | null>(localStorage.getItem('dz_token'));
-  const [loading, setLoading] = useState<boolean>(true);
+  
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem('dz_token'));
+  // If user is already loaded from localStorage, loading is immediately false!
+  const [loading, setLoading] = useState<boolean>(() => !localStorage.getItem('dz_current_user') && !!localStorage.getItem('dz_token'));
 
   const refreshUser = async () => {
     const storedToken = localStorage.getItem('dz_token');
+    const cachedUser = localStorage.getItem('dz_current_user');
+    
     if (!storedToken) {
       setUser(null);
       setLoading(false);
       return;
     }
+    
     try {
       const currentUser = await api.getCurrentUser();
       setUser(currentUser);
       localStorage.setItem('dz_current_user', JSON.stringify(currentUser));
     } catch {
-      const cached = localStorage.getItem('dz_current_user');
-      if (cached) {
-        setUser(JSON.parse(cached));
-      } else {
-        localStorage.removeItem('dz_token');
-        setToken(null);
-        setUser(null);
+      // If network fails or on static host, retain cached user! NEVER kick them out unexpectedly
+      if (cachedUser) {
+        try {
+          setUser(JSON.parse(cachedUser));
+        } catch {
+          // ignore
+        }
       }
     } finally {
       setLoading(false);
@@ -61,46 +66,66 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshUser();
   }, []);
 
-  const login = async (email: string, pass: string) => {
-    const response = await api.login({ email, password: pass });
-    localStorage.setItem('dz_token', response.access_token);
-    localStorage.setItem('dz_current_user', JSON.stringify(response.user));
-    setToken(response.access_token);
-    setUser(response.user);
+  const login = async (email: string, pass: string): Promise<User> => {
+    setLoading(true);
+    try {
+      const response = await api.login({ email, password: pass });
+      localStorage.setItem('dz_token', response.access_token);
+      localStorage.setItem('dz_current_user', JSON.stringify(response.user));
+      setToken(response.access_token);
+      setUser(response.user);
+      return response.user;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const loginAsDemoDriver = async () => {
+  const loginAsDemoDriver = async (): Promise<User> => {
+    setLoading(true);
     try {
-      await login('amine.benali@dz-carpool.dz', 'password123');
+      return await login('amine.benali@dz-carpool.dz', 'password123');
     } catch {
       const driver = DEMO_USERS.driver;
-      const fakeToken = 'demo_driver_token';
+      const fakeToken = 'dz_demo_token_driver';
       localStorage.setItem('dz_token', fakeToken);
       localStorage.setItem('dz_current_user', JSON.stringify(driver));
       setToken(fakeToken);
       setUser(driver);
+      return driver;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const loginAsDemoPassenger = async () => {
+  const loginAsDemoPassenger = async (): Promise<User> => {
+    setLoading(true);
     try {
-      await login('amina.mansouri@dz-carpool.dz', 'password123');
+      return await login('amina.mansouri@dz-carpool.dz', 'password123');
     } catch {
       const passenger = DEMO_USERS.passenger;
-      const fakeToken = 'demo_passenger_token';
+      const fakeToken = 'dz_demo_token_passenger';
       localStorage.setItem('dz_token', fakeToken);
       localStorage.setItem('dz_current_user', JSON.stringify(passenger));
       setToken(fakeToken);
       setUser(passenger);
+      return passenger;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const register = async (data: Record<string, unknown>) => {
-    const response = await api.register(data);
-    localStorage.setItem('dz_token', response.access_token);
-    localStorage.setItem('dz_current_user', JSON.stringify(response.user));
-    setToken(response.access_token);
-    setUser(response.user);
+  const register = async (data: Record<string, unknown>): Promise<User> => {
+    setLoading(true);
+    try {
+      const response = await api.register(data);
+      localStorage.setItem('dz_token', response.access_token);
+      localStorage.setItem('dz_current_user', JSON.stringify(response.user));
+      setToken(response.access_token);
+      setUser(response.user);
+      return response.user;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = () => {
@@ -108,6 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('dz_current_user');
     setToken(null);
     setUser(null);
+    setLoading(false);
   };
 
   return (

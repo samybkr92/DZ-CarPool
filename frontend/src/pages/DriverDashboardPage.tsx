@@ -25,7 +25,7 @@ import {
 
 export const DriverDashboardPage: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   const [trips, setTrips] = useState<Trip[]>([]);
@@ -58,12 +58,14 @@ export const DriverDashboardPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!authLoading && !user) {
       navigate('/login');
       return;
     }
-    fetchDriverTrips();
-  }, [user]);
+    if (user) {
+      fetchDriverTrips();
+    }
+  }, [user, authLoading, navigate]);
 
   const selectTrip = async (trip: Trip) => {
     setSelectedTrip(trip);
@@ -121,6 +123,20 @@ export const DriverDashboardPage: React.FC = () => {
   // Aggregated quick stats
   const totalAvailableSeats = trips.reduce((acc, t) => acc + (t.available_seats || 0), 0);
   const totalPendingBookings = bookings.filter((b) => b.status === 'pending').length;
+
+  if (authLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 animate-pulse">
+        <div className="h-10 w-64 bg-slate-200 rounded-xl" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-24 bg-white rounded-2xl border border-slate-200" />
+          ))}
+        </div>
+        <div className="h-96 bg-white rounded-3xl border border-slate-200" />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

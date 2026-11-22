@@ -18,7 +18,7 @@ import {
 
 export const LoginPage: React.FC = () => {
   const { t } = useTranslation();
-  const { login, loginAsDemoDriver, loginAsDemoPassenger } = useAuth();
+  const { user, login, loginAsDemoDriver, loginAsDemoPassenger } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -27,13 +27,21 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // If already logged in, redirect immediately
+  React.useEffect(() => {
+    if (user) {
+      navigate(user.role === 'passenger' ? '/dashboard/passenger' : '/dashboard/driver');
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
-      await login(email, password);
-      navigate('/dashboard/driver');
+      const authUser = await login(email, password);
+      const target = authUser.role === 'passenger' ? '/dashboard/passenger' : '/dashboard/driver';
+      navigate(target);
     } catch (err: any) {
       setError(err.message || 'Identifiants incorrects');
     } finally {

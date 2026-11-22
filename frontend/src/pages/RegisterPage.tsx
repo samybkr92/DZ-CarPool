@@ -38,7 +38,7 @@ export const RegisterPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      await register({
+      const newUser = await register({
         full_name: fullName,
         email,
         phone_number: phone,
@@ -47,7 +47,7 @@ export const RegisterPage: React.FC = () => {
         wilaya_code: wilayaCode,
         wilaya_name: selectedWilaya.name,
       });
-      navigate(role === 'passenger' ? '/dashboard/passenger' : '/dashboard/driver');
+      navigate(newUser.role === 'passenger' ? '/dashboard/passenger' : '/dashboard/driver');
     } catch (err: any) {
       setError(err.message || "Échec de l'inscription");
     } finally {

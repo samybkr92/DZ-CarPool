@@ -244,9 +244,15 @@ class ApiService {
   }): Promise<Trip[]> {
     try {
       const query = new URLSearchParams();
-      if (params.origin_city) query.append('origin_city', params.origin_city);
+      if (params.origin_city) {
+        query.append('origin', params.origin_city);
+        query.append('origin_city', params.origin_city);
+      }
       if (params.origin_wilaya) query.append('origin_wilaya', params.origin_wilaya.toString());
-      if (params.destination_city) query.append('destination_city', params.destination_city);
+      if (params.destination_city) {
+        query.append('destination', params.destination_city);
+        query.append('destination_city', params.destination_city);
+      }
       if (params.destination_wilaya) query.append('destination_wilaya', params.destination_wilaya.toString());
       if (params.date) query.append('date', params.date);
       if (params.min_seats) query.append('min_seats', params.min_seats.toString());

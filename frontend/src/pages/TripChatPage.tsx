@@ -19,7 +19,7 @@ import {
 export const TripChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   const [trip, setTrip] = useState<Trip | null>(null);
@@ -53,16 +53,20 @@ export const TripChatPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!authLoading && !user) {
       navigate('/login');
       return;
     }
-    loadData();
+    if (user) {
+      loadData();
+    }
 
     // Polling interval for MVP live coordination (5s)
-    const interval = setInterval(loadData, 5000);
+    const interval = setInterval(() => {
+      if (user) loadData();
+    }, 5000);
     return () => clearInterval(interval);
-  }, [id, user]);
+  }, [id, user, authLoading, navigate]);
 
   useEffect(() => {
     scrollToBottom();
