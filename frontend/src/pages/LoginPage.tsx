@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Coffee,
   CheckCircle2,
+  Compass,
 } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
@@ -70,57 +71,56 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-12 bg-white rounded-2xl border border-[#E6E0D6] shadow-elevated overflow-hidden">
+      <div className="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 bg-white rounded-2xl border border-[#E6E0D6] shadow-elevated overflow-hidden">
         {/* Left Editorial Visual Panel (Desktop) */}
         <div className="hidden lg:flex lg:col-span-5 relative bg-[#0A1C14] text-white p-10 flex-col justify-between">
-          <img
-            src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1000&q=85"
-            alt="Voyage en Algérie"
-            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A1C14] via-[#0A1C14]/80 to-transparent" />
-
-          <div className="relative z-10 space-y-4">
+          <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#173C2C] border border-[#2D6A4F] text-[11px] font-bold text-[#8FBFA9] uppercase tracking-wider">
-              <span>Mobilité Partagée</span>
+              <span>Mobilité Algérienne</span>
             </div>
-            <h2 className="text-3xl font-serif font-bold text-white leading-tight">
-              L'Algérie reliée, <br />
-              <span className="text-[#8FBFA9] italic">ville par ville.</span>
-            </h2>
+
+            <div className="space-y-2">
+              <h2 className="text-3xl font-serif font-bold text-white leading-tight">
+                L'Algérie reliée, <br />
+                <span className="text-[#8FBFA9] italic">en toute confiance.</span>
+              </h2>
+              <p className="text-xs text-stone-300 leading-relaxed pt-2">
+                Accédez à vos trajets, réservations et messages de coordination sur le réseau national.
+              </p>
+            </div>
           </div>
 
-          <div className="relative z-10 space-y-4 pt-8 border-t border-[#1E4D38]">
-            <p className="text-xs text-stone-300 leading-relaxed italic font-serif">
-              "Un covoiturage digne et transparent, pensé pour la réalité de nos routes nationales."
-            </p>
-
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center gap-2 text-stone-200">
-                <CheckCircle2 className="w-4 h-4 text-[#8FBFA9]" />
+          <div className="space-y-4 pt-8 border-t border-[#1E4D38]">
+            <div className="space-y-2.5 text-xs">
+              <div className="flex items-center gap-2.5 text-stone-200">
+                <CheckCircle2 className="w-4 h-4 text-[#8FBFA9] flex-shrink-0" />
                 <span>15% commission de service plafonnée</span>
               </div>
-              <div className="flex items-center gap-2 text-stone-200">
-                <CheckCircle2 className="w-4 h-4 text-[#8FBFA9]" />
+              <div className="flex items-center gap-2.5 text-stone-200">
+                <CheckCircle2 className="w-4 h-4 text-[#8FBFA9] flex-shrink-0" />
                 <span>Halte Naftal 15 min obligatoire (&gt;300 km)</span>
               </div>
-              <div className="flex items-center gap-2 text-stone-200">
-                <CheckCircle2 className="w-4 h-4 text-[#8FBFA9]" />
-                <span>Option Confort (+30%)</span>
+              <div className="flex items-center gap-2.5 text-stone-200">
+                <CheckCircle2 className="w-4 h-4 text-[#8FBFA9] flex-shrink-0" />
+                <span>Option Trajet Confort (+30%)</span>
               </div>
             </div>
+
+            <p className="text-[11px] text-stone-400 italic pt-2">
+              Spécifications du projet GL 2025/2026.
+            </p>
           </div>
         </div>
 
         {/* Right Authentication & 1-Click Form */}
-        <div className="lg:col-span-7 p-8 sm:p-12 space-y-6 text-left">
+        <div className="lg:col-span-7 p-8 sm:p-10 space-y-6 text-left">
           {/* Header */}
           <div className="space-y-1">
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#141613] tracking-tight">
               Connexion à DZ-CarPool
             </h1>
             <p className="text-xs sm:text-sm text-[#5C6057]">
-              Accédez à vos trajets inter-wilayas, réservations et messages.
+              Accédez à vos trajets inter-wilayas et vos réservations.
             </p>
           </div>
 
@@ -169,7 +169,7 @@ export const LoginPage: React.FC = () => {
                 type="button"
                 onClick={handleQuickDriver}
                 disabled={loading}
-                className="p-3 rounded-lg bg-white border border-[#E6E0D6] hover:border-[#173C2C] hover:shadow-subtle text-left transition-all group"
+                className="p-3 rounded-xl bg-white border border-[#E6E0D6] hover:border-[#173C2C] hover:shadow-subtle text-left transition-all group"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#141613] group-hover:text-[#173C2C]">
@@ -180,7 +180,7 @@ export const LoginPage: React.FC = () => {
                   </span>
                 </div>
                 <span className="text-[11px] text-[#8E9389] block mt-0.5">
-                  Symbol • Trajets Alger-Oran
+                  Renault Symbol • Alger-Oran
                 </span>
               </button>
 
@@ -188,7 +188,7 @@ export const LoginPage: React.FC = () => {
                 type="button"
                 onClick={handleQuickPassenger}
                 disabled={loading}
-                className="p-3 rounded-lg bg-white border border-[#E6E0D6] hover:border-[#D97706] hover:shadow-subtle text-left transition-all group"
+                className="p-3 rounded-xl bg-white border border-[#E6E0D6] hover:border-[#D97706] hover:shadow-subtle text-left transition-all group"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#141613] group-hover:text-[#D97706]">
@@ -264,7 +264,7 @@ export const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-lg bg-[#173C2C] hover:bg-[#112E22] text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-2 active:scale-[0.99] disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-[#173C2C] hover:bg-[#112E22] text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-2 active:scale-[0.99] disabled:opacity-50"
             >
               <span>{loading ? 'Connexion en cours...' : 'Se connecter'}</span>
               <ArrowRight className="w-4 h-4" />

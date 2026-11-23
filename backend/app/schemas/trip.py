@@ -74,7 +74,7 @@ class TripOut(TripBase):
     status: str
     cancellation_reason: Optional[str] = None
     created_at: datetime
-    
+
     # Financial breakdowns for consumer clarity
     passenger_standard_price: float
     passenger_comfort_price: Optional[float] = None

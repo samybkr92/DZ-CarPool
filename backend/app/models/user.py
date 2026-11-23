@@ -17,7 +17,7 @@ class User(Base):
     bio = Column(Text, nullable=True)
     wilaya_code = Column(Integer, nullable=True)
     wilaya_name = Column(String(100), nullable=True)
-    
+
     rating_avg = Column(Numeric(3, 2), nullable=False, default=5.00)
     rating_count = Column(Integer, nullable=False, default=0)
     trips_completed_count = Column(Integer, nullable=False, default=0)
