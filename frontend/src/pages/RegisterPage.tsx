@@ -16,7 +16,7 @@ import {
 
 export const RegisterPage: React.FC = () => {
   const { t } = useTranslation();
-  const { register } = useAuth();
+  const { user, register, logout } = useAuth();
   const navigate = useNavigate();
 
   const [fullName, setFullName] = useState('');
@@ -124,6 +124,32 @@ export const RegisterPage: React.FC = () => {
               Renseignez vos coordonnées pour accéder aux trajets et réservations.
             </p>
           </div>
+
+          {/* Active Session Notification if already logged in */}
+          {user && (
+            <div className="p-4 rounded-xl bg-white border border-[#EAE5DC] shadow-xs space-y-2 text-left">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-[#5A625D]">Actuellement connecté :</span>
+                <span className="font-bold text-[#16382C]">{user.full_name}</span>
+              </div>
+              <div className="flex gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => navigate(user.role === 'passenger' ? '/dashboard/passenger' : '/dashboard/driver')}
+                  className="flex-1 py-2 px-3 rounded-lg bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] text-xs font-bold transition-colors"
+                >
+                  Aller au tableau de bord
+                </button>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="py-2 px-3 rounded-lg border border-[#EAE5DC] bg-[#FAF7F2] hover:bg-[#FCF7F3] text-[#A14114] text-xs font-bold transition-colors"
+                >
+                  Déconnexion
+                </button>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="p-3 bg-[#FCF7F3] text-[#A14114] rounded-lg border border-[#F0D5C3] text-xs font-semibold flex items-center gap-2">
