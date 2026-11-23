@@ -12,12 +12,11 @@ import {
   Sparkles,
   ArrowRight,
   Car,
-  ArrowRightLeft,
   Clock,
   Fuel,
-  CheckCircle2,
   ChevronRight,
   Star,
+  CheckCircle,
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
@@ -73,12 +72,6 @@ export const HomePage: React.FC = () => {
     navigate(`/search?${query.toString()}`);
   };
 
-  const handleSwap = () => {
-    const temp = origin;
-    setOrigin(destination);
-    setDestination(temp);
-  };
-
   const setDateToday = () => {
     const today = new Date().toISOString().split('T')[0];
     setDate(today);
@@ -102,12 +95,14 @@ export const HomePage: React.FC = () => {
       basePrice: '1 600 DA',
       comfort: true,
       restStop: true,
-      driver: 'Amine B.',
+      driver: 'Amine Benali',
       rating: 4.9,
       reviews: 32,
-      car: 'VW Golf 8',
+      car: 'Volkswagen Golf 8',
       departureTime: '07:30',
       availableSeats: 3,
+      tag: 'Liaison Côtière',
+      imageUrl: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
     },
     {
       from: 'Alger',
@@ -120,12 +115,14 @@ export const HomePage: React.FC = () => {
       basePrice: '1 500 DA',
       comfort: true,
       restStop: true,
-      driver: 'Karim F.',
+      driver: 'Karim Fekir',
       rating: 4.85,
       reviews: 19,
       car: 'Peugeot 3008',
       departureTime: '08:00',
       availableSeats: 2,
+      tag: 'Ponts Suspendus',
+      imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
     },
     {
       from: 'Alger',
@@ -138,12 +135,14 @@ export const HomePage: React.FC = () => {
       basePrice: '1 000 DA',
       comfort: true,
       restStop: false,
-      driver: 'Youcef B.',
+      driver: 'Youcef Belkacem',
       rating: 4.8,
       reviews: 15,
-      car: 'Renault Megane',
+      car: 'Renault Megane 4',
       departureTime: '09:15',
       availableSeats: 3,
+      tag: 'Hauts Plateaux',
+      imageUrl: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80',
     },
     {
       from: 'Oran',
@@ -156,49 +155,107 @@ export const HomePage: React.FC = () => {
       basePrice: '600 DA',
       comfort: false,
       restStop: false,
-      driver: 'Bilal B.',
+      driver: 'Bilal Boutaleb',
       rating: 4.95,
       reviews: 24,
       car: 'Seat Ibiza',
       departureTime: '14:00',
       availableSeats: 2,
+      tag: 'Cité des Zianides',
+      imageUrl: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80',
     },
   ];
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-24 text-left">
-      {/* 1. HERO SECTION: Clean, Modern Tech Mobility */}
-      <section className="relative overflow-hidden pt-8 sm:pt-16 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Subtle decorative background gradient */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-96 bg-gradient-to-b from-brand-50/60 via-slate-50 to-transparent -z-10 pointer-events-none rounded-full blur-3xl" />
+    <div className="space-y-16 sm:space-y-24 pb-20 text-left">
+      {/* 1. TRAVEL-LED EDITORIAL HERO WITH INTEGRATED PHOTOGRAPHY */}
+      <section className="relative pt-8 sm:pt-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left Text & Value Props */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-[#173C2C] bg-[#E1EDE6] border border-[#C2DBCF]">
+              <span className="w-2 h-2 rounded-full bg-[#173C2C] animate-pulse" />
+              <span className="tracking-wide">Réseau National de Mobilité • 58 Wilayas d'Algérie</span>
+            </div>
 
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 shadow-soft-xs">
-            <span className="w-2 h-2 rounded-full bg-brand-600 animate-pulse" />
-            <span>Plateforme Nationale de Covoiturage • 58 Wilayas</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-[#141613] leading-[1.12]">
+              Voyager à travers l'Algérie, <br />
+              <span className="text-[#173C2C] italic">en toute sérénité.</span>
+            </h1>
+
+            <p className="text-base sm:text-lg text-[#5C6057] max-w-xl leading-relaxed">
+              Le premier réseau de covoiturage inter-wilayas fondé sur la transparence : tarifs réglementés en Dinars (DZD), conducteurs certifiés, et halte sécurité Naftal de 15 minutes garantie sur les longues distances.
+            </p>
+
+            {/* Regulatory & Trust Pillars */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-[#E6E0D6] shadow-subtle">
+                <ShieldCheck className="w-4 h-4 text-[#173C2C] flex-shrink-0" />
+                <span className="text-xs font-bold text-[#141613]">15% commission plafonnée</span>
+              </div>
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-[#E6E0D6] shadow-subtle">
+                <Coffee className="w-4 h-4 text-[#D97706] flex-shrink-0" />
+                <span className="text-xs font-bold text-[#141613]">Pause Naftal &gt;300 km</span>
+              </div>
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-[#E6E0D6] shadow-subtle">
+                <Sparkles className="w-4 h-4 text-purple-700 flex-shrink-0" />
+                <span className="text-xs font-bold text-[#141613]">Option Confort (+30%)</span>
+              </div>
+            </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-[1.12]">
-            Vos trajets partout en Algérie, <br />
-            <span className="text-brand-600">au meilleur prix.</span>
-          </h1>
+          {/* Right Hero Image Card */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative rounded-2xl overflow-hidden border border-[#E6E0D6] shadow-elevated group aspect-[4/3] sm:aspect-[16/11]">
+              <img
+                src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1000&q=85"
+                alt="Route nationale et covoiturage en Algérie"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1C14]/90 via-[#0A1C14]/30 to-transparent" />
 
-          <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Rejoignez la première communauté de covoiturage inter-wilayas. Tarification transparente en Dinars (DZD), conducteurs vérifiés et halte de sécurité obligatoire de 15 minutes au-delà de 300 km.
-          </p>
+              {/* Passport Stamp Overlay */}
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-md border border-white/50 text-[10px] font-bold text-[#173C2C] uppercase tracking-wider shadow-sm">
+                Autoroute Est-Ouest A1
+              </div>
+
+              {/* Route Highlight Badge */}
+              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-white/95 backdrop-blur-md border border-[#E6E0D6] shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#D97706] block">
+                      Liaison Quotidienne
+                    </span>
+                    <span className="text-base font-bold text-[#141613]">
+                      Alger ➔ Oran
+                    </span>
+                    <span className="text-xs text-[#5C6057] block">
+                      415 km • Halte Naftal Chlef incluse
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-black text-[#173C2C] block">
+                      1 840 DA
+                    </span>
+                    <span className="text-[10px] text-[#8E9389]">
+                      TTC tout inclus
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* 2. THE FLOATING SEARCH BAR (BlaBlaCar-style) */}
-        <div className="mt-8 sm:mt-12 max-w-5xl mx-auto relative z-30">
-          <div className="bg-white rounded-3xl p-3 sm:p-4 shadow-search border border-slate-200/90">
+        {/* 2. SOLID, INTEGRATED SEARCH CONSOLE */}
+        <div className="mt-10 max-w-5xl relative z-30">
+          <div className="bg-white rounded-xl p-3 sm:p-4 shadow-elevated border border-[#E6E0D6]">
             <form onSubmit={handleSearch} className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-0">
               {/* Segment 1: Origin */}
-              <div ref={originRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors">
-                <div className="w-4 h-4 rounded-full border-2 border-brand-600 flex items-center justify-center flex-shrink-0">
-                  <div className="w-1.5 h-1.5 rounded-full bg-brand-600" />
-                </div>
+              <div ref={originRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#FAF8F5] transition-colors">
+                <MapPin className="w-4 h-4 text-[#173C2C] flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
                     Départ
                   </label>
                   <input
@@ -209,15 +266,15 @@ export const HomePage: React.FC = () => {
                       setShowOriginDropdown(true);
                     }}
                     onFocus={() => setShowOriginDropdown(true)}
-                    placeholder="Ville de départ (ex. Alger)"
-                    className="w-full bg-transparent text-sm font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
+                    placeholder="Ex. Alger, Blida..."
+                    className="w-full bg-transparent text-sm font-bold text-[#141613] focus:outline-none placeholder:text-[#8E9389]"
                   />
                 </div>
 
                 {/* Autocomplete Dropdown */}
                 {showOriginDropdown && filteredOriginWilayas.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
-                    <div className="px-4 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-search border border-[#E6E0D6] py-2 z-50 max-h-60 overflow-y-auto">
+                    <div className="px-4 py-1 text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
                       Wilayas correspondantes
                     </div>
                     {filteredOriginWilayas.map((w) => (
@@ -228,35 +285,26 @@ export const HomePage: React.FC = () => {
                           setOrigin(w.name);
                           setShowOriginDropdown(false);
                         }}
-                        className="w-full text-left px-4 py-2 hover:bg-brand-50 flex items-center justify-between text-xs transition-colors"
+                        className="w-full text-left px-4 py-2 hover:bg-[#F3EFE8] flex items-center justify-between text-xs transition-colors"
                       >
-                        <span className="font-bold text-slate-800">
+                        <span className="font-bold text-[#141613]">
                           {w.code_str} - {w.name}
                         </span>
-                        <span className="text-slate-400 font-arabic">{w.name_ar}</span>
+                        <span className="text-[#8E9389] font-arabic">{w.name_ar}</span>
                       </button>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Swap Button */}
-              <div className="flex justify-center -my-2 lg:my-0 lg:-mx-2 z-10">
-                <button
-                  type="button"
-                  onClick={handleSwap}
-                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all border border-slate-200 shadow-soft-xs active:scale-95"
-                  title="Intervertir départ et destination"
-                >
-                  <ArrowRightLeft className="w-3.5 h-3.5" />
-                </button>
-              </div>
+              {/* Hairline Divider */}
+              <div className="hidden lg:block w-px h-10 bg-[#E6E0D6] my-auto" />
 
               {/* Segment 2: Destination */}
-              <div ref={destRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors">
-                <MapPin className="w-4 h-4 text-rose-500 flex-shrink-0" />
+              <div ref={destRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#FAF8F5] transition-colors">
+                <MapPin className="w-4 h-4 text-rose-600 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
                     Destination
                   </label>
                   <input
@@ -267,15 +315,15 @@ export const HomePage: React.FC = () => {
                       setShowDestDropdown(true);
                     }}
                     onFocus={() => setShowDestDropdown(true)}
-                    placeholder="Ville d'arrivée (ex. Oran)"
-                    className="w-full bg-transparent text-sm font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
+                    placeholder="Ex. Oran, Constantine..."
+                    className="w-full bg-transparent text-sm font-bold text-[#141613] focus:outline-none placeholder:text-[#8E9389]"
                   />
                 </div>
 
                 {/* Autocomplete Dropdown */}
                 {showDestDropdown && filteredDestWilayas.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
-                    <div className="px-4 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-search border border-[#E6E0D6] py-2 z-50 max-h-60 overflow-y-auto">
+                    <div className="px-4 py-1 text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
                       Wilayas correspondantes
                     </div>
                     {filteredDestWilayas.map((w) => (
@@ -286,35 +334,43 @@ export const HomePage: React.FC = () => {
                           setDestination(w.name);
                           setShowDestDropdown(false);
                         }}
-                        className="w-full text-left px-4 py-2 hover:bg-brand-50 flex items-center justify-between text-xs transition-colors"
+                        className="w-full text-left px-4 py-2 hover:bg-[#F3EFE8] flex items-center justify-between text-xs transition-colors"
                       >
-                        <span className="font-bold text-slate-800">
+                        <span className="font-bold text-[#141613]">
                           {w.code_str} - {w.name}
                         </span>
-                        <span className="text-slate-400 font-arabic">{w.name_ar}</span>
+                        <span className="text-[#8E9389] font-arabic">{w.name_ar}</span>
                       </button>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Divider on desktop */}
-              <div className="hidden lg:block w-px h-10 bg-slate-200 my-auto" />
+              {/* Hairline Divider */}
+              <div className="hidden lg:block w-px h-10 bg-[#E6E0D6] my-auto" />
 
               {/* Segment 3: Date */}
-              <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors">
-                <Calendar className="w-4 h-4 text-brand-600 flex-shrink-0" />
+              <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#FAF8F5] transition-colors">
+                <Calendar className="w-4 h-4 text-[#173C2C] flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      Date de départ
+                    <label className="block text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
+                      Date
                     </label>
-                    <div className="flex gap-1.5 text-[10px] text-brand-700 font-bold">
-                      <button type="button" onClick={setDateToday} className="hover:underline">
+                    <div className="flex gap-1">
+                      <button
+                        type="button"
+                        onClick={setDateToday}
+                        className="text-[10px] text-[#173C2C] hover:underline font-bold"
+                      >
                         Aujourd'hui
                       </button>
-                      <span>•</span>
-                      <button type="button" onClick={setDateTomorrow} className="hover:underline">
+                      <span className="text-[10px] text-[#8E9389]">•</span>
+                      <button
+                        type="button"
+                        onClick={setDateTomorrow}
+                        className="text-[10px] text-[#173C2C] hover:underline font-bold"
+                      >
                         Demain
                       </button>
                     </div>
@@ -323,39 +379,39 @@ export const HomePage: React.FC = () => {
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-transparent text-sm font-bold text-slate-900 focus:outline-none"
+                    className="w-full bg-transparent text-sm font-bold text-[#141613] focus:outline-none cursor-pointer"
                   />
                 </div>
               </div>
 
-              {/* Divider on desktop */}
-              <div className="hidden lg:block w-px h-10 bg-slate-200 my-auto" />
+              {/* Hairline Divider */}
+              <div className="hidden lg:block w-px h-10 bg-[#E6E0D6] my-auto" />
 
-              {/* Segment 4: Seats Selector */}
-              <div className="w-full lg:w-32 flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors">
-                <Users className="w-4 h-4 text-slate-500 flex-shrink-0" />
+              {/* Segment 4: Passengers */}
+              <div className="flex-initial sm:w-44 flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#FAF8F5] transition-colors">
+                <Users className="w-4 h-4 text-[#173C2C] flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
                     Passagers
                   </label>
                   <select
                     value={seats}
                     onChange={(e) => setSeats(Number(e.target.value))}
-                    className="w-full bg-transparent text-sm font-bold text-slate-900 focus:outline-none cursor-pointer"
+                    className="w-full bg-transparent text-sm font-bold text-[#141613] focus:outline-none cursor-pointer"
                   >
-                    <option value={1}>1 place</option>
-                    <option value={2}>2 places</option>
-                    <option value={3}>3 places</option>
-                    <option value={4}>4 places</option>
+                    <option value={1}>1 passager</option>
+                    <option value={2}>2 passagers</option>
+                    <option value={3}>3 passagers</option>
+                    <option value={4}>4 passagers</option>
                   </select>
                 </div>
               </div>
 
-              {/* Submit CTA */}
+              {/* Submit CTA Button */}
               <div className="p-1">
                 <button
                   type="submit"
-                  className="w-full lg:w-auto px-8 py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm shadow-soft-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full lg:w-auto px-7 py-3.5 rounded-lg bg-[#173C2C] hover:bg-[#112E22] text-white font-bold text-xs shadow-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   <Search className="w-4 h-4" />
                   <span>Rechercher</span>
@@ -365,8 +421,8 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Quick Route Shortcuts */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
-            <span className="text-slate-400 font-semibold">Axes fréquents :</span>
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-[#8E9389] font-medium">Liaisons fréquentes :</span>
             {[
               { from: 'Alger', to: 'Oran' },
               { from: 'Alger', to: 'Constantine' },
@@ -381,7 +437,7 @@ export const HomePage: React.FC = () => {
                   setOrigin(route.from);
                   setDestination(route.to);
                 }}
-                className="px-3 py-1 rounded-full bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-semibold shadow-soft-xs transition-colors"
+                className="px-3 py-1 rounded-md bg-white hover:bg-[#F3EFE8] border border-[#E6E0D6] text-[#32362F] font-medium shadow-subtle transition-colors"
               >
                 {route.from} ➔ {route.to}
               </button>
@@ -390,202 +446,182 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. CORE METRICS & REGULATORY TRUST BANNER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-soft-xs space-y-1">
-            <div className="text-2xl font-black text-brand-600">58 Wilayas</div>
-            <p className="text-xs font-semibold text-slate-800">Couverture nationale</p>
-            <p className="text-[11px] text-slate-500">Axes autoroutiers A1 Est/Ouest & Sud</p>
-          </div>
-
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-soft-xs space-y-1">
-            <div className="text-2xl font-black text-slate-900">15% Commission</div>
-            <p className="text-xs font-semibold text-slate-800">Transparence garantie</p>
-            <p className="text-[11px] text-slate-500">Prix passager = Base + 15% (0 frais cachés)</p>
-          </div>
-
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-soft-xs space-y-1">
-            <div className="text-2xl font-black text-amber-600">15 min Pause</div>
-            <p className="text-xs font-semibold text-slate-800">Sécurité &gt; 300 km</p>
-            <p className="text-[11px] text-slate-500">Halte obligatoire en station Naftal</p>
-          </div>
-
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-soft-xs space-y-1">
-            <div className="text-2xl font-black text-purple-600">+30% Confort</div>
-            <p className="text-xs font-semibold text-slate-800">Option place avant</p>
-            <p className="text-[11px] text-slate-500">Trajet Confort avec espace garanti</p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. FEATURED RIDES: Modern Ticket Cards */}
+      {/* 3. FEATURED CORRIDORS (TRAVEL MARKETPLACE PHOTOGRAPHY) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 border-b border-slate-200 pb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 border-b border-[#E6E0D6] pb-4">
           <div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-              Trajets populaires à réserver
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#141613] tracking-tight">
+              Liaisons régulières & itinéraires
             </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Départs fréquents sur les autoroutes algériennes avec conducteurs certifiés.
+            <p className="text-xs sm:text-sm text-[#5C6057] mt-1">
+              Départs fréquents sur les autoroutes algériennes avec conducteurs certifiés et pause Naftal incluse.
             </p>
           </div>
           <Link
             to="/search"
-            className="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1"
+            className="text-xs font-bold text-[#173C2C] hover:text-[#112E22] flex items-center gap-1 group"
           >
             <span>Voir tous les trajets</span>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {featuredRoutes.map((route, i) => (
             <div
               key={i}
-              className="bg-white rounded-3xl border border-slate-200 p-6 shadow-soft-sm hover:shadow-soft-md transition-all space-y-5"
+              onClick={() => navigate(`/search?origin=${route.from}&destination=${route.to}`)}
+              className="group bg-white rounded-xl border border-[#E6E0D6] overflow-hidden shadow-card hover:shadow-elevated hover:border-[#173C2C] transition-all cursor-pointer flex flex-col justify-between"
             >
-              {/* Card Header: Route & Time */}
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg font-black text-slate-900">{route.departureTime}</span>
-                    <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
+              {/* Photo Header */}
+              <div className="relative h-44 overflow-hidden">
+                <img
+                  src={route.imageUrl}
+                  alt={`${route.from} vers ${route.to}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                <div className="absolute top-3 left-3 bg-[#173C2C] text-white px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase">
+                  {route.tag}
+                </div>
+
+                <div className="absolute top-3 right-3 flex gap-1.5">
+                  {route.comfort && (
+                    <span className="bg-purple-900/80 backdrop-blur-sm text-purple-200 border border-purple-400/30 px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" /> Confort
+                    </span>
+                  )}
+                  {route.restStop && (
+                    <span className="bg-[#D97706]/90 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
+                      <Coffee className="w-3 h-3" /> Naftal 15 min
+                    </span>
+                  )}
+                </div>
+
+                <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between text-white">
+                  <div>
+                    <div className="flex items-center gap-2 text-lg font-bold">
                       <span>{route.from}</span>
-                      <ArrowRight className="w-4 h-4 text-brand-600" />
+                      <ArrowRight className="w-4 h-4 text-white/70" />
                       <span>{route.to}</span>
                     </div>
+                    <span className="text-xs text-white/80">
+                      {route.dist} • ~{route.time} • Départ {route.departureTime}
+                    </span>
                   </div>
-                  <p className="text-xs text-slate-500">
-                    {route.dist} • Durée estimée : {route.time}
-                  </p>
-                </div>
-
-                <div className="text-right">
-                  <div className="text-xl font-black text-brand-600 tabular-nums">
-                    {route.price}
+                  <div className="text-right">
+                    <span className="text-xl font-black text-amber-300 block">
+                      {route.price}
+                    </span>
+                    <span className="text-[10px] text-white/80">
+                      TTC / place
+                    </span>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-medium block">par place</span>
                 </div>
               </div>
 
-              {/* Badges Bar: Rest Stop & Comfort */}
-              <div className="flex flex-wrap items-center gap-2">
-                {route.restStop && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                    <Coffee className="w-3.5 h-3.5 text-amber-600" />
-                    <span>Pause Naftal 15 min</span>
-                  </span>
-                )}
-                {route.comfort && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-50 text-purple-800 border border-purple-200">
-                    <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-                    <span>Trajet Confort (+30%)</span>
-                  </span>
-                )}
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700">
-                  <span>{route.availableSeats} places libres</span>
-                </span>
-              </div>
-
-              {/* Card Footer: Driver & Action */}
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-brand-100 text-brand-800 font-bold flex items-center justify-center text-xs">
+              {/* Driver & Booking Footer */}
+              <div className="p-4 flex items-center justify-between text-xs bg-white">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-[#173C2C] text-white flex items-center justify-center font-bold text-xs">
                     {route.driver.charAt(0)}
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block">{route.driver}</span>
-                    <div className="flex items-center gap-1 text-[11px] text-slate-500">
-                      <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-                      <span className="font-bold text-slate-700">{route.rating}</span>
-                      <span>({route.reviews} avis) • {route.car}</span>
-                    </div>
+                    <span className="font-bold text-[#141613] block leading-tight">{route.driver}</span>
+                    <span className="text-[11px] text-[#8E9389]">{route.car}</span>
                   </div>
                 </div>
 
-                <Link
-                  to={`/search?origin=${encodeURIComponent(route.from)}&destination=${encodeURIComponent(route.to)}`}
-                  className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors shadow-soft-xs"
-                >
-                  Réserver
-                </Link>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1 font-bold text-xs text-[#141613]">
+                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                    <span>{route.rating}</span>
+                    <span className="text-[#8E9389] font-normal">({route.reviews})</span>
+                  </div>
+                  <span className="px-2 py-1 rounded bg-[#E1EDE6] text-[#173C2C] font-bold text-[11px]">
+                    {route.availableSeats} places
+                  </span>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 5. HOW IT WORKS: Clear 3-Step Tech Process */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-soft-sm space-y-10">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Comment fonctionne DZ-CarPool ?
+      {/* 4. HOW IT WORKS (COMMENT ÇA MARCHE) */}
+      <section className="bg-white border-y border-[#E6E0D6] py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#173C2C]">
+              Simplicité & Rigueur
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#141613]">
+              Comment fonctionne DZ-CarPool
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Un fonctionnement simple pensé pour les réalités du transport inter-wilayas en Algérie.
+            <p className="text-xs sm:text-sm text-[#5C6057]">
+              Un service conçu sur mesure pour les déplacements inter-wilayas en Algérie.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center font-black text-lg border border-brand-200">
-                1
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-6 rounded-xl border border-[#E6E0D6] bg-[#FAF8F5] space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-[#173C2C] text-white flex items-center justify-center font-bold text-sm">
+                01
               </div>
-              <h3 className="text-base font-bold text-slate-900">Recherchez votre trajet</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Renseignez votre ville de départ et votre destination. Consultez les heures précises, les véhicules et les profils vérifiés des conducteurs.
+              <h3 className="text-base font-bold text-[#141613]">Recherchez votre liaison</h3>
+              <p className="text-xs text-[#5C6057] leading-relaxed">
+                Indiquez vos wilayas de départ et d'arrivée. Comparez les horaires, les véhicules et les profils de conducteurs vérifiés.
               </p>
             </div>
 
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center font-black text-lg border border-amber-200">
-                2
+            <div className="p-6 rounded-xl border border-[#E6E0D6] bg-[#FAF8F5] space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-[#173C2C] text-white flex items-center justify-center font-bold text-sm">
+                02
               </div>
-              <h3 className="text-base font-bold text-slate-900">Approbation du conducteur</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Envoyez votre demande de réservation. Le conducteur approuve manuellement votre demande pour assurer un voyage en toute confiance mutuelle.
+              <h3 className="text-base font-bold text-[#141613]">Tarification claire en Dinars</h3>
+              <p className="text-xs text-[#5C6057] leading-relaxed">
+                Aucun coût caché. Le prix inclut exactement 15% de frais de plateforme et l'option Confort optionnelle (+30% pour 2 max à l'arrière).
               </p>
             </div>
 
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-black text-lg border border-blue-200">
-                3
+            <div className="p-6 rounded-xl border border-[#E6E0D6] bg-[#FAF8F5] space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-[#173C2C] text-white flex items-center justify-center font-bold text-sm">
+                03
               </div>
-              <h3 className="text-base font-bold text-slate-900">Coordonnez & Voyagez</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Échangez les détails de prise en charge via la messagerie interne du trajet. Profitez de la pause de 15 minutes sur les longs parcours.
+              <h3 className="text-base font-bold text-[#141613]">Sécurité & Halte Naftal</h3>
+              <p className="text-xs text-[#5C6057] leading-relaxed">
+                Sur tous les trajets dépassant 300 km, une pause sécurité obligatoire de 15 minutes en station autoroutière Naftal est intégrée.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. DRIVER BANNER: Rentabilisez vos trajets */}
+      {/* 5. DRIVER CALL TO ACTION BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
-          <div className="space-y-3 max-w-xl text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold text-brand-400 bg-brand-950/80 border border-brand-800">
+        <div className="rounded-2xl bg-[#0A1C14] text-white p-8 sm:p-12 border border-[#173C2C] shadow-elevated relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-bold text-[#8FBFA9] bg-[#173C2C] border border-[#2D6A4F]">
               <Fuel className="w-3.5 h-3.5" />
-              <span>Calculateur de carburant Naftal intégré</span>
+              <span>Conducteurs : Amortissez vos frais de carburant</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
-              Vous prenez la route ? Publiez vos places libres.
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight">
+              Vous prenez la route ? <br />
+              <span className="text-[#8FBFA9] italic">Partagez vos places libres.</span>
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Ne voyagez plus seul. L'application estime automatiquement votre coût en carburant à 8L/100km et suggère un prix équitable par passager. Vous recevez 100% de votre contribution de base.
+            <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+              Publiez votre trajet en 2 minutes. Notre simulateur intègre automatiquement le barème Naftal officiel (8 L / 100 km) pour suggérer un prix juste par passager.
             </p>
-          </div>
-
-          <div className="flex-shrink-0">
-            <Link
-              to="/trips/create"
-              className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl bg-brand-500 hover:bg-brand-400 text-slate-950 font-black text-sm shadow-lg transition-all active:scale-95"
-            >
-              <Car className="w-4 h-4" />
-              <span>Publier un trajet en 2 min</span>
-            </Link>
+            <div className="pt-2">
+              <Link
+                to="/trips/create"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-[#0A1C14] hover:bg-[#FAF8F5] font-bold text-xs transition-all shadow-sm"
+              >
+                <span>Publier un trajet maintenant</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
