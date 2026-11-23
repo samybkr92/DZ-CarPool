@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../services/api';
 import { Trip } from '../types';
-import { calculatePrices } from '../utils/algeriaData';
 import {
   Search,
   MapPin,
@@ -13,10 +12,12 @@ import {
   ArrowRight,
   Car,
   Filter,
-  Navigation,
   Clock,
   ShieldCheck,
   ChevronRight,
+  Star,
+  Users,
+  Check,
 } from 'lucide-react';
 
 export const SearchPage: React.FC = () => {
@@ -28,7 +29,7 @@ export const SearchPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Search input state
+  // Search inputs
   const originCity = searchParams.get('origin') || '';
   const destinationCity = searchParams.get('destination') || '';
   const dateParam = searchParams.get('date') || '';
@@ -82,384 +83,253 @@ export const SearchPage: React.FC = () => {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
-      {/* 1. Refined Search & Filter Header */}
-      <div className="bg-white rounded-2xl border border-[#EAE5DC] p-5 sm:p-6 shadow-fine space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#F4EFE6]">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#141716] tracking-tight">
-              {t('search.title', 'Trajets Disponibles')}
-            </h1>
-            <p className="text-xs text-[#5A625D] mt-1 flex items-center gap-2">
-              {originCity || destinationCity ? (
-                <span className="flex items-center gap-1.5 flex-wrap">
-                  Résultats pour <strong className="text-[#16382C]">{originCity || 'Toute wilaya'}</strong>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#ADB3AF] inline" />
-                  <strong className="text-[#16382C]">{destinationCity || 'Toute wilaya'}</strong>
-                  {dateParam && <span className="text-[#7E8681]">• {dateParam}</span>}
-                </span>
-              ) : (
-                'Trajets réguliers inter-wilayas vérifiés en Dinars Algériens (DZD)'
-              )}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 text-xs">
-            <span className="font-semibold text-[#7E8681]">Trier par :</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="py-1.5 px-3 rounded-lg border border-[#EAE5DC] bg-[#FAF7F2] text-xs font-semibold text-[#141716] focus:outline-none focus:border-[#16382C]"
-            >
-              <option value="departure">Heure de départ</option>
-              <option value="price">Prix le plus bas</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Inline Quick Search Refinement */}
-        <form onSubmit={handleUpdateSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2">
-          <div className="lg:col-span-4 flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#EAE5DC]">
-            <MapPin className="w-4 h-4 text-[#16382C] flex-shrink-0" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 text-left">
+      {/* 1. Quick Search Bar & Filters */}
+      <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-soft-sm space-y-5">
+        <form onSubmit={handleUpdateSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="relative">
+            <MapPin className="w-4 h-4 text-brand-600 absolute left-3.5 top-3.5" />
             <input
               type="text"
               value={inputOrigin}
               onChange={(e) => setInputOrigin(e.target.value)}
-              placeholder="Ville de départ (ex: Alger)..."
-              className="w-full bg-transparent text-xs font-semibold text-[#141716] focus:outline-none placeholder:text-[#ADB3AF]"
+              placeholder="Ville de départ"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
             />
           </div>
 
-          <div className="lg:col-span-4 flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#EAE5DC]">
-            <Navigation className="w-4 h-4 text-[#16382C] flex-shrink-0" />
+          <div className="relative">
+            <MapPin className="w-4 h-4 text-rose-500 absolute left-3.5 top-3.5" />
             <input
               type="text"
               value={inputDestination}
               onChange={(e) => setInputDestination(e.target.value)}
-              placeholder="Ville d'arrivée (ex: Oran)..."
-              className="w-full bg-transparent text-xs font-semibold text-[#141716] focus:outline-none placeholder:text-[#ADB3AF]"
+              placeholder="Ville d'arrivée"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
             />
           </div>
 
-          <div className="lg:col-span-2 flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#EAE5DC]">
-            <Calendar className="w-4 h-4 text-[#16382C] flex-shrink-0" />
+          <div className="relative">
+            <Calendar className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
             <input
               type="date"
               value={inputDate}
               onChange={(e) => setInputDate(e.target.value)}
-              className="w-full bg-transparent text-xs font-semibold text-[#141716] focus:outline-none cursor-pointer"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
             />
           </div>
 
-          <div className="lg:col-span-2">
-            <button
-              type="submit"
-              className="w-full h-full py-2.5 px-4 rounded-xl bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-fine active:scale-[0.98]"
-            >
-              <Search className="w-3.5 h-3.5" />
-              <span>Actualiser</span>
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full py-2.5 px-5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-soft-xs transition-colors flex items-center justify-center gap-2"
+          >
+            <Search className="w-4 h-4" />
+            <span>Mettre à jour la recherche</span>
+          </button>
         </form>
 
-        {/* Filter Badges Pill Row */}
-        <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
-          <span className="font-bold text-[#7E8681] uppercase tracking-wider text-[10px] flex items-center gap-1 mr-1">
-            <Filter className="w-3 h-3 text-[#16382C]" />
-            Filtres :
-          </span>
-
-          <button
-            type="button"
-            onClick={() => setComfortOnly(!comfortOnly)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-              comfortOnly
-                ? 'bg-[#16382C] text-[#FAF7F2] border-[#16382C] shadow-fine'
-                : 'bg-white text-[#303632] border-[#EAE5DC] hover:border-[#16382C]'
-            }`}
-          >
-            <Sparkles className={`w-3.5 h-3.5 ${comfortOnly ? 'text-[#FAF7F2]' : 'text-[#D96B27]'}`} />
-            <span>Option Confort (+30%)</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setRestStopOnly(!restStopOnly)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-              restStopOnly
-                ? 'bg-[#A14114] text-[#FAF7F2] border-[#A14114] shadow-fine'
-                : 'bg-white text-[#303632] border-[#EAE5DC] hover:border-[#A14114]'
-            }`}
-          >
-            <Coffee className={`w-3.5 h-3.5 ${restStopOnly ? 'text-[#FAF7F2]' : 'text-[#A14114]'}`} />
-            <span>Pause Naftal obligatoire (&gt; 300 km)</span>
-          </button>
-
-          {(comfortOnly || restStopOnly) && (
+        {/* Filter Pills */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-slate-400 font-semibold mr-1">Filtres :</span>
             <button
               type="button"
-              onClick={() => {
-                setComfortOnly(false);
-                setRestStopOnly(false);
-              }}
-              className="text-xs text-[#A14114] hover:underline ml-2"
+              onClick={() => setComfortOnly(!comfortOnly)}
+              className={`px-3 py-1.5 rounded-full border text-xs font-bold transition-all flex items-center gap-1.5 ${
+                comfortOnly
+                  ? 'bg-purple-50 text-purple-800 border-purple-300'
+                  : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+              }`}
             >
-              Effacer les filtres
+              <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+              <span>Trajet Confort (+30%)</span>
             </button>
-          )}
+
+            <button
+              type="button"
+              onClick={() => setRestStopOnly(!restStopOnly)}
+              className={`px-3 py-1.5 rounded-full border text-xs font-bold transition-all flex items-center gap-1.5 ${
+                restStopOnly
+                  ? 'bg-amber-50 text-amber-800 border-amber-300'
+                  : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+              }`}
+            >
+              <Coffee className="w-3.5 h-3.5 text-amber-600" />
+              <span>Avec Pause Naftal (&gt;300km)</span>
+            </button>
+          </div>
+
+          {/* Sort By Selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400 font-semibold">Trier par :</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-700 focus:outline-none"
+            >
+              <option value="departure">Heure de départ</option>
+              <option value="price">Prix croissant</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* 2. Scannable Ticket Ledger */}
+      {/* 2. Results Count */}
+      <div className="flex items-center justify-between px-1">
+        <h2 className="text-base font-black text-slate-900">
+          {sortedTrips.length} trajet{sortedTrips.length > 1 ? 's' : ''} disponible{sortedTrips.length > 1 ? 's' : ''}
+        </h2>
+        {(originCity || destinationCity) && (
+          <span className="text-xs text-slate-500">
+            {originCity || 'Toute wilaya'} ➔ {destinationCity || 'Toute wilaya'}
+          </span>
+        )}
+      </div>
+
+      {/* 3. Trip Feed / List */}
       {loading ? (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {[1, 2, 3].map((n) => (
-            <div key={n} className="h-40 rounded-2xl bg-white border border-[#EAE5DC] p-6 animate-pulse space-y-4">
-              <div className="h-4 bg-[#F4EFE6] rounded w-1/4" />
-              <div className="h-8 bg-[#F4EFE6] rounded w-1/2" />
-              <div className="h-4 bg-[#F4EFE6] rounded w-1/3" />
-            </div>
+            <div key={n} className="h-44 rounded-3xl bg-white border border-slate-200 animate-pulse p-6" />
           ))}
         </div>
       ) : error ? (
-        <div className="rounded-2xl bg-[#FCF7F3] border border-[#F0D5C3] p-8 text-center text-[#A14114] space-y-2">
-          <p className="font-bold">{error}</p>
-          <button
-            onClick={() => fetchTrips()}
-            className="text-xs font-bold text-[#16382C] underline"
-          >
-            Réessayer
-          </button>
+        <div className="bg-rose-50 border border-rose-200 rounded-2xl p-6 text-center text-rose-800 text-xs font-bold">
+          {error}
         </div>
       ) : sortedTrips.length === 0 ? (
-        <div className="rounded-2xl bg-white border border-[#EAE5DC] p-12 text-center space-y-4 shadow-fine">
-          <div className="w-12 h-12 rounded-lg bg-[#E2EDE6] text-[#16382C] flex items-center justify-center mx-auto border border-[#C4DBCD]">
-            <Search className="w-6 h-6" />
+        <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4 shadow-soft-xs">
+          <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mx-auto">
+            <Car className="w-7 h-7" />
           </div>
-          <div className="space-y-1">
-            <p className="text-base font-bold text-[#141716]">{t('search.no_results', 'Aucun trajet correspondant')}</p>
-            <p className="text-xs text-[#5A625D] max-w-md mx-auto">
-              {t('search.no_results_sub', 'Essayez d’élargir vos filtres ou de sélectionner une autre date.')}
-            </p>
-          </div>
+          <h3 className="text-base font-bold text-slate-900">Aucun trajet trouvé pour ces critères</h3>
+          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+            Essayez d'élargir votre recherche, de changer de date ou de réinitialiser les filtres pour voir les départs sur d'autres axes.
+          </p>
           <button
             onClick={() => {
-              setSearchParams(new URLSearchParams());
               setInputOrigin('');
               setInputDestination('');
               setInputDate('');
               setComfortOnly(false);
               setRestStopOnly(false);
+              setSearchParams(new URLSearchParams());
             }}
-            className="inline-flex items-center gap-2 py-2.5 px-5 rounded-lg bg-[#16382C] text-[#FAF7F2] text-xs font-bold hover:bg-[#0F281F] transition-colors shadow-fine"
+            className="px-5 py-2.5 rounded-full bg-slate-900 text-white font-bold text-xs"
           >
-            <span>Voir tous les trajets disponibles</span>
+            Réinitialiser les filtres
           </button>
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs font-semibold text-[#7E8681] px-1">
-            <span>{sortedTrips.length} trajet{sortedTrips.length > 1 ? 's' : ''} disponible{sortedTrips.length > 1 ? 's' : ''}</span>
-            <span>Prix TTC par siège (commission plateforme 15% incluse)</span>
-          </div>
+          {sortedTrips.map((trip) => {
+            const depDate = new Date(trip.departure_datetime);
+            const depTimeStr = depDate.toLocaleTimeString('fr-DZ', { hour: '2-digit', minute: '2-digit' });
+            const depDateStr = depDate.toLocaleDateString('fr-DZ', { weekday: 'short', day: 'numeric', month: 'short' });
 
-          <div className="grid grid-cols-1 gap-3.5">
-            {sortedTrips.map((trip) => {
-              const prices = calculatePrices(trip.base_seat_price);
-              const standardPrice = trip.passenger_standard_price || prices.passengerStandard;
-              const comfortPrice = trip.comfort_enabled
-                ? (trip.passenger_comfort_price || prices.passengerComfort)
-                : null;
+            const hours = Math.floor(trip.estimated_duration_minutes / 60);
+            const minutes = trip.estimated_duration_minutes % 60;
+            const durationStr = `${hours}h ${minutes > 0 ? minutes + 'm' : ''}`;
 
-              const departure = new Date(trip.departure_datetime);
-              const depTimeString = departure.toLocaleTimeString('fr-DZ', {
-                hour: '2-digit',
-                minute: '2-digit',
-              });
-              const depDateString = departure.toLocaleDateString('fr-DZ', {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'short',
-              });
-
-              const arrival = new Date(departure.getTime() + trip.estimated_duration_minutes * 60000);
-              const arrTimeString = arrival.toLocaleTimeString('fr-DZ', {
-                hour: '2-digit',
-                minute: '2-digit',
-              });
-
-              const durationHours = Math.floor(trip.estimated_duration_minutes / 60);
-              const durationMins = trip.estimated_duration_minutes % 60;
-
-              return (
-                <div
-                  key={trip.id}
-                  onClick={() => navigate(`/trips/${trip.id}`)}
-                  className="group cursor-pointer rounded-2xl bg-white border border-[#EAE5DC] hover:border-[#16382C] hover:shadow-card transition-all p-5 sm:p-6 flex flex-col lg:flex-row justify-between gap-6 items-stretch lg:items-center"
-                >
-                  {/* Left: Route Timeline & Stations */}
-                  <div className="space-y-4 flex-1">
-                    {/* Time & Route */}
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                      {/* Departure */}
-                      <div className="flex sm:flex-col items-baseline sm:items-start justify-between sm:justify-start gap-0.5">
-                        <span className="text-xl font-extrabold text-[#141716] tabular-nums">
-                          {depTimeString}
-                        </span>
-                        <div className="text-right sm:text-left">
-                          <span className="text-xs sm:text-sm font-bold text-[#141716] block">
-                            {trip.origin_city}
-                          </span>
-                          <span className="text-[11px] text-[#7E8681] truncate max-w-[200px] block">
-                            {trip.origin_address.split(',')[0]}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Timeline Duration Track */}
-                      <div className="hidden sm:flex flex-col items-center px-2 flex-shrink-0 min-w-[140px]">
-                        <span className="text-[10px] font-semibold text-[#7E8681]">
-                          {durationHours}h{durationMins > 0 ? ` ${durationMins}m` : ''}
-                        </span>
-                        <div className="w-full flex items-center my-1.5">
-                          <div className="w-2 h-2 rounded-full bg-[#16382C]" />
-                          <div className="flex-1 h-0.5 bg-[#EAE5DC] border-t border-dashed border-[#16382C]" />
-                          <ArrowRight className="w-3.5 h-3.5 text-[#16382C] flex-shrink-0" />
-                        </div>
-                        <span className="text-[10px] text-[#ADB3AF]">
-                          {trip.distance_km} km
-                        </span>
-                      </div>
-
-                      {/* Arrival */}
-                      <div className="flex sm:flex-col items-baseline sm:items-start justify-between sm:justify-start gap-0.5">
-                        <span className="text-xl font-extrabold text-[#141716] tabular-nums">
-                          {arrTimeString}
-                        </span>
-                        <div className="text-right sm:text-left">
-                          <span className="text-xs sm:text-sm font-bold text-[#141716] block">
-                            {trip.destination_city}
-                          </span>
-                          <span className="text-[11px] text-[#7E8681] truncate max-w-[200px] block">
-                            {trip.destination_address.split(',')[0]}
-                          </span>
-                        </div>
-                      </div>
+            return (
+              <div
+                key={trip.id}
+                onClick={() => navigate(`/trips/${trip.id}`)}
+                className="bg-white rounded-3xl border border-slate-200 p-6 shadow-soft-sm hover:shadow-soft-md hover:border-brand-300 transition-all cursor-pointer space-y-5"
+              >
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  {/* Timeline & Route Details */}
+                  <div className="space-y-2 flex-1">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl font-black text-slate-900">{depTimeStr}</span>
+                      <span className="text-xs text-slate-400 font-semibold">• {depDateStr}</span>
                     </div>
 
-                    {/* Driver Profile & Badges Row */}
-                    <div className="pt-3 border-t border-[#F4EFE6] flex flex-wrap items-center justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={trip.driver?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${trip.driver?.full_name || 'DZ'}`}
-                          alt={trip.driver?.full_name}
-                          className="w-8 h-8 rounded-full border border-[#EAE5DC] object-cover"
-                        />
-                        <div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-xs font-bold text-[#141716]">
-                              {trip.driver?.full_name}
-                            </span>
-                            <span className="text-[11px] font-semibold text-[#16382C]">
-                              ★ {trip.driver?.rating_avg || 4.8}
-                            </span>
-                          </div>
-                          {trip.vehicle && (
-                            <span className="text-[10px] text-[#7E8681] flex items-center gap-1">
-                              <Car className="w-3 h-3 text-[#ADB3AF]" />
-                              {trip.vehicle.make} {trip.vehicle.model}
-                              {trip.vehicle.air_conditioning && (
-                                <span className="text-[#16382C] ml-1">• Climatisé</span>
-                              )}
-                            </span>
-                          )}
-                        </div>
+                    <div className="flex items-center gap-3">
+                      <div className="flex flex-col items-center">
+                        <div className="w-2.5 h-2.5 rounded-full bg-brand-600" />
+                        <div className="w-0.5 h-7 bg-slate-200 my-0.5" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
                       </div>
-
-                      {/* Safety & Comfort Badges */}
-                      <div className="flex items-center gap-2 flex-wrap">
-                        {trip.has_mandatory_rest && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#A14114] bg-[#F8ECE3] px-2 py-0.5 rounded border border-[#F0D5C3]">
-                            <Coffee className="w-3 h-3" />
-                            Pause 15 min (&gt; 300 km)
-                          </span>
-                        )}
-
-                        {trip.comfort_enabled && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#16382C] bg-[#E2EDE6] px-2 py-0.5 rounded border border-[#C4DBCD]">
-                            <Sparkles className="w-3 h-3" />
-                            Confort (+30%)
-                          </span>
-                        )}
-
-                        {/* Available Seats Pill */}
-                        <span
-                          className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded border ${
-                            trip.available_seats > 1
-                              ? 'bg-[#E2EDE6] text-[#16382C] border-[#C4DBCD]'
-                              : trip.available_seats === 1
-                              ? 'bg-[#F8ECE3] text-[#A14114] border-[#F0D5C3]'
-                              : 'bg-[#FCF7F3] text-[#A14114] border-[#F0D5C3]'
-                          }`}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              trip.available_seats > 1
-                                ? 'bg-[#16382C]'
-                                : trip.available_seats === 1
-                                ? 'bg-[#D96B27]'
-                                : 'bg-[#A14114]'
-                            }`}
-                          />
-                          <span>
-                            {trip.available_seats > 0
-                              ? `${trip.available_seats} place${trip.available_seats > 1 ? 's' : ''} libre${trip.available_seats > 1 ? 's' : ''}`
-                              : 'Complet'}
-                          </span>
-                        </span>
+                      <div className="space-y-3 flex-1">
+                        <div>
+                          <span className="text-sm font-black text-slate-900 block">{trip.origin_city}</span>
+                          <span className="text-[11px] text-slate-400 block">{trip.origin_address}</span>
+                        </div>
+                        <div>
+                          <span className="text-sm font-black text-slate-900 block">{trip.destination_city}</span>
+                          <span className="text-[11px] text-slate-400 block">{trip.destination_address}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Right: Boarding Pass Pricing & Action */}
-                  <div className="lg:border-l lg:border-[#F4EFE6] lg:pl-6 flex flex-col justify-between items-start lg:items-end gap-3 min-w-[190px]">
-                    <div className="text-left lg:text-right">
-                      <span className="text-[10px] text-[#7E8681] font-semibold uppercase tracking-wider block">
-                        Tarif Standard (TTC)
-                      </span>
-                      <div className="flex items-baseline gap-1 lg:justify-end">
-                        <span className="text-2xl font-black text-[#16382C] tabular-nums">
-                          {standardPrice} DA
-                        </span>
+                  {/* Route Specs & Price Column */}
+                  <div className="flex md:flex-col justify-between md:items-end items-center pt-4 md:pt-0 border-t md:border-t-0 border-slate-100">
+                    <div className="text-left md:text-right">
+                      <div className="text-2xl font-black text-brand-600 tabular-nums">
+                        {trip.passenger_standard_price.toLocaleString('fr-DZ')} DA
                       </div>
-                      <span className="text-[10px] text-[#7E8681] font-medium block">
-                        Base net: {trip.base_seat_price} DA + 15%
-                      </span>
-
-                      {comfortPrice && (
-                        <span className="text-[10px] font-semibold text-[#5A625D] block mt-0.5">
-                          Option Confort : <strong className="text-[#141716]">{comfortPrice} DA</strong>
-                        </span>
-                      )}
+                      <span className="text-[10px] text-slate-400 font-medium">TTC tout inclus / place</span>
+                      <div className="text-[11px] text-slate-500 font-semibold mt-0.5">
+                        Base conducteur : {trip.base_seat_price} DA
+                      </div>
                     </div>
 
-                    <div className="w-full lg:w-auto">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/trips/${trip.id}`);
-                        }}
-                        className="w-full lg:w-auto py-2.5 px-5 rounded-lg bg-[#16382C] group-hover:bg-[#0F281F] text-[#FAF7F2] font-bold text-xs shadow-fine transition-all flex items-center justify-center gap-1.5 active:scale-[0.98]"
-                      >
-                        <span>Voir & Réserver</span>
-                        <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                      </button>
+                    <div className="mt-2 text-right">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-800">
+                        <Users className="w-3.5 h-3.5 text-slate-600" />
+                        <span>{trip.available_seats} place{trip.available_seats > 1 ? 's' : ''} libre{trip.available_seats > 1 ? 's' : ''}</span>
+                      </span>
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+
+                {/* Badges Bar & Driver Footer */}
+                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    {trip.has_mandatory_rest && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                        <Coffee className="w-3.5 h-3.5 text-amber-600" />
+                        <span>Pause Naftal 15 min ({trip.distance_km} km)</span>
+                      </span>
+                    )}
+
+                    {trip.comfort_enabled && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-50 text-purple-800 border border-purple-200">
+                        <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                        <span>Confort (+30%)</span>
+                      </span>
+                    )}
+
+                    <span className="text-xs text-slate-400">
+                      {trip.distance_km} km • {durationStr}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between sm:justify-end gap-3">
+                    <div className="flex items-center gap-2 text-xs">
+                      <img
+                        src={trip.driver?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${trip.driver?.full_name}`}
+                        alt={trip.driver?.full_name}
+                        className="w-7 h-7 rounded-full object-cover border border-slate-200"
+                      />
+                      <span className="font-bold text-slate-800">{trip.driver?.full_name}</span>
+                      <span className="flex items-center gap-0.5 text-amber-600 font-bold">
+                        <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                        <span>{trip.driver?.rating_avg || 4.8}</span>
+                      </span>
+                    </div>
+
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-brand-600 hover:underline">
+                      <span>Détails</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

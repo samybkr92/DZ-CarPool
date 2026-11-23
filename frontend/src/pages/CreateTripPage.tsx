@@ -16,6 +16,8 @@ import {
   Clock,
   MapPin,
   Check,
+  AlertCircle,
+  HelpCircle,
 } from 'lucide-react';
 
 export const CreateTripPage: React.FC = () => {
@@ -102,10 +104,10 @@ export const CreateTripPage: React.FC = () => {
     setSubmitting(true);
     setError(null);
 
-    const departureDatetime = `${departureDate}T${departureTime}:00Z`;
+    const departureDateTime = `${departureDate}T${departureTime}:00`;
 
     try {
-      const newTrip = await api.createTrip({
+      const created = await api.createTrip({
         origin_wilaya_code: originWilayaCode,
         origin_wilaya_name: originCity,
         origin_city: originCity,
@@ -114,18 +116,18 @@ export const CreateTripPage: React.FC = () => {
         destination_wilaya_name: destCity,
         destination_city: destCity,
         destination_address: destAddress,
-        departure_datetime: departureDatetime,
+        departure_datetime: departureDateTime,
         estimated_duration_minutes: durationMin,
         distance_km: distanceKm,
         total_seats: totalSeats,
-        base_seat_price: baseSeatPrice,
+        base_seat_price: Number(baseSeatPrice),
         comfort_enabled: comfortEnabled,
         vehicle_make: vehicleMake,
         vehicle_model: vehicleModel,
         notes: notes,
       });
 
-      navigate(`/trips/${newTrip.id}`);
+      navigate(`/trips/${created.id}`);
     } catch (err: any) {
       setError(err.message || 'Erreur lors de la publication du trajet');
     } finally {
@@ -135,46 +137,63 @@ export const CreateTripPage: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 text-left">
-      {/* Editorial Header */}
-      <div className="space-y-2 pb-6 border-b border-[#EAE5DC]">
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#16382C] bg-[#E2EDE6] px-2.5 py-0.5 rounded border border-[#C4DBCD]">
-            Espace Conducteur
-          </span>
-          <span className="text-xs text-[#C8BEAD]">•</span>
-          <span className="text-xs font-medium text-[#7E8681]">
-            Publication certifiée de trajet inter-wilayas
-          </span>
-        </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#141716] tracking-tight">
-          Proposer des places en covoiturage
+      {/* Header */}
+      <div className="space-y-2 border-b border-slate-200 pb-5">
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          Publier un trajet inter-wilayas
         </h1>
-        <p className="text-xs sm:text-sm text-[#5A625D] leading-relaxed max-w-2xl">
-          Renseignez votre itinéraire, consultez le barème officiel Naftal (8L/100km) pour fixer un prix équitable, et conservez 100% de votre prix net conducteur.
+        <p className="text-xs sm:text-sm text-slate-500">
+          Renseignez vos étapes, utilisez notre estimation officielle du carburant et partagez vos frais équitablement.
         </p>
       </div>
 
+      {error && (
+        <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs font-bold flex items-center gap-2">
+          <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Step 1: Itinerary & Route details */}
-        <div className="bg-white rounded-2xl border border-[#EAE5DC] p-6 sm:p-8 shadow-fine space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-[#F4EFE6]">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#141716] flex items-center gap-2">
-              <span className="w-5 h-5 rounded bg-[#16382C] text-[#FAF7F2] text-[10px] flex items-center justify-center font-bold">
-                1
-              </span>
-              <span>Itinéraire & Horaires de Départ</span>
+        {/* Step 1: Route & Schedule */}
+        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-soft-sm space-y-6">
+          <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+            <span className="w-6 h-6 rounded-full bg-brand-50 text-brand-700 text-xs font-bold flex items-center justify-center border border-brand-200">
+              1
+            </span>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+              Itinéraire & Horaires
             </h2>
-            <span className="text-xs font-semibold text-[#7E8681]">Étape 1 sur 3</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Origin Wilaya */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Wilaya de départ</label>
+              <label className="block text-xs font-bold text-slate-700">
+                Wilaya de départ
+              </label>
               <select
                 value={originWilayaCode}
                 onChange={(e) => handleOriginWilayaChange(Number(e.target.value))}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-semibold text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C] cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
+              >
+                {WILAYAS.map((w) => (
+                  <option key={w.code} value={w.code}>
+                    {w.code_str} - {w.name} ({w.name_ar})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Destination Wilaya */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-700">
+                Wilaya d'arrivée
+              </label>
+              <select
+                value={destWilayaCode}
+                onChange={(e) => handleDestWilayaChange(Number(e.target.value))}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
               >
                 {WILAYAS.map((w) => (
                   <option key={w.code} value={w.code}>
@@ -186,303 +205,289 @@ export const CreateTripPage: React.FC = () => {
 
             {/* Origin Address */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Point de rassemblement exact</label>
+              <label className="block text-xs font-bold text-slate-700">
+                Point de rendez-vous exact (Départ)
+              </label>
               <input
                 type="text"
                 value={originAddress}
                 onChange={(e) => setOriginAddress(e.target.value)}
-                placeholder="Ex: Station Tafourah, Alger Centre"
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-medium text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
+                placeholder="Ex. Station de métro Tafourah, Station service Naftal"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
                 required
               />
-            </div>
-
-            {/* Destination Wilaya */}
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Wilaya de destination</label>
-              <select
-                value={destWilayaCode}
-                onChange={(e) => handleDestWilayaChange(Number(e.target.value))}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-semibold text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C] cursor-pointer"
-              >
-                {WILAYAS.map((w) => (
-                  <option key={w.code} value={w.code}>
-                    {w.code_str} - {w.name} ({w.name_ar})
-                  </option>
-                ))}
-              </select>
             </div>
 
             {/* Destination Address */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Point d'arrivée exact</label>
+              <label className="block text-xs font-bold text-slate-700">
+                Point de dépose exact (Arrivée)
+              </label>
               <input
                 type="text"
                 value={destAddress}
                 onChange={(e) => setDestAddress(e.target.value)}
-                placeholder="Ex: Place d'Armes, Centre-Ville"
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-medium text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
+                placeholder="Ex. Place d'Armes, Rond-point El Bahia"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
                 required
               />
             </div>
 
-            {/* Date */}
+            {/* Departure Date */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Date du voyage</label>
+              <label className="block text-xs font-bold text-slate-700">
+                Date de départ
+              </label>
               <input
                 type="date"
                 value={departureDate}
                 onChange={(e) => setDepartureDate(e.target.value)}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-semibold text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C] cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
                 required
               />
             </div>
 
-            {/* Time */}
+            {/* Departure Time */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Heure de départ</label>
+              <label className="block text-xs font-bold text-slate-700">
+                Heure de départ
+              </label>
               <input
                 type="time"
                 value={departureTime}
                 onChange={(e) => setDepartureTime(e.target.value)}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-semibold text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C] cursor-pointer"
-                required
-              />
-            </div>
-
-            {/* Distance */}
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-[#303632]">Distance estimée (km)</label>
-                <span className="text-[10px] text-[#16382C] font-bold">Auto-calculée</span>
-              </div>
-              <input
-                type="number"
-                value={distanceKm}
-                onChange={(e) => setDistanceKm(parseFloat(e.target.value) || 0)}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-semibold text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
-                required
-              />
-            </div>
-
-            {/* Duration */}
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Durée estimée (minutes)</label>
-              <input
-                type="number"
-                value={durationMin}
-                onChange={(e) => setDurationMin(parseInt(e.target.value, 10) || 0)}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-semibold text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
                 required
               />
             </div>
           </div>
 
-          {/* Mandatory Rest Alert if > 300km */}
-          {distanceKm > 300.0 && (
-            <div className="mt-3">
-              <RestStopAlert distanceKm={distanceKm} />
+          {/* Route Distance & Mandatory Rest Stop Notice */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+              <span>Distance estimée de l'axe :</span>
+              <span className="text-brand-700 font-extrabold">{distanceKm} km (~{Math.floor(durationMin / 60)}h{durationMin % 60 > 0 ? durationMin % 60 + 'm' : ''})</span>
             </div>
-          )}
+
+            {distanceKm > 300 ? (
+              <div className="flex items-start gap-2.5 text-xs text-amber-800 bg-amber-50 p-3 rounded-xl border border-amber-200">
+                <Coffee className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="block font-bold">Halte obligatoire de 15 minutes programmée</strong>
+                  <span className="text-[11px] text-amber-700">
+                    Conformément aux règles de sécurité pour les trajets supérieurs à 300 km, une pause de 15 minutes à mi-parcours (station Naftal) est automatiquement incluse.
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <p className="text-[11px] text-slate-500">
+                Trajet de moins de 300 km : pas de halte obligatoire réglementaire imposée.
+              </p>
+            )}
+          </div>
         </div>
 
-        {/* Step 2: Fuel Advisory & Transparent Pricing */}
-        <div className="bg-white rounded-2xl border border-[#EAE5DC] p-6 sm:p-8 shadow-fine space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F4EFE6]">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#141716] flex items-center gap-2">
-              <span className="w-5 h-5 rounded bg-[#16382C] text-[#FAF7F2] text-[10px] flex items-center justify-center font-bold">
-                2
-              </span>
-              <span>Barème Naftal & Tarification par Siège</span>
-            </h2>
-            <span className="text-xs font-semibold text-[#7E8681]">Étape 2 sur 3</span>
-          </div>
-
-          {/* Fuel Estimate Live Advisory Card */}
-          <div className="p-4 bg-[#E2EDE6] border border-[#C4DBCD] rounded-xl space-y-2 text-xs text-[#16382C]">
-            <div className="flex items-center justify-between">
-              <span className="font-bold flex items-center gap-1.5 text-[#16382C]">
-                <Fuel className="w-4 h-4 text-[#16382C]" />
-                Barème officiel Naftal ({fuelType.toUpperCase()}) :
-              </span>
-              <span className="text-xs font-bold text-[#16382C] bg-white px-2 py-0.5 rounded border border-[#C4DBCD]">
-                {currentFuelEstimate.price_per_liter} DA / Litre
-              </span>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 text-[11px] text-[#276243]">
-              <div>
-                <span className="text-[#5A625D] block">Volume estimé (8L/100) :</span>
-                <strong>{currentFuelEstimate.consumption_liters} Litres</strong>
-              </div>
-              <div>
-                <span className="text-[#5A625D] block">Coût total estimé :</span>
-                <strong>{currentFuelEstimate.total_fuel_cost} DA</strong>
-              </div>
-              <div className="col-span-2 sm:col-span-1">
-                <span className="text-[#5A625D] block">Part suggérée / place :</span>
-                <strong className="text-[#16382C] text-xs">{currentFuelEstimate.suggested_seat_contribution} DA</strong>
-              </div>
-            </div>
-            <span className="text-[10px] text-[#16382C] block italic pt-1 border-t border-[#C4DBCD]/60">
-              * Note consultative : vous fixez librement votre prix net de base en Dinars.
+        {/* Step 2: Fuel Estimation & Pricing */}
+        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-soft-sm space-y-6">
+          <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+            <span className="w-6 h-6 rounded-full bg-brand-50 text-brand-700 text-xs font-bold flex items-center justify-center border border-brand-200">
+              2
             </span>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+              Estimation Carburant & Tarification
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Carburant utilisé</label>
-              <select
-                value={fuelType}
-                onChange={(e) => setFuelType(e.target.value as any)}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-semibold text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
-              >
-                <option value="essence">Essence (45.62 DA/L)</option>
-                <option value="diesel">Gasoil / Diesel (29.01 DA/L)</option>
-                <option value="gpl">GPL / Sirghaz (9.00 DA/L)</option>
-              </select>
+          {/* Naftal Fuel Advisory Module */}
+          <div className="p-5 rounded-2xl bg-emerald-50/60 border border-brand-200 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-900 flex items-center gap-1.5">
+                <Fuel className="w-4 h-4 text-brand-600" />
+                <span>Calculateur Officiel Carburant (8L/100km)</span>
+              </span>
+              <span className="text-[10px] font-bold text-brand-800 bg-white px-2 py-0.5 rounded-full border border-brand-200">
+                Prix Naftal Wilaya
+              </span>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Places passagers offertes</label>
-              <select
-                value={totalSeats}
-                onChange={(e) => setTotalSeats(parseInt(e.target.value, 10))}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-semibold text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
-              >
-                <option value={1}>1 place</option>
-                <option value={2}>2 places</option>
-                <option value={3}>3 places</option>
-                <option value={4}>4 places</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-[#303632]">
-                  Prix de Base / Siège (DA)
-                </label>
-                <span className="text-[10px] text-[#16382C] font-bold">100% net pour vous</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div className="bg-white p-3 rounded-xl border border-brand-100">
+                <span className="text-slate-400 block text-[10px]">Carburant estimé</span>
+                <span className="font-black text-slate-900 text-base">{currentFuelEstimate.fuelQuantityLiters} Litres</span>
               </div>
-              <input
-                type="number"
-                value={baseSeatPrice}
-                onChange={(e) => setBaseSeatPrice(parseFloat(e.target.value) || 0)}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-sm font-extrabold text-[#16382C] focus:bg-white focus:outline-none focus:border-[#16382C]"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Trajet Confort Toggle */}
-          <div className="p-4 bg-[#FAF7F2] rounded-xl border border-[#EAE5DC] space-y-2">
-            <label className="flex items-center justify-between cursor-pointer">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#D96B27]" />
-                <span className="text-xs font-bold text-[#141716]">
-                  Activer l'option « Trajet Confort » (+30%)
-                </span>
+              <div className="bg-white p-3 rounded-xl border border-brand-100">
+                <span className="text-slate-400 block text-[10px]">Coût total carburant</span>
+                <span className="font-black text-slate-900 text-base">{currentFuelEstimate.totalFuelCost} DA</span>
               </div>
-              <input
-                type="checkbox"
-                checked={comfortEnabled}
-                onChange={(e) => setComfortEnabled(e.target.checked)}
-                className="rounded text-[#16382C] focus:ring-[#16382C] h-4 w-4 border-[#C8BEAD] cursor-pointer"
-              />
-            </label>
-            <p className="text-xs text-[#5A625D] leading-relaxed">
-              Permet à un passager de réserver le siège avant pour plus d'espace avec un supplément de 30% ({Math.round(baseSeatPrice * 0.30)} DA) entièrement reversé au conducteur.
+              <div className="bg-white p-3 rounded-xl border border-brand-100">
+                <span className="text-slate-400 block text-[10px]">Suggestion conseillée / siège</span>
+                <span className="font-black text-brand-700 text-base">{currentFuelEstimate.suggestedPricePerSeat} DA</span>
+              </div>
+            </div>
+
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              Donnée consultative basée sur la consommation moyenne de 8L/100km et le tarif officiel du carburant en station. Vous gardez la liberté totale de fixer votre prix de base.
             </p>
           </div>
 
-          {/* Live Preview of Price Breakdown */}
-          <div className="pt-2">
-            <span className="text-[11px] font-bold text-[#7E8681] uppercase tracking-wider block mb-2">
-              Aperçu transparent des tarifs passagers (+15% commission) :
-            </span>
-            <PriceBreakdown baseSeatPrice={baseSeatPrice} comfortEnabled={comfortEnabled} />
+          {/* Base Seat Price Input */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-bold text-slate-700">
+                  Votre contribution de base par siège (DA)
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setBaseSeatPrice(currentFuelEstimate.suggestedPricePerSeat)}
+                  className="text-[11px] font-bold text-brand-700 hover:underline"
+                >
+                  Appliquer le prix conseillé
+                </button>
+              </div>
+              <input
+                type="number"
+                min={100}
+                max={20000}
+                step={50}
+                value={baseSeatPrice}
+                onChange={(e) => setBaseSeatPrice(Number(e.target.value))}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-black text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
+                required
+              />
+              <span className="text-[11px] text-slate-400 block">
+                Montant net que vous percevrez intégralement pour chaque place standard.
+              </span>
+            </div>
+
+            {/* Comfort Option Toggle */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-700">
+                Option Trajet Confort (+30%)
+              </label>
+              <div
+                onClick={() => setComfortEnabled(!comfortEnabled)}
+                className={`p-3 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                  comfortEnabled
+                    ? 'bg-purple-50 border-purple-300 text-purple-900'
+                    : 'bg-slate-50 border-slate-200 text-slate-600'
+                }`}
+              >
+                <div>
+                  <span className="text-xs font-bold block flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                    <span>Activer la place avant Confort</span>
+                  </span>
+                  <span className="text-[11px] text-slate-500 block">
+                    Supplément de 30% (+{Math.round(baseSeatPrice * 0.3)} DA) réservé au passager avant
+                  </span>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={comfortEnabled}
+                  onChange={(e) => setComfortEnabled(e.target.checked)}
+                  className="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 cursor-pointer"
+                />
+              </div>
+            </div>
           </div>
+
+          {/* Live Pricing Breakdown Preview */}
+          <PriceBreakdown
+            basePrice={baseSeatPrice}
+            seatCount={1}
+            seatType={comfortEnabled ? 'comfort' : 'standard'}
+            showDriverPayout={true}
+          />
         </div>
 
-        {/* Step 3: Vehicle details & Travel Guidelines */}
-        <div className="bg-white rounded-2xl border border-[#EAE5DC] p-6 sm:p-8 shadow-fine space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-[#F4EFE6]">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#141716] flex items-center gap-2">
-              <span className="w-5 h-5 rounded bg-[#16382C] text-[#FAF7F2] text-[10px] flex items-center justify-center font-bold">
-                3
-              </span>
-              <span>Véhicule & Consignes de Voyage</span>
+        {/* Step 3: Vehicle & Capacity */}
+        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-soft-sm space-y-6">
+          <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+            <span className="w-6 h-6 rounded-full bg-brand-50 text-brand-700 text-xs font-bold flex items-center justify-center border border-brand-200">
+              3
+            </span>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+              Véhicule & Places Disponibles
             </h2>
-            <span className="text-xs font-semibold text-[#7E8681]">Étape 3 sur 3</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Marque du véhicule</label>
+              <label className="block text-xs font-bold text-slate-700">
+                Nombre de places disponibles
+              </label>
+              <select
+                value={totalSeats}
+                onChange={(e) => setTotalSeats(Number(e.target.value))}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
+              >
+                <option value={1}>1 place</option>
+                <option value={2}>2 places</option>
+                <option value={3}>3 places (recommandé)</option>
+                <option value={4}>4 places max</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-700">
+                Marque du véhicule
+              </label>
               <input
                 type="text"
                 value={vehicleMake}
                 onChange={(e) => setVehicleMake(e.target.value)}
-                placeholder="Ex: Renault, Peugeot, Volkswagen"
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-medium text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
+                placeholder="Ex. Renault, Peugeot, Volkswagen"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
                 required
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">Modèle</label>
+              <label className="block text-xs font-bold text-slate-700">
+                Modèle
+              </label>
               <input
                 type="text"
                 value={vehicleModel}
                 onChange={(e) => setVehicleModel(e.target.value)}
-                placeholder="Ex: Clio 5, 208, Golf 8"
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-medium text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
+                placeholder="Ex. Clio 4, 208, Golf 8"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
                 required
               />
             </div>
+          </div>
 
-            <div className="sm:col-span-2 space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">
-                Consignes pour les passagers (bagages, musique, ponctualité)
-              </label>
-              <textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                rows={3}
-                placeholder="Ex: Bagages moyens acceptés. Départ ponctuel à l'heure indiquée."
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] p-3 text-xs font-medium text-[#141716] focus:bg-white focus:outline-none focus:border-[#16382C]"
-              />
-            </div>
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-slate-700">
+              Précisions pour les passagers (bagages, musique, non-fumeur...)
+            </label>
+            <textarea
+              rows={3}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
+            />
           </div>
         </div>
-
-        {error && (
-          <div className="p-4 bg-[#FCF7F3] rounded-xl border border-[#F0D5C3] text-xs text-[#A14114] font-medium">
-            {error}
-          </div>
-        )}
 
         {/* Submit Button */}
         <div className="flex items-center justify-end gap-4 pt-2">
           <button
             type="button"
-            onClick={() => navigate('/dashboard/driver')}
-            className="py-3 px-6 rounded-xl border border-[#EAE5DC] text-xs font-semibold text-[#5A625D] hover:bg-[#FAF7F2]"
+            onClick={() => navigate('/')}
+            className="px-6 py-3.5 rounded-2xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50"
           >
             Annuler
           </button>
+
           <button
             type="submit"
             disabled={submitting}
-            className="py-3.5 px-8 rounded-xl bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] font-bold text-xs shadow-fine active:scale-[0.98] transition-all flex items-center gap-2"
+            className="px-8 py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 disabled:bg-slate-200 text-white font-black text-sm shadow-soft-md transition-all active:scale-[0.98] flex items-center gap-2"
           >
-            {submitting ? (
-              <span>Publication en cours...</span>
-            ) : (
-              <>
-                <Car className="w-4 h-4 text-[#FAF7F2]" />
-                <span>Publier mon annonce de trajet</span>
-              </>
-            )}
+            <Car className="w-4 h-4" />
+            <span>{submitting ? 'Publication en cours...' : 'Publier mon trajet'}</span>
           </button>
         </div>
       </form>

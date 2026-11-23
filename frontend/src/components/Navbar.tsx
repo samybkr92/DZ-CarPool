@@ -11,8 +11,6 @@ import {
   LogOut,
   Menu,
   X,
-  User as UserIcon,
-  ShieldCheck,
   ChevronDown,
 } from 'lucide-react';
 
@@ -39,7 +37,7 @@ export const Navbar: React.FC = () => {
   const isRtl = i18n.language.startsWith('ar');
 
   const navLinks = [
-    { to: '/search', label: t('nav.search', 'Rechercher'), icon: Compass },
+    { to: '/search', label: t('nav.search', 'Rechercher un trajet'), icon: Compass },
     ...(user
       ? [
           { to: '/dashboard/driver', label: t('nav.driver_dashboard', 'Espace Conducteur'), icon: Car },
@@ -49,34 +47,34 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#EAE5DC] transition-all">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/90 transition-all shadow-soft-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Brand Logo & Algerian Editorial Wordmark */}
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          {/* Brand Logo */}
           <Link
             to="/"
-            className="flex items-center gap-3.5 group focus:outline-none rounded-lg p-1"
+            className="flex items-center gap-3 group focus:outline-none rounded-lg p-1"
           >
-            <div className="w-10 h-10 rounded-lg bg-[#16382C] text-[#FAF7F2] flex items-center justify-center shadow-fine group-hover:bg-[#0F281F] transition-colors">
-              <span className="font-serif italic font-bold text-lg tracking-tight">DZ</span>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-soft-sm group-hover:bg-brand-700 transition-colors">
+              <Car className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col text-left">
               <div className="flex items-center gap-2">
-                <span className="text-xl font-bold tracking-tight text-[#141716] group-hover:text-[#16382C] transition-colors">
+                <span className="text-lg sm:text-xl font-black tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
                   DZ-CarPool
                 </span>
-                <span className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase text-[#16382C] bg-[#E2EDE6] rounded border border-[#C4DBCD]">
+                <span className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase text-brand-700 bg-brand-50 rounded-full border border-brand-200">
                   Algérie
                 </span>
               </div>
-              <p className="text-[11px] text-[#5A625D] font-normal hidden sm:block -mt-0.5">
-                {t('brand.slogan', 'Mobilité inter-wilayas')}
+              <p className="text-[11px] text-slate-500 font-medium hidden sm:block -mt-0.5">
+                {t('brand.slogan', 'Covoiturage inter-wilayas')}
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1.5">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = location.pathname === link.to;
@@ -84,13 +82,13 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full transition-all ${
                     isActive
-                      ? 'bg-[#EAE5DC] text-[#141716] shadow-fine font-bold'
-                      : 'text-[#5A625D] hover:text-[#141716] hover:bg-[#F4EFE6]'
+                      ? 'bg-slate-100 text-brand-700 font-bold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#16382C]' : 'text-[#7E8681]'}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-brand-600' : 'text-slate-400'}`} />
                   <span>{link.label}</span>
                 </Link>
               );
@@ -102,7 +100,7 @@ export const Navbar: React.FC = () => {
             {/* Direct Driver Publish CTA */}
             <Link
               to="/trips/create"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg border border-[#16382C] text-[#16382C] hover:bg-[#16382C] hover:text-[#FAF7F2] transition-all shadow-fine active:scale-[0.98]"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-full bg-brand-600 text-white hover:bg-brand-700 transition-all shadow-soft-sm active:scale-[0.98]"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>{t('nav.publish', 'Publier un trajet')}</span>
@@ -111,11 +109,11 @@ export const Navbar: React.FC = () => {
             {/* Language Switcher Pill */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border border-[#EAE5DC] bg-white text-[#434A46] hover:border-[#16382C] hover:text-[#16382C] shadow-fine transition-all focus:outline-none"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border border-slate-200 bg-slate-50 text-slate-700 hover:border-brand-600 hover:text-brand-600 shadow-soft-xs transition-all focus:outline-none"
               title="Changer de langue / تغيير اللغة"
               aria-label="Changer de langue"
             >
-              <Globe className="w-3.5 h-3.5 text-[#16382C]" />
+              <Globe className="w-3.5 h-3.5 text-brand-600" />
               <span className="tracking-wide font-medium">{isRtl ? 'Français' : 'العربية'}</span>
             </button>
 
@@ -124,31 +122,28 @@ export const Navbar: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2.5 py-1.5 px-2.5 rounded-lg bg-white border border-[#EAE5DC] hover:border-[#C8BEAD] shadow-fine transition-all focus:outline-none"
+                  className="flex items-center gap-2 py-1.5 px-3 rounded-full bg-slate-50 border border-slate-200 hover:border-slate-300 shadow-soft-xs transition-all focus:outline-none"
                 >
                   <img
                     src={user.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${user.full_name}`}
                     alt={user.full_name}
-                    className="w-7 h-7 rounded-full object-cover border border-[#EAE5DC]"
+                    className="w-6 h-6 rounded-full object-cover border border-slate-200"
                   />
                   <div className="text-left hidden sm:block">
-                    <span className="text-xs font-bold text-[#141716] block leading-tight">
+                    <span className="text-xs font-bold text-slate-800 block leading-tight">
                       {user.full_name.split(' ')[0]}
                     </span>
-                    <span className="text-[10px] text-[#7E8681] font-medium block leading-tight">
-                      {user.wilaya_name || 'Algérie'}
-                    </span>
                   </div>
-                  <ChevronDown className="w-3.5 h-3.5 text-[#7E8681]" />
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                 </button>
 
                 {/* Dropdown Menu */}
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white border border-[#EAE5DC] shadow-dropdown py-1.5 z-50 animate-in fade-in slide-in-from-top-1 text-left">
-                    <div className="px-3.5 py-2 border-b border-[#F4EFE6]">
-                      <span className="text-xs font-bold text-[#141716] block">{user.full_name}</span>
-                      <span className="text-[11px] text-[#7E8681] block truncate">{user.email}</span>
-                      <span className="inline-block mt-1 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#16382C] bg-[#E2EDE6] rounded">
+                  <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-slate-200 shadow-search py-2 z-50 animate-in fade-in slide-in-from-top-1 text-left">
+                    <div className="px-4 py-2.5 border-b border-slate-100">
+                      <span className="text-xs font-bold text-slate-900 block">{user.full_name}</span>
+                      <span className="text-[11px] text-slate-500 block truncate">{user.email}</span>
+                      <span className="inline-block mt-1 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-brand-700 bg-brand-50 rounded-full">
                         {user.role === 'driver' ? 'Conducteur' : user.role === 'passenger' ? 'Passager' : 'Conducteur & Passager'}
                       </span>
                     </div>
@@ -156,29 +151,29 @@ export const Navbar: React.FC = () => {
                     <Link
                       to="/dashboard/driver"
                       onClick={() => setUserDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-[#303632] hover:bg-[#FAF7F2] hover:text-[#16382C]"
+                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-brand-600 transition-colors"
                     >
-                      <Car className="w-3.5 h-3.5 text-[#16382C]" />
+                      <Car className="w-3.5 h-3.5 text-brand-600" />
                       <span>Espace Conducteur</span>
                     </Link>
 
                     <Link
                       to="/dashboard/passenger"
                       onClick={() => setUserDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-[#303632] hover:bg-[#FAF7F2] hover:text-[#16382C]"
+                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-brand-600 transition-colors"
                     >
-                      <CalendarCheck className="w-3.5 h-3.5 text-[#16382C]" />
+                      <CalendarCheck className="w-3.5 h-3.5 text-brand-600" />
                       <span>Mes Réservations</span>
                     </Link>
 
-                    <div className="border-t border-[#F4EFE6] my-1" />
+                    <div className="border-t border-slate-100 my-1" />
 
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-[#A14114] hover:bg-[#FCF7F3] text-left"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 text-left transition-colors"
                     >
                       <LogOut className="w-3.5 h-3.5" />
-                      <span>{t('nav.logout', 'Se déconnecter')}</span>
+                      <span>Déconnexion</span>
                     </button>
                   </div>
                 )}
@@ -187,13 +182,13 @@ export const Navbar: React.FC = () => {
               <div className="hidden sm:flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-3.5 py-2 text-xs font-semibold text-[#434A46] hover:text-[#16382C] hover:bg-[#F4EFE6] rounded-lg transition-colors"
+                  className="px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-brand-600 hover:bg-slate-100 rounded-full transition-colors"
                 >
                   {t('nav.login', 'Connexion')}
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 text-xs font-bold text-[#FAF7F2] bg-[#16382C] hover:bg-[#0F281F] rounded-lg shadow-fine transition-all"
+                  className="px-4 py-2 text-xs font-bold text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-full shadow-soft-xs transition-all"
                 >
                   {t('nav.register', "S'inscrire")}
                 </Link>
@@ -203,8 +198,8 @@ export const Navbar: React.FC = () => {
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-[#434A46] hover:text-[#16382C] hover:bg-[#F4EFE6] rounded-lg transition-colors focus:outline-none"
-              aria-label="Ouvrir le menu"
+              className="md:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl focus:outline-none"
+              aria-label="Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -212,87 +207,64 @@ export const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#EAE5DC] bg-[#FAF7F2] px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-150 text-left">
-          <nav className="space-y-1">
+        <div className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 text-left">
+          <div className="space-y-1">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = location.pathname === link.to;
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold ${
+                    isActive
+                      ? 'bg-brand-50 text-brand-700 font-bold'
+                      : 'text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 text-brand-600" />
+                  <span>{link.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="pt-2 border-t border-slate-100 space-y-2">
             <Link
               to="/trips/create"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-bold rounded-lg bg-[#16382C] text-[#FAF7F2]"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-brand-600 text-white font-bold text-xs shadow-soft-sm"
             >
-              <Plus className="w-4 h-4 text-[#FAF7F2]" />
+              <Plus className="w-4 h-4" />
               <span>Publier un trajet</span>
             </Link>
 
-            <Link
-              to="/search"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-lg text-[#303632] hover:bg-[#EAE5DC]"
-            >
-              <Compass className="w-4 h-4 text-[#16382C]" />
-              <span>Rechercher un trajet</span>
-            </Link>
-
-            {user && (
-              <>
-                <Link
-                  to="/dashboard/driver"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-lg text-[#303632] hover:bg-[#EAE5DC]"
-                >
-                  <Car className="w-4 h-4 text-[#16382C]" />
-                  <span>Espace Conducteur</span>
-                </Link>
-                <Link
-                  to="/dashboard/passenger"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-lg text-[#303632] hover:bg-[#EAE5DC]"
-                >
-                  <CalendarCheck className="w-4 h-4 text-[#16382C]" />
-                  <span>Mes Réservations</span>
-                </Link>
-              </>
-            )}
-          </nav>
-
-          <div className="pt-3 border-t border-[#EAE5DC]">
             {user ? (
-              <div className="space-y-2">
-                <div className="flex items-center gap-3 p-2.5 rounded-lg bg-white border border-[#EAE5DC]">
-                  <img
-                    src={user.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${user.full_name}`}
-                    alt={user.full_name}
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  <div>
-                    <span className="text-xs font-bold text-[#141716] block">{user.full_name}</span>
-                    <span className="text-[10px] text-[#7E8681]">{user.email}</span>
-                  </div>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-[#FCF7F3] text-[#A14114] font-bold text-xs hover:bg-[#F8ECE3] transition-colors"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>{t('nav.logout', 'Se déconnecter')}</span>
-                </button>
-              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 font-bold text-xs"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Se déconnecter</span>
+              </button>
             ) : (
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <Link
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 px-4 text-xs font-bold text-[#303632] bg-white border border-[#EAE5DC] rounded-lg"
+                  className="py-2.5 text-center text-xs font-bold text-slate-800 bg-slate-100 rounded-xl"
                 >
-                  {t('nav.login', 'Connexion')}
+                  Connexion
                 </Link>
                 <Link
                   to="/register"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 px-4 text-xs font-bold text-[#FAF7F2] bg-[#16382C] rounded-lg shadow-fine"
+                  className="py-2.5 text-center text-xs font-bold text-slate-900 bg-slate-200 rounded-xl"
                 >
-                  {t('nav.register', "S'inscrire")}
+                  S'inscrire
                 </Link>
               </div>
             )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../services/api';
 import { Trip } from '../types';
@@ -9,18 +9,20 @@ import {
   Clock,
   MapPin,
   Car,
-  Wind,
   ShieldCheck,
   Sparkles,
   Coffee,
   MessageCircle,
   AlertCircle,
-  Check,
+  CheckCircle2,
   ArrowRight,
   UserCheck,
-  Fuel,
-  Info,
+  Star,
+  Users,
+  ChevronLeft,
 } from 'lucide-react';
+import { PriceBreakdown } from '../components/PriceBreakdown';
+import { RestStopAlert } from '../components/RestStopAlert';
 
 export const TripDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -80,28 +82,25 @@ export const TripDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="max-w-5xl mx-auto px-4 py-16">
-        <div className="h-96 rounded-2xl bg-white border border-[#EAE5DC] p-8 animate-pulse space-y-4">
-          <div className="h-6 bg-[#F4EFE6] rounded w-1/3" />
-          <div className="h-4 bg-[#F4EFE6] rounded w-1/2" />
-          <div className="h-32 bg-[#F4EFE6] rounded" />
-        </div>
+      <div className="max-w-6xl mx-auto px-4 py-16">
+        <div className="h-96 rounded-3xl bg-white border border-slate-200 p-8 animate-pulse space-y-4" />
       </div>
     );
   }
 
   if (error || !trip) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-16 text-center space-y-4">
-        <div className="w-12 h-12 rounded-lg bg-[#FCF7F3] text-[#A14114] flex items-center justify-center mx-auto border border-[#F0D5C3]">
-          <AlertCircle className="w-6 h-6" />
+      <div className="max-w-xl mx-auto px-4 py-20 text-center space-y-4">
+        <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-200">
+          <AlertCircle className="w-7 h-7" />
         </div>
-        <h2 className="text-xl font-bold text-[#141716]">{error || 'Trajet introuvable'}</h2>
-        <p className="text-xs text-[#5A625D]">Ce trajet n'existe plus ou a été annulé par son conducteur.</p>
+        <h2 className="text-xl font-black text-slate-900">{error || 'Trajet introuvable'}</h2>
+        <p className="text-xs text-slate-500">Ce trajet n'est plus disponible ou a été annulé par le conducteur.</p>
         <button
           onClick={() => navigate('/search')}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#16382C] text-[#FAF7F2] text-xs font-bold hover:bg-[#0F281F] transition-colors shadow-fine"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white text-xs font-bold"
         >
+          <ChevronLeft className="w-4 h-4" />
           <span>Retourner aux recherches</span>
         </button>
       </div>
@@ -127,49 +126,43 @@ export const TripDetailPage: React.FC = () => {
     minute: '2-digit',
   });
 
-  // Accurate monetary arithmetic
-  const basePricePerSeat = trip.base_seat_price;
-  const commissionPerSeat = Math.round(basePricePerSeat * 0.15);
-  const standardPricePerSeat = basePricePerSeat + commissionPerSeat;
-  const comfortFeePerSeat = seatType === 'comfort' ? Math.round(basePricePerSeat * 0.30) : 0;
-  const finalPricePerSeat = standardPricePerSeat + comfortFeePerSeat;
-  const totalDue = finalPricePerSeat * seatCount;
+  const hours = Math.floor(trip.estimated_duration_minutes / 60);
+  const minutes = trip.estimated_duration_minutes % 60;
+  const durationStr = `${hours}h ${minutes > 0 ? minutes + 'm' : ''}`;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
       {/* 1. Page Header Summary */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#EAE5DC]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#16382C] bg-[#E2EDE6] px-2.5 py-0.5 rounded border border-[#C4DBCD]">
-              Trajet Certifié Inter-Wilayas
-            </span>
-            <span className="text-xs text-[#C8BEAD]">•</span>
-            <span className="text-xs font-medium text-[#7E8681]">
-              Publié le {new Date(trip.created_at).toLocaleDateString()}
-            </span>
-          </div>
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-900 mb-2 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>Retour</span>
+          </button>
 
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#141716] tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
             <span>{trip.origin_city}</span>
-            <ArrowRight className="w-5 h-5 text-[#16382C] flex-shrink-0" />
+            <ArrowRight className="w-5 h-5 text-brand-600 flex-shrink-0" />
             <span>{trip.destination_city}</span>
           </h1>
 
-          <p className="text-xs sm:text-sm text-[#5A625D] mt-1 flex items-center gap-2 flex-wrap">
-            <Calendar className="w-4 h-4 text-[#16382C] inline" />
-            <span className="capitalize">{departureDateFormatted}</span>
+          <p className="text-xs sm:text-sm text-slate-600 mt-1 flex items-center gap-2 flex-wrap">
+            <Calendar className="w-4 h-4 text-brand-600 inline" />
+            <span className="capitalize font-semibold">{departureDateFormatted}</span>
             <span>•</span>
             <span>Départ à <strong>{departureTimeFormatted}</strong></span>
             <span>•</span>
-            <span>{trip.distance_km} km ({Math.floor(trip.estimated_duration_minutes / 60)}h{trip.estimated_duration_minutes % 60 > 0 ? ` ${trip.estimated_duration_minutes % 60}m` : ''})</span>
+            <span>{trip.distance_km} km ({durationStr})</span>
           </p>
         </div>
 
-        {/* Action button if already driver */}
+        {/* Status / Driver info */}
         {isDriver && (
-          <div className="self-start sm:self-auto px-3.5 py-2 rounded-lg bg-[#E2EDE6] border border-[#C4DBCD] text-[#16382C] text-xs font-bold flex items-center gap-2">
-            <UserCheck className="w-4 h-4 text-[#16382C]" />
+          <div className="self-start sm:self-auto px-4 py-2 rounded-full bg-brand-50 border border-brand-200 text-brand-800 text-xs font-bold flex items-center gap-2">
+            <UserCheck className="w-4 h-4 text-brand-600" />
             <span>Vous êtes le conducteur de ce trajet</span>
           </div>
         )}
@@ -177,46 +170,44 @@ export const TripDetailPage: React.FC = () => {
 
       {/* 2. Main Columns Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column (7 cols): Route Timeline, Stops, Driver & Vehicle */}
+        {/* Left Column (7 cols): Route Timeline, Rest Stop, Driver & Vehicle */}
         <div className="lg:col-span-7 space-y-6">
           {/* Section: Route Itinerary Timeline */}
-          <div className="bg-white rounded-2xl border border-[#EAE5DC] p-6 sm:p-8 shadow-fine space-y-6">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#7E8681] border-b border-[#F4EFE6] pb-3 flex items-center justify-between">
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-soft-sm space-y-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-3 flex items-center justify-between">
               <span>Itinéraire & Points de Prise en Charge</span>
-              <span className="text-xs font-semibold text-[#16382C] lowercase">
-                {trip.distance_km} kilomètres
-              </span>
+              <span className="text-xs font-bold text-brand-700">{trip.distance_km} km</span>
             </h2>
 
             {/* Timeline */}
-            <div className="relative pl-8 border-l-2 border-[#16382C]/30 ml-3 space-y-8">
+            <div className="relative pl-8 border-l-2 border-slate-200 ml-3 space-y-8">
               {/* Point 1: Departure */}
               <div className="relative">
-                <div className="absolute -left-[41px] top-0.5 w-5 h-5 rounded-full bg-[#16382C] ring-4 ring-[#E2EDE6] flex items-center justify-center text-white text-[10px] font-bold">
+                <div className="absolute -left-[41px] top-0.5 w-5 h-5 rounded-full bg-brand-600 ring-4 ring-brand-100 flex items-center justify-center text-white text-[10px] font-black">
                   D
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-extrabold text-[#141716] tabular-nums">
+                    <span className="text-base font-black text-slate-900 tabular-nums">
                       {departureTimeFormatted}
                     </span>
-                    <span className="text-[10px] font-bold text-[#16382C] uppercase tracking-wider bg-[#E2EDE6] px-2 py-0.5 rounded border border-[#C4DBCD]">
-                      Point de départ
+                    <span className="text-[10px] font-bold text-brand-700 uppercase tracking-wider bg-brand-50 px-2 py-0.5 rounded-full border border-brand-200">
+                      Départ
                     </span>
                   </div>
-                  <h3 className="text-base font-bold text-[#141716] mt-1">
+                  <h3 className="text-base font-bold text-slate-900 mt-1">
                     {trip.origin_city}{' '}
-                    <span className="text-xs font-normal text-[#7E8681]">
+                    <span className="text-xs font-normal text-slate-400">
                       (Wilaya de {trip.origin_wilaya_name})
                     </span>
                   </h3>
-                  <p className="text-xs text-[#5A625D] mt-0.5 bg-[#FAF7F2] p-2.5 rounded-lg border border-[#EAE5DC]">
+                  <p className="text-xs text-slate-600 mt-1 bg-slate-50 p-3 rounded-xl border border-slate-200">
                     📍 {trip.origin_address}
                   </p>
                 </div>
               </div>
 
-              {/* Point 2: Intermediate Stops (including Mandatory Rest Stop > 300km) */}
+              {/* Point 2: Stops & Mandatory Rest Stop */}
               {trip.stops && trip.stops.length > 0 && (
                 <div className="space-y-6">
                   {trip.stops.map((stop, idx) => (
@@ -224,8 +215,8 @@ export const TripDetailPage: React.FC = () => {
                       <div
                         className={`absolute -left-[41px] top-0.5 w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold ${
                           stop.is_mandatory_rest
-                            ? 'bg-[#A14114] ring-4 ring-[#F8ECE3]'
-                            : 'bg-[#7E8681] ring-4 ring-[#F4EFE6]'
+                            ? 'bg-amber-600 ring-4 ring-amber-100'
+                            : 'bg-slate-400 ring-4 ring-slate-100'
                         }`}
                       >
                         {stop.is_mandatory_rest ? '☕' : idx + 1}
@@ -235,274 +226,242 @@ export const TripDetailPage: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <span
                             className={`text-xs font-bold ${
-                              stop.is_mandatory_rest ? 'text-[#A14114]' : 'text-[#303632]'
+                              stop.is_mandatory_rest ? 'text-amber-800' : 'text-slate-800'
                             }`}
                           >
                             {stop.is_mandatory_rest
                               ? 'Pause de Sécurité Obligatoire (15 minutes)'
-                              : `Étape intermédiaire #${stop.stop_order}`}
+                              : `Étape #${stop.stop_order}`}
                           </span>
                           {stop.is_mandatory_rest && (
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#F8ECE3] text-[#A14114] border border-[#F0D5C3]">
-                              Règle &gt; 300 km
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-200">
+                              Règle Sécurité &gt; 300 km
                             </span>
                           )}
                         </div>
-
-                        <p className="text-sm font-semibold text-[#141716]">
-                          {stop.location_name} ({stop.city})
-                        </p>
-
-                        {stop.is_mandatory_rest && (
-                          <p className="text-xs text-[#823414] bg-[#FCF7F3] p-2.5 rounded-lg border border-[#F0D5C3] leading-relaxed">
-                            Arrêt obligatoire au point médian en aire autoroutière Naftal pour le repos du conducteur et la sécurité de tous les passagers.
-                          </p>
-                        )}
+                        <p className="text-xs text-slate-700 font-semibold">{stop.location_name}</p>
+                        <p className="text-xs text-slate-500">{stop.notes}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Point 3: Destination */}
+              {/* Point 3: Arrival */}
               <div className="relative">
-                <div className="absolute -left-[41px] top-0.5 w-5 h-5 rounded-full bg-[#141716] ring-4 ring-[#EAE5DC] flex items-center justify-center text-white text-[10px] font-bold">
+                <div className="absolute -left-[41px] top-0.5 w-5 h-5 rounded-full bg-rose-500 ring-4 ring-rose-100 flex items-center justify-center text-white text-[10px] font-black">
                   A
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-extrabold text-[#141716] tabular-nums">
+                    <span className="text-base font-black text-slate-900 tabular-nums">
                       {arrivalTimeFormatted}
                     </span>
-                    <span className="text-[10px] font-bold text-[#7E8681] uppercase tracking-wider bg-[#F4EFE6] px-2 py-0.5 rounded border border-[#EAE5DC]">
-                      Arrivée prévue
+                    <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                      Arrivée
                     </span>
                   </div>
-                  <h3 className="text-base font-bold text-[#141716] mt-1">
+                  <h3 className="text-base font-bold text-slate-900 mt-1">
                     {trip.destination_city}{' '}
-                    <span className="text-xs font-normal text-[#7E8681]">
+                    <span className="text-xs font-normal text-slate-400">
                       (Wilaya de {trip.destination_wilaya_name})
                     </span>
                   </h3>
-                  <p className="text-xs text-[#5A625D] mt-0.5 bg-[#FAF7F2] p-2.5 rounded-lg border border-[#EAE5DC]">
-                    🏁 {trip.destination_address}
+                  <p className="text-xs text-slate-600 mt-1 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    📍 {trip.destination_address}
                   </p>
                 </div>
               </div>
             </div>
-
-            {/* Fuel Estimation Advisory Box (GL 2025/2026 Rubric) */}
-            <div className="p-4 bg-[#E2EDE6] rounded-xl border border-[#C4DBCD] space-y-2 text-xs text-[#16382C]">
-              <div className="flex items-center justify-between">
-                <span className="font-bold flex items-center gap-1.5 text-[#16382C]">
-                  <Fuel className="w-4 h-4 text-[#16382C]" />
-                  Transparence Carburant (Barème Officiel Naftal)
-                </span>
-                <span className="text-[10px] font-bold text-[#16382C] bg-white px-2 py-0.5 rounded border border-[#C4DBCD]">
-                  8L / 100km
-                </span>
-              </div>
-              <p className="text-[#276243] leading-relaxed">
-                Pour ce parcours de <strong>{trip.distance_km} km</strong>, la consommation estimée est d'environ <strong>{Math.round(trip.distance_km * 8 / 100 * 10) / 10} Litres</strong>.
-                Le coût estimé de carburant est de <strong>{trip.fuel_estimate_cost ? `${trip.fuel_estimate_cost} DA` : `${Math.round((trip.distance_km * 8 / 100) * 45.62)} DA`}</strong>, soit une part indicative de <strong>{trip.suggested_seat_price ? `${trip.suggested_seat_price} DA` : `${Math.round(((trip.distance_km * 8 / 100) * 45.62) / trip.total_seats)} DA`}</strong> par siège.
-              </p>
-            </div>
           </div>
 
-          {/* Section: Driver & Vehicle Card */}
-          <div className="bg-white rounded-2xl border border-[#EAE5DC] p-6 sm:p-8 shadow-fine space-y-5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#7E8681] border-b border-[#F4EFE6] pb-3 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#16382C]" />
-              Conducteur & Véhicule
-            </h2>
+          {/* Mandatory Rest Stop Alert Banner shown prominently BEFORE booking */}
+          {trip.has_mandatory_rest && (
+            <RestStopAlert distanceKm={trip.distance_km} />
+          )}
+
+          {/* Section: Driver Profile */}
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-soft-sm space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-3">
+              Conducteur Certifié
+            </h3>
 
             <div className="flex items-start gap-4">
               <img
-                src={trip.driver?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${trip.driver?.full_name || 'DZ'}`}
+                src={trip.driver?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${trip.driver?.full_name}`}
                 alt={trip.driver?.full_name}
-                className="w-14 h-14 rounded-full border border-[#EAE5DC] object-cover flex-shrink-0"
+                className="w-14 h-14 rounded-2xl object-cover border border-slate-200 shadow-soft-xs"
               />
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-base font-bold text-[#141716]">{trip.driver?.full_name}</h3>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#E2EDE6] text-[#16382C] border border-[#C4DBCD]">
-                    Membre Certifié
-                  </span>
+
+              <div className="flex-1 space-y-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-base font-bold text-slate-900">{trip.driver?.full_name}</h4>
+                  <div className="flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                    <span>{trip.driver?.rating_avg || 4.9}</span>
+                    <span className="text-slate-400">({trip.driver?.rating_count || 12} avis)</span>
+                  </div>
                 </div>
-                <p className="text-xs text-[#7E8681]">
-                  Réside à {trip.driver?.wilaya_name || 'Algérie'} • {trip.driver?.trips_completed_count || 14} trajets réalisés
+
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {trip.driver?.bio || 'Conducteur vérifié de la communauté DZ-CarPool.'}
                 </p>
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#16382C]">
-                  <span>★ {trip.driver?.rating_avg || 4.9}</span>
-                  <span className="text-[#ADB3AF] font-normal">({trip.driver?.rating_count || 12} avis)</span>
+
+                <div className="flex items-center gap-4 text-xs text-slate-500 pt-2">
+                  <span>Wilaya : <strong className="text-slate-700">{trip.driver?.wilaya_name || 'Alger'}</strong></span>
+                  <span>•</span>
+                  <span>Trajets effectués : <strong className="text-slate-700">{trip.driver?.trips_completed_count || 8}</strong></span>
                 </div>
               </div>
             </div>
+          </div>
 
-            {trip.driver?.bio && (
-              <p className="text-xs text-[#5A625D] italic bg-[#FAF7F2] p-3 rounded-xl border border-[#EAE5DC]">
-                "{trip.driver.bio}"
-              </p>
-            )}
+          {/* Section: Vehicle Details */}
+          {trip.vehicle && (
+            <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-soft-sm space-y-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-3">
+                Véhicule Utilisé
+              </h3>
 
-            {/* Vehicle info block */}
-            {trip.vehicle && (
-              <div className="p-3.5 bg-[#FAF7F2] rounded-xl border border-[#EAE5DC] flex items-center justify-between text-xs text-[#141716]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-white border border-[#EAE5DC] flex items-center justify-center text-[#16382C] shadow-fine">
-                    <Car className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="font-bold block text-[#141716]">
-                      {trip.vehicle.make} {trip.vehicle.model} ({trip.vehicle.year})
-                    </span>
-                    <span className="text-[11px] text-[#7E8681]">
-                      Couleur : {trip.vehicle.color}
-                    </span>
-                  </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+                <div>
+                  <span className="text-slate-400 block">Modèle</span>
+                  <span className="font-bold text-slate-900">{trip.vehicle.make} {trip.vehicle.model}</span>
                 </div>
-
-                {trip.vehicle.air_conditioning && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#E2EDE6] text-[#16382C] font-semibold border border-[#C4DBCD] text-[11px]">
-                    <Wind className="w-3.5 h-3.5 text-[#16382C]" />
-                    Climatisé
-                  </span>
-                )}
+                <div>
+                  <span className="text-slate-400 block">Année & Couleur</span>
+                  <span className="font-bold text-slate-900">{trip.vehicle.year} • {trip.vehicle.color}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block">Climatisation</span>
+                  <span className="font-bold text-brand-700">{trip.vehicle.air_conditioning ? 'Oui (Climatisé)' : 'Standard'}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block">Immatriculation</span>
+                  <span className="font-mono text-slate-700">{trip.vehicle.license_plate}</span>
+                </div>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Trip Chat Action */}
-            {user && (
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => navigate(`/trips/${trip.id}/chat`)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] hover:bg-[#EAE5DC] text-[#141716] text-xs font-bold transition-all shadow-fine"
-                >
-                  <MessageCircle className="w-4 h-4 text-[#16382C]" />
-                  <span>Messagerie de coordination du trajet</span>
-                </button>
-              </div>
-            )}
+          {/* Link to coordination chat */}
+          <div className="p-4 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2.5 text-slate-700 font-semibold">
+              <MessageCircle className="w-4 h-4 text-brand-600" />
+              <span>Messagerie de coordination de trajet disponible pour les membres confirmés.</span>
+            </div>
+            <Link
+              to={`/trips/${trip.id}/chat`}
+              className="text-brand-700 hover:text-brand-800 font-bold hover:underline"
+            >
+              Accéder au fil
+            </Link>
           </div>
         </div>
 
-        {/* Right Column (5 cols): Sticky Booking & Transparent Pricing Card */}
-        <div className="lg:col-span-5 space-y-6 sticky top-24">
-          <div className="bg-white rounded-2xl border border-[#EAE5DC] p-6 sm:p-7 shadow-fine space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#F4EFE6]">
-              <h3 className="text-base font-bold text-[#141716] tracking-tight">
-                Réserver votre place
-              </h3>
-              <div className="text-right">
-                <span className="text-xs font-bold text-[#16382C]">
-                  {trip.available_seats > 1 ? (
-                    `${trip.available_seats} places libres`
-                  ) : trip.available_seats === 1 ? (
-                    <span className="text-[#A14114] font-bold">Dernière place disponible !</span>
-                  ) : (
-                    <span className="text-[#A14114]">Complet</span>
-                  )}
-                </span>
+        {/* Right Column (5 cols): Sticky Booking Form & Price Breakdown */}
+        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-soft-md space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Réservation de Place
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200">
+                <Users className="w-3.5 h-3.5" />
+                <span>{trip.available_seats} place{trip.available_seats > 1 ? 's' : ''} disponible{trip.available_seats > 1 ? 's' : ''}</span>
+              </span>
+            </div>
+
+            {/* Seat Count Selector */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-800">
+                Nombre de places souhaitées
+              </label>
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, 4].filter((n) => n <= trip.available_seats).map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setSeatCount(num)}
+                    className={`flex-1 py-2.5 rounded-xl text-xs font-bold border transition-all ${
+                      seatCount === num
+                        ? 'bg-brand-600 text-white border-brand-600 shadow-soft-xs'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                    }`}
+                  >
+                    {num} place{num > 1 ? 's' : ''}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Seat count selector */}
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">
-                Nombre de places souhaitées
-              </label>
-              <select
-                value={seatCount}
-                onChange={(e) => setSeatCount(parseInt(e.target.value, 10))}
-                className="w-full rounded-xl border border-[#EAE5DC] bg-[#FAF7F2] py-2.5 px-3 text-xs font-semibold text-[#141716] focus:outline-none focus:border-[#16382C] focus:bg-white transition-colors cursor-pointer"
-              >
-                {[...Array(Math.min(trip.available_seats, 4))].map((_, i) => (
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1} place{i + 1 > 1 ? 's' : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Trajet Confort (+30%) option */}
+            {/* Comfort Option Selection (if enabled) */}
             {trip.comfort_enabled && (
-              <div className="p-3.5 bg-[#FAF7F2] rounded-xl border border-[#EAE5DC] space-y-2">
-                <label className="flex items-center justify-between cursor-pointer">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#D96B27]" />
-                    <span className="text-xs font-bold text-[#141716]">
-                      Option Trajet Confort (+30%)
-                    </span>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={seatType === 'comfort'}
-                    onChange={(e) => setSeatType(e.target.checked ? 'comfort' : 'standard')}
-                    className="w-4 h-4 text-[#16382C] rounded focus:ring-[#16382C]"
-                  />
+              <div className="space-y-2 pt-2">
+                <label className="block text-xs font-bold text-slate-800 flex items-center justify-between">
+                  <span>Type de siège</span>
+                  <span className="text-purple-700 font-bold text-[11px]">+30% sur la base</span>
                 </label>
-                <p className="text-[11px] text-[#5A625D] leading-relaxed">
-                  Siège passager avant garanti sans passager au milieu à l’arrière. Supplément fixe de 30% calculé sur le prix de base net conducteur.
-                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSeatType('standard')}
+                    className={`py-3 px-3 rounded-xl border text-xs font-bold text-left transition-all ${
+                      seatType === 'standard'
+                        ? 'bg-brand-50 border-brand-300 text-brand-900 shadow-soft-xs'
+                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <span className="block font-bold">Standard</span>
+                    <span className="text-[10px] text-slate-500">Places arrière confort</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSeatType('comfort')}
+                    className={`py-3 px-3 rounded-xl border text-xs font-bold text-left transition-all ${
+                      seatType === 'comfort'
+                        ? 'bg-purple-50 border-purple-300 text-purple-900 shadow-soft-xs'
+                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <span className="block font-bold flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-purple-600" />
+                      <span>Trajet Confort</span>
+                    </span>
+                    <span className="text-[10px] text-purple-700">Place avant garantie</span>
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* Transparent Pricing Breakdown */}
-            <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#EAE5DC] space-y-2.5 text-xs text-[#5A625D]">
-              <div className="flex justify-between items-center">
-                <span>Prix de base par siège (Net conducteur) :</span>
-                <span className="font-semibold text-[#141716] tabular-nums">{basePricePerSeat} DA</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Commission plateforme (15%) :</span>
-                <span className="font-semibold text-[#141716] tabular-nums">+{commissionPerSeat} DA</span>
-              </div>
-              {seatType === 'comfort' && (
-                <div className="flex justify-between items-center text-[#A14114] font-semibold">
-                  <span>Supplément Trajet Confort (+30%) :</span>
-                  <span className="tabular-nums">+{comfortFeePerSeat} DA</span>
-                </div>
-              )}
-              {seatCount > 1 && (
-                <div className="flex justify-between items-center pt-1 border-t border-[#EAE5DC]">
-                  <span>Nombre de passagers :</span>
-                  <span className="font-bold text-[#141716]">× {seatCount}</span>
-                </div>
-              )}
-
-              <div className="pt-2 border-t border-[#EAE5DC] flex justify-between items-baseline">
-                <div>
-                  <span className="text-xs font-bold text-[#141716] block">
-                    Total passager à régler :
-                  </span>
-                  <span className="text-[10px] text-[#7E8681]">TTC, aucun frais additionnel</span>
-                </div>
-                <span className="text-2xl font-black text-[#16382C] tabular-nums">
-                  {totalDue} DA
-                </span>
-              </div>
-            </div>
+            {/* Price Breakdown Component */}
+            <PriceBreakdown
+              basePrice={trip.base_seat_price}
+              seatCount={seatCount}
+              seatType={seatType}
+              showDriverPayout={true}
+            />
 
             {/* Error or Success notification */}
             {bookingError && (
-              <div className="p-3 bg-[#FCF7F3] rounded-lg border border-[#F0D5C3] text-xs text-[#A14114]">
-                {bookingError}
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-semibold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{bookingError}</span>
               </div>
             )}
 
             {bookingSuccess ? (
-              <div className="p-4 bg-[#E2EDE6] rounded-xl border border-[#C4DBCD] text-center space-y-2">
-                <div className="w-8 h-8 rounded-full bg-[#16382C] text-[#FAF7F2] flex items-center justify-center mx-auto">
-                  <Check className="w-4 h-4" />
-                </div>
-                <h4 className="text-sm font-bold text-[#16382C]">Demande envoyée avec succès !</h4>
-                <p className="text-xs text-[#276243] leading-relaxed">
-                  Le conducteur examine votre demande. Vos places sont réservées de façon atomique dès son approbation.
+              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-2">
+                <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
+                <h4 className="text-sm font-bold text-emerald-900">Demande de réservation envoyée !</h4>
+                <p className="text-xs text-emerald-700 leading-relaxed">
+                  Le conducteur a été notifié et doit approuver manuellement votre demande. Vos places sont pré-réservées.
                 </p>
                 <button
+                  type="button"
                   onClick={() => navigate('/dashboard/passenger')}
-                  className="w-full mt-2 py-2 px-4 rounded-lg bg-[#16382C] text-[#FAF7F2] font-bold text-xs"
+                  className="mt-2 w-full py-2 px-4 rounded-xl bg-emerald-700 text-white font-bold text-xs"
                 >
                   Voir mes réservations
                 </button>
@@ -511,22 +470,22 @@ export const TripDetailPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleBooking}
-                disabled={bookingLoading || trip.available_seats < seatCount}
-                className="w-full py-3.5 px-6 rounded-xl bg-[#16382C] hover:bg-[#0F281F] disabled:bg-[#D6D9D7] text-[#FAF7F2] font-bold text-xs shadow-fine active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                disabled={bookingLoading || trip.available_seats === 0}
+                className="w-full py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-black text-sm shadow-soft-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"
               >
                 {bookingLoading ? (
-                  <span>Transmission sécurisée...</span>
+                  <span>Transmission de la demande...</span>
                 ) : (
                   <>
-                    <ShieldCheck className="w-4 h-4" />
-                    <span>Demander la réservation ({totalDue} DA)</span>
+                    <span>Demander à réserver ({seatCount} place{seatCount > 1 ? 's' : ''})</span>
+                    <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
             )}
 
-            <p className="text-[11px] text-[#7E8681] text-center">
-              🔒 Réservation avec validation manuelle • Paiement sécurisé à bord
+            <p className="text-[11px] text-slate-400 text-center leading-relaxed">
+              Conformément aux règles DZ-CarPool, le conducteur dispose de 24h pour approuver votre demande. Aucun débit immédiat.
             </p>
           </div>
         </div>

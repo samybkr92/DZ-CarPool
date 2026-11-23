@@ -5,12 +5,13 @@ import { useAuth } from '../context/AuthContext';
 import {
   Lock,
   Mail,
-  ShieldCheck,
+  Car,
   Sparkles,
   ArrowRight,
   Eye,
   EyeOff,
-  UserCheck,
+  AlertCircle,
+  ShieldCheck,
 } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
@@ -66,230 +67,152 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[88vh] flex items-stretch bg-[#FAF7F2]">
-      {/* Left Column: Algerian Editorial Atmosphere (Desktop) */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-[#16382C] text-[#FAF7F2] flex-col justify-between p-12 overflow-hidden text-left">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=80"
-            alt="Autoroute en Algérie"
-            className="w-full h-full object-cover object-center opacity-30 mix-blend-luminosity scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0F281F] via-[#16382C]/80 to-[#16382C]/60" />
-        </div>
-
-        {/* Top Brand Pill */}
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-[#FAF7F2] text-[#16382C] flex items-center justify-center shadow-fine font-serif font-bold italic text-lg">
-            DZ
+    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <div className="max-w-md w-full space-y-7 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-soft-sm text-left">
+        {/* Brand Header */}
+        <div className="text-center space-y-2">
+          <div className="w-12 h-12 rounded-2xl bg-brand-600 text-white flex items-center justify-center mx-auto shadow-soft-sm">
+            <Car className="w-6 h-6" />
           </div>
-          <div>
-            <span className="text-xl font-bold tracking-tight text-[#FAF7F2]">
-              DZ-CarPool
-            </span>
-            <p className="text-[11px] text-[#C4DBCD] font-medium">Plateforme Nationale de Mobilité</p>
-          </div>
-        </div>
-
-        {/* Center Quote / Travel Manifesto */}
-        <div className="relative z-10 space-y-6 max-w-lg">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-[#C4DBCD] border border-white/15">
-            <ShieldCheck className="w-4 h-4 text-[#97C0A7]" />
-            <span>Voyages Inter-Wilayas Certifiés</span>
-          </div>
-
-          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
-            La route algérienne partagée en toute confiance.
-          </h2>
-
-          <p className="text-sm text-[#C4DBCD] leading-relaxed">
-            Reliez Alger, Oran, Constantine, Sétif et le Sud dans le respect des règles : approbation manuelle par le conducteur, commission transparente de 15% et halte de repos obligatoire de 15 minutes sur les trajets de plus de 300 km.
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            Connexion à DZ-CarPool
+          </h1>
+          <p className="text-xs text-slate-500">
+            Accédez à vos trajets inter-wilayas et vos réservations.
           </p>
+        </div>
 
-          <div className="grid grid-cols-3 gap-3 pt-4 border-t border-white/10 text-xs">
-            <div className="space-y-1">
-              <span className="font-extrabold text-[#FAF7F2] text-base">58</span>
-              <p className="text-[11px] text-[#97C0A7] font-medium">Wilayas couvertes</p>
+        {/* Active Session Card if user is already logged in */}
+        {user && (
+          <div className="p-4 rounded-2xl bg-brand-50 border border-brand-200 space-y-2 text-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-slate-600">Session active :</span>
+              <span className="font-bold text-brand-900">{user.full_name}</span>
             </div>
-            <div className="space-y-1">
-              <span className="font-extrabold text-[#97C0A7] text-base">100%</span>
-              <p className="text-[11px] text-[#C4DBCD] font-medium">Net conducteur</p>
+            <div className="flex gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => navigate(user.role === 'passenger' ? '/dashboard/passenger' : '/dashboard/driver')}
+                className="flex-1 py-2 px-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold transition-colors"
+              >
+                Accéder à mon espace
+              </button>
+              <button
+                type="button"
+                onClick={logout}
+                className="py-2 px-3 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-700 font-bold transition-colors"
+              >
+                Déconnexion
+              </button>
             </div>
-            <div className="space-y-1">
-              <span className="font-extrabold text-[#FAF7F2] text-base">15 min</span>
-              <p className="text-[11px] text-[#97C0A7] font-medium">Pause sécurité &gt;300km</p>
-            </div>
+          </div>
+        )}
+
+        {/* 1-Click Fast Evaluator Demo Access */}
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-brand-600" />
+              <span>Accès Démo Immédiat (1 Clic)</span>
+            </span>
+            <span className="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full border border-brand-200">
+              Évaluation GL
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={handleQuickDriver}
+              disabled={loading}
+              className="py-2.5 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-left transition-all shadow-soft-xs"
+            >
+              <span className="text-xs font-bold text-slate-900 block">Amine Benali</span>
+              <span className="text-[10px] font-bold text-brand-700">Conducteur</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleQuickPassenger}
+              disabled={loading}
+              className="py-2.5 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-left transition-all shadow-soft-xs"
+            >
+              <span className="text-xs font-bold text-slate-900 block">Amina Mansouri</span>
+              <span className="text-[10px] font-bold text-amber-700">Passagère</span>
+            </button>
           </div>
         </div>
 
-        {/* Bottom Tag */}
-        <div className="relative z-10 text-xs text-[#97C0A7]">
-          Projet d'Ingénierie Logicielle GL 2025/2026 • Algérie
-        </div>
-      </div>
-
-      {/* Right Column: Clean, Elegant Auth Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12">
-        <div className="max-w-md w-full space-y-7">
-          {/* Form Header */}
-          <div className="space-y-2 text-left">
-            <div className="lg:hidden w-10 h-10 rounded-lg bg-[#16382C] text-[#FAF7F2] flex items-center justify-center mb-3 font-serif font-bold italic text-base">
-              DZ
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#141716] tracking-tight">
-              Bon retour parmi nous
-            </h1>
-            <p className="text-xs sm:text-sm text-[#5A625D]">
-              Connectez-vous pour gérer vos trajets ou vos réservations en cours.
-            </p>
-          </div>
-
-          {/* Active Session Notification if already logged in */}
-          {user && (
-            <div className="p-4 rounded-xl bg-white border border-[#EAE5DC] shadow-xs space-y-2 text-left">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-[#5A625D]">Actuellement connecté :</span>
-                <span className="font-bold text-[#16382C]">{user.full_name}</span>
-              </div>
-              <div className="flex gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => navigate(user.role === 'passenger' ? '/dashboard/passenger' : '/dashboard/driver')}
-                  className="flex-1 py-2 px-3 rounded-lg bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] text-xs font-bold transition-colors"
-                >
-                  Aller au tableau de bord
-                </button>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="py-2 px-3 rounded-lg border border-[#EAE5DC] bg-[#FAF7F2] hover:bg-[#FCF7F3] text-[#A14114] text-xs font-bold transition-colors"
-                >
-                  Déconnexion
-                </button>
-              </div>
+        {/* Login Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{error}</span>
             </div>
           )}
 
-          {/* Quick Demo Access - Single Click Test Credentials */}
-          <div className="bg-[#E2EDE6] border border-[#C4DBCD] rounded-xl p-4 space-y-3 text-left">
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-slate-700">Adresse email</label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="nom@exemple.dz"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#16382C] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#16382C]" />
-                Accès Démo Immédiat (1 Clic)
-              </span>
-              <span className="text-[10px] font-bold text-[#16382C] bg-white px-2 py-0.5 rounded border border-[#C4DBCD]">
-                Sans saisie
-              </span>
+              <label className="block text-xs font-bold text-slate-700">Mot de passe</label>
+              <span className="text-[11px] text-slate-400 font-medium">Test : password123</span>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="relative">
+              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-brand-600"
+                required
+              />
               <button
                 type="button"
-                onClick={handleQuickDriver}
-                disabled={loading}
-                className="py-2.5 px-3 rounded-lg bg-white hover:bg-[#FAF7F2] border border-[#C4DBCD] text-left transition-all shadow-fine group"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
               >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#141716]">Amine Benali</span>
-                  <span className="text-[10px] font-bold text-[#16382C] bg-[#E2EDE6] px-1.5 py-0.5 rounded">
-                    Conducteur
-                  </span>
-                </div>
-                <p className="text-[10px] text-[#7E8681] mt-0.5">Alger → Oran (Golf 8)</p>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleQuickPassenger}
-                disabled={loading}
-                className="py-2.5 px-3 rounded-lg bg-white hover:bg-[#FAF7F2] border border-[#C4DBCD] text-left transition-all shadow-fine group"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#141716]">Amina Mansouri</span>
-                  <span className="text-[10px] font-bold text-[#A14114] bg-[#F8ECE3] px-1.5 py-0.5 rounded">
-                    Passagère
-                  </span>
-                </div>
-                <p className="text-[10px] text-[#7E8681] mt-0.5">Réservations actives</p>
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 text-left">
-            {error && (
-              <div className="p-3 bg-[#FCF7F3] border border-[#F0D5C3] rounded-lg text-xs text-[#A14114] font-medium">
-                {error}
-              </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-soft-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <span>Connexion en cours...</span>
+            ) : (
+              <>
+                <span>Se connecter</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </>
             )}
+          </button>
+        </form>
 
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#303632]">
-                Adresse email
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-[#7E8681] absolute left-3 top-3" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="nom@exemple.dz"
-                  className="w-full rounded-xl border border-[#EAE5DC] bg-white py-2.5 pl-9 pr-3 text-xs font-medium text-[#141716] focus:outline-none focus:border-[#16382C]"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-[#303632]">
-                  Mot de passe
-                </label>
-                <span className="text-[11px] text-[#7E8681]">Test: password123</span>
-              </div>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-[#7E8681] absolute left-3 top-3" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full rounded-xl border border-[#EAE5DC] bg-white py-2.5 pl-9 pr-10 text-xs font-medium text-[#141716] focus:outline-none focus:border-[#16382C]"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-[#7E8681] hover:text-[#141716]"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 px-4 rounded-xl bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] font-bold text-xs shadow-fine active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <span>Connexion en cours...</span>
-              ) : (
-                <>
-                  <span>Se connecter</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Footer Register Link */}
-          <div className="pt-4 border-t border-[#EAE5DC] text-center text-xs text-[#5A625D]">
-            <span>Nouveau sur DZ-CarPool ? </span>
-            <Link to="/register" className="font-bold text-[#16382C] hover:underline">
-              Créer un compte membre
-            </Link>
-          </div>
+        <div className="pt-4 border-t border-slate-100 text-center text-xs text-slate-500">
+          <span>Pas encore de compte ? </span>
+          <Link to="/register" className="font-bold text-brand-600 hover:underline">
+            Créer un compte
+          </Link>
         </div>
       </div>
     </div>

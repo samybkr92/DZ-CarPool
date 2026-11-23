@@ -7,67 +7,44 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Art Direction: Premium Algerian Mobility Brand
-        // Warm ivory / stone canvas
-        ivory: {
-          50: '#FDFBF7',
-          100: '#FAF7F2',
-          200: '#F4EFE6',
-          300: '#EAE3D6',
-          400: '#DDD4C3',
-          DEFAULT: '#FAF7F2',
+        // High-Tech Modern Algerian Mobility Palette (BlaBlaCar / Uber Tier)
+        brand: {
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669', // Signature tech emerald
+          700: '#047857',
+          800: '#065F46',
+          900: '#064E3B',
+          950: '#022C22',
+          DEFAULT: '#059669',
         },
-        // Deep Algerian Atlas Forest Green (Matte, luxury, organic)
-        forest: {
-          50: '#F2F7F4',
-          100: '#E2EDE6',
-          200: '#C4DBCD',
-          300: '#97C0A7',
-          400: '#649E7C',
-          500: '#3D7E5A',
-          600: '#276243',
-          700: '#1B4D34',
-          800: '#16382C', // Signature deep forest
-          900: '#0F281F',
-          950: '#071711',
-          DEFAULT: '#16382C',
+        slate: {
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+          950: '#020617',
         },
-        // Near-black charcoal ink (No harsh blue-slate)
-        ink: {
-          50: '#F6F7F6',
-          100: '#ECEEEC',
-          200: '#D6D9D7',
-          300: '#ADB3AF',
-          400: '#7E8681',
-          500: '#5A625D',
-          600: '#434A46',
-          700: '#303632',
-          800: '#212623',
-          900: '#141716', // Primary ink
-          950: '#0B0D0C',
-          DEFAULT: '#141716',
-        },
-        // Restrained Citrus Accent (Mediterranean terracotta / clementine)
-        citrus: {
-          50: '#FCF7F3',
-          100: '#F8ECE3',
-          200: '#F0D5C3',
-          300: '#E4B497',
-          400: '#D98F66',
-          500: '#D96B27', // Signature citrus terracotta
-          600: '#C2551A',
-          700: '#A14114',
-          800: '#823414',
-          900: '#6B2D14',
-          DEFAULT: '#D96B27',
-        },
-        // Warm architectural borders & lines
-        sand: {
-          100: '#F5F1E9',
-          200: '#EAE5DC',
-          300: '#DCD5C8',
-          400: '#C8BEAD',
-          DEFAULT: '#EAE5DC',
+        accent: {
+          amber: '#F59E0B',
+          amberLight: '#FEF3C7',
+          amberDark: '#B45309',
+          blue: '#2563EB',
+          blueLight: '#EFF6FF',
+          blueDark: '#1D4ED8',
+          purple: '#7C3AED',
+          purpleLight: '#F5F3FF',
+          purpleDark: '#5B21B6',
         },
       },
       fontFamily: {
@@ -81,13 +58,6 @@ export default {
           'Noto Sans Arabic',
           'sans-serif',
         ],
-        serif: [
-          'Newsreader',
-          'Georgia',
-          'Cambria',
-          'Times New Roman',
-          'serif',
-        ],
         arabic: [
           'Noto Sans Arabic',
           'Cairo',
@@ -96,10 +66,12 @@ export default {
         ],
       },
       boxShadow: {
-        'fine': '0 1px 2px 0 rgba(20, 23, 22, 0.04)',
-        'card': '0 2px 8px -2px rgba(20, 23, 22, 0.05), 0 1px 3px -1px rgba(20, 23, 22, 0.03)',
-        'elevated': '0 12px 24px -6px rgba(20, 23, 22, 0.08), 0 4px 8px -2px rgba(20, 23, 22, 0.03)',
-        'dropdown': '0 16px 32px -8px rgba(20, 23, 22, 0.12), 0 4px 12px -2px rgba(20, 23, 22, 0.04)',
+        'soft-xs': '0 1px 2px 0 rgba(15, 23, 42, 0.05)',
+        'soft-sm': '0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.08)',
+        'soft-md': '0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06)',
+        'soft-lg': '0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04)',
+        'soft-xl': '0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04)',
+        'search': '0 12px 36px -4px rgba(15, 23, 42, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.06)',
       },
     },
   },

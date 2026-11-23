@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../services/api';
 import { Trip, Booking } from '../types';
@@ -13,16 +13,14 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
-  MessageCircle,
-  Plus,
   ArrowRight,
-  ExternalLink,
+  Plus,
+  MessageCircle,
   ShieldCheck,
   Wallet,
   Sparkles,
   AlertCircle,
-  Check,
-  X,
+  ExternalLink,
 } from 'lucide-react';
 
 export const DriverDashboardPage: React.FC = () => {
@@ -86,13 +84,12 @@ export const DriverDashboardPage: React.FC = () => {
       if (selectedTrip) {
         const updated = await api.getTripBookings(selectedTrip.id);
         setBookings(updated);
-        const refreshedTrips = await api.getMyDriverTrips();
-        setTrips(refreshedTrips);
-        const updatedCurrent = refreshedTrips.find((t) => t.id === selectedTrip.id);
-        if (updatedCurrent) setSelectedTrip(updatedCurrent);
+        // Refresh trip data to update available seats
+        const tripData = await api.getTrip(selectedTrip.id);
+        setSelectedTrip(tripData);
       }
     } catch (err: any) {
-      alert(err.message || "Erreur lors de l'approbation");
+      alert(err.message || "Impossible d'approuver la réservation");
     } finally {
       setActionLoading(null);
     }
@@ -100,151 +97,135 @@ export const DriverDashboardPage: React.FC = () => {
 
   const openRejectModal = (bookingId: number) => {
     setTargetBookingId(bookingId);
-    setRejectReason('Désolé, indisponibilité imprévue');
     setRejectModalOpen(true);
   };
 
-  const confirmReject = async () => {
+  const handleConfirmReject = async () => {
     if (!targetBookingId) return;
     setActionLoading(targetBookingId);
     try {
-      await api.rejectBooking(targetBookingId, rejectReason || undefined);
+      await api.rejectBooking(targetBookingId, rejectReason);
+      setRejectModalOpen(false);
       if (selectedTrip) {
         const updated = await api.getTripBookings(selectedTrip.id);
         setBookings(updated);
+        const tripData = await api.getTrip(selectedTrip.id);
+        setSelectedTrip(tripData);
       }
-      setRejectModalOpen(false);
-      setTargetBookingId(null);
     } catch (err: any) {
-      alert(err.message || 'Erreur lors du refus');
+      alert(err.message || 'Erreur lors du refus de la réservation');
     } finally {
       setActionLoading(null);
     }
   };
 
-  // Aggregated quick stats
-  const totalAvailableSeats = trips.reduce((acc, t) => acc + (t.available_seats || 0), 0);
-  const totalPendingBookings = bookings.filter((b) => b.status === 'pending').length;
-
-  if (authLoading) {
+  if (authLoading || loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 animate-pulse text-left">
-        <div className="h-8 w-64 bg-[#EAE5DC] rounded-lg" />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-20 bg-white rounded-xl border border-[#EAE5DC]" />
-          ))}
-        </div>
-        <div className="h-96 bg-white rounded-2xl border border-[#EAE5DC]" />
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="h-96 rounded-3xl bg-white border border-slate-200 animate-pulse p-8" />
       </div>
     );
   }
 
+  // Calculate Metrics
+  const totalTripsCount = trips.length;
+  const pendingRequestsCount = bookings.filter((b) => b.status === 'pending').length;
+  const confirmedBookingsCount = bookings.filter((b) => b.status === 'confirmed').length;
+  const estimatedNetEarnings = bookings
+    .filter((b) => b.status === 'confirmed')
+    .reduce((sum, b) => sum + (selectedTrip?.base_seat_price || 0) * b.seat_count, 0);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
-      {/* 1. Header with Stats & New Trip CTA */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-[#EAE5DC]">
+      {/* 1. Header with Publish CTA */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#16382C] bg-[#E2EDE6] px-2.5 py-0.5 rounded border border-[#C4DBCD]">
-              Espace Conducteur
+            <span className="text-[10px] font-bold uppercase tracking-wider text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full border border-brand-200">
+              Espace Conducteur Certifié
             </span>
+            <span className="text-xs text-slate-400">•</span>
+            <span className="text-xs text-slate-500 font-semibold">{user?.full_name}</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#141716] tracking-tight">
-            {t('dashboard.driver_title', 'Tableau de Bord Conducteur')}
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            Tableau de bord de vos trajets
           </h1>
-          <p className="text-xs sm:text-sm text-[#5A625D] mt-0.5">
-            Gérez vos annonces de trajets, validez les demandes de passagers et suivez vos gains nets en Dinars.
-          </p>
         </div>
 
-        <button
-          onClick={() => navigate('/trips/create')}
-          className="inline-flex items-center gap-2 py-2.5 px-5 bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] font-bold text-xs rounded-xl shadow-fine transition-all active:scale-[0.98]"
+        <Link
+          to="/trips/create"
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-soft-sm transition-all"
         >
-          <Plus className="w-4 h-4 text-[#FAF7F2]" />
-          <span>Publier un nouveau trajet</span>
-        </button>
+          <Plus className="w-4 h-4" />
+          <span>Nouveau trajet</span>
+        </Link>
       </div>
 
-      {/* 2. Key Metrics Bar */}
+      {/* 2. Key Metrics Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl border border-[#EAE5DC] p-4 shadow-fine">
-          <span className="text-[10px] font-bold text-[#7E8681] uppercase tracking-wider block">
-            Trajets Actifs
-          </span>
-          <span className="text-2xl font-black text-[#141716] tabular-nums mt-1 block">
-            {trips.length}
-          </span>
+        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-soft-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-400 font-bold uppercase tracking-wider">
+            <span>Trajets publiés</span>
+            <Car className="w-4 h-4 text-brand-600" />
+          </div>
+          <div className="text-2xl font-black text-slate-900">{totalTripsCount}</div>
+          <span className="text-[11px] text-slate-500 font-medium block">Annonces actives sur le réseau</span>
         </div>
 
-        <div className="bg-white rounded-xl border border-[#EAE5DC] p-4 shadow-fine">
-          <span className="text-[10px] font-bold text-[#7E8681] uppercase tracking-wider block">
-            Places Libres Totales
-          </span>
-          <span className="text-2xl font-black text-[#16382C] tabular-nums mt-1 block">
-            {totalAvailableSeats}
-          </span>
+        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-soft-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-amber-600 font-bold uppercase tracking-wider">
+            <span>Demandes en attente</span>
+            <Clock className="w-4 h-4 text-amber-600" />
+          </div>
+          <div className="text-2xl font-black text-amber-600">{pendingRequestsCount}</div>
+          <span className="text-[11px] text-slate-500 font-medium block">Nécessitent votre approbation</span>
         </div>
 
-        <div className="bg-white rounded-xl border border-[#EAE5DC] p-4 shadow-fine">
-          <span className="text-[10px] font-bold text-[#7E8681] uppercase tracking-wider block">
-            Demandes En Attente
-          </span>
-          <span className="text-2xl font-black text-[#A14114] tabular-nums mt-1 block">
-            {totalPendingBookings}
-          </span>
+        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-soft-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-emerald-700 font-bold uppercase tracking-wider">
+            <span>Passagers confirmés</span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          </div>
+          <div className="text-2xl font-black text-emerald-700">{confirmedBookingsCount}</div>
+          <span className="text-[11px] text-slate-500 font-medium block">Réservations validées</span>
         </div>
 
-        <div className="bg-white rounded-xl border border-[#EAE5DC] p-4 shadow-fine">
-          <span className="text-[10px] font-bold text-[#7E8681] uppercase tracking-wider block">
-            Validation Manuelle
-          </span>
-          <span className="text-xs font-semibold text-[#16382C] flex items-center gap-1.5 mt-2">
-            <ShieldCheck className="w-4 h-4 text-[#16382C]" />
-            Contrôle total du véhicule
-          </span>
+        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-soft-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-400 font-bold uppercase tracking-wider">
+            <span>Rémunération nette</span>
+            <Wallet className="w-4 h-4 text-brand-600" />
+          </div>
+          <div className="text-2xl font-black text-brand-600 tabular-nums">
+            {estimatedNetEarnings.toLocaleString('fr-DZ')} DA
+          </div>
+          <span className="text-[11px] text-slate-500 font-medium block">100% net conducteur sans retenue</span>
         </div>
       </div>
 
-      {/* 3. Main Master-Detail Workarea */}
-      {loading ? (
-        <div className="h-64 rounded-2xl bg-white border border-[#EAE5DC] animate-pulse p-8" />
-      ) : trips.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-[#EAE5DC] p-12 text-center space-y-4 shadow-fine">
-          <div className="w-12 h-12 rounded-lg bg-[#E2EDE6] text-[#16382C] flex items-center justify-center mx-auto border border-[#C4DBCD]">
-            <Car className="w-6 h-6" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-base font-bold text-[#141716]">{t('dashboard.no_trips', 'Vous n’avez publié aucun trajet')}</h3>
-            <p className="text-xs text-[#5A625D] max-w-md mx-auto">
-              Partagez vos frais de carburant en publiant votre premier trajet inter-wilayas dès aujourd’hui.
-            </p>
-          </div>
-          <button
-            onClick={() => navigate('/trips/create')}
-            className="inline-flex items-center gap-2 py-2.5 px-6 rounded-lg bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] text-xs font-bold shadow-fine transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Publier mon premier trajet</span>
-          </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column (5 cols): Published Trips List */}
-          <div className="lg:col-span-5 space-y-4">
-            <div className="flex items-center justify-between px-1">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-[#7E8681]">
-                Vos annonces ({trips.length})
-              </h2>
-              <span className="text-[11px] text-[#7E8681]">Sélectionnez pour gérer</span>
-            </div>
+      {/* 3. Main Split View: Trips List & Bookings Management */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left: Published Trips List */}
+        <div className="lg:col-span-5 space-y-4">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">
+            Vos annonces publiées ({trips.length})
+          </h2>
 
+          {trips.length === 0 ? (
+            <div className="bg-white rounded-3xl border border-slate-200 p-8 text-center space-y-3">
+              <Car className="w-8 h-8 text-slate-300 mx-auto" />
+              <p className="text-sm font-bold text-slate-700">Aucun trajet publié pour l'instant</p>
+              <Link
+                to="/trips/create"
+                className="inline-block text-xs font-bold text-brand-600 hover:underline"
+              >
+                Créer mon premier trajet
+              </Link>
+            </div>
+          ) : (
             <div className="space-y-3">
               {trips.map((trip) => {
                 const isSelected = selectedTrip?.id === trip.id;
                 const depDate = new Date(trip.departure_datetime).toLocaleDateString('fr-DZ', {
-                  weekday: 'short',
                   day: 'numeric',
                   month: 'short',
                   hour: '2-digit',
@@ -255,235 +236,194 @@ export const DriverDashboardPage: React.FC = () => {
                   <div
                     key={trip.id}
                     onClick={() => selectTrip(trip)}
-                    className={`cursor-pointer rounded-xl p-4 border transition-all text-left ${
+                    className={`p-5 rounded-3xl border transition-all cursor-pointer space-y-3 ${
                       isSelected
-                        ? 'bg-white border-[#16382C] shadow-card ring-1 ring-[#16382C]'
-                        : 'bg-white border-[#EAE5DC] hover:border-[#16382C]'
+                        ? 'bg-white border-brand-500 shadow-soft-md ring-2 ring-brand-100'
+                        : 'bg-white border-slate-200 hover:border-slate-300 shadow-soft-xs'
                     }`}
                   >
-                    <div className="flex items-center justify-between text-xs text-[#7E8681] mb-1.5">
-                      <span className="flex items-center gap-1 font-medium">
-                        <Calendar className="w-3 h-3 text-[#16382C]" />
-                        {depDate}
-                      </span>
-                      <span className="font-bold text-[#16382C] tabular-nums">
-                        {trip.available_seats} / {trip.total_seats} libres
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 font-black text-slate-900 text-sm">
+                        <span>{trip.origin_city}</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-brand-600" />
+                        <span>{trip.destination_city}</span>
+                      </div>
+                      <span className="text-xs font-black text-brand-700 tabular-nums">
+                        {trip.base_seat_price} DA net
                       </span>
                     </div>
 
-                    <h3 className="text-sm font-bold text-[#141716] flex items-center gap-2">
-                      <span>{trip.origin_city}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-[#16382C] flex-shrink-0" />
-                      <span>{trip.destination_city}</span>
-                    </h3>
-
-                    <div className="mt-3 pt-2.5 border-t border-[#F4EFE6] flex items-center justify-between text-xs">
-                      <span className="text-[#5A625D] font-medium tabular-nums">
-                        Net conducteur : <strong className="text-[#141716]">{trip.base_seat_price} DA</strong>
-                      </span>
-                      {trip.comfort_enabled && (
-                        <span className="text-[10px] font-bold text-[#16382C] bg-[#E2EDE6] px-2 py-0.5 rounded border border-[#C4DBCD]">
-                          Confort (+30%)
-                        </span>
-                      )}
+                    <div className="flex items-center justify-between text-xs text-slate-500 pt-1 border-t border-slate-100">
+                      <span>{depDate}</span>
+                      <span className="font-bold text-slate-700">{trip.available_seats} places libres</span>
                     </div>
                   </div>
                 );
               })}
             </div>
-          </div>
+          )}
+        </div>
 
-          {/* Right Column (7 cols): Selected Trip & Passenger Bookings Management */}
-          <div className="lg:col-span-7 space-y-6">
+        {/* Right: Selected Trip Bookings & Approvals */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="flex items-center justify-between px-1">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Gestion des réservations pour ce trajet
+            </h2>
             {selectedTrip && (
-              <div className="bg-white rounded-2xl border border-[#EAE5DC] p-6 shadow-fine space-y-6">
-                {/* Header of selected trip */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-[#F4EFE6]">
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-[#16382C] uppercase tracking-wider bg-[#E2EDE6] px-2 py-0.5 rounded border border-[#C4DBCD]">
-                      Gestion des réservations
-                    </span>
-                    <h3 className="text-lg font-bold text-[#141716] flex items-center gap-2">
-                      <span>{selectedTrip.origin_city}</span>
-                      <ArrowRight className="w-4 h-4 text-[#16382C]" />
-                      <span>{selectedTrip.destination_city}</span>
-                    </h3>
-                    <p className="text-xs text-[#7E8681]">
-                      Départ : {new Date(selectedTrip.departure_datetime).toLocaleString('fr-DZ')} • {selectedTrip.distance_km} km
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-2 self-start sm:self-auto">
-                    <button
-                      onClick={() => navigate(`/trips/${selectedTrip.id}/chat`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#EAE5DC] bg-[#FAF7F2] text-xs font-semibold text-[#141716] hover:border-[#16382C] transition-colors shadow-fine"
-                    >
-                      <MessageCircle className="w-3.5 h-3.5 text-[#16382C]" />
-                      <span>Chat du trajet</span>
-                    </button>
-                    <button
-                      onClick={() => navigate(`/trips/${selectedTrip.id}`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#FAF7F2] border border-[#EAE5DC] hover:bg-[#EAE5DC] text-xs font-semibold text-[#141716] transition-colors shadow-fine"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5 text-[#7E8681]" />
-                      <span>Fiche</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Capacity breakdown bar */}
-                <div className="p-3.5 rounded-xl bg-[#FAF7F2] border border-[#EAE5DC] space-y-2">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-[#5A625D]">Remplissage du véhicule :</span>
-                    <span className="font-bold text-[#16382C] tabular-nums">
-                      {selectedTrip.total_seats - selectedTrip.available_seats} / {selectedTrip.total_seats} sièges réservés
-                    </span>
-                  </div>
-                  <div className="w-full bg-[#EAE5DC] h-2 rounded-full overflow-hidden">
-                    <div
-                      className="bg-[#16382C] h-full rounded-full transition-all"
-                      style={{
-                        width: `${((selectedTrip.total_seats - selectedTrip.available_seats) / selectedTrip.total_seats) * 100}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Bookings List */}
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#141716]">
-                      Demandes de réservation reçues ({bookings.length})
-                    </h4>
-                    <span className="text-[11px] text-[#7E8681]">
-                      Approbation atomique sécurisée
-                    </span>
-                  </div>
-
-                  {bookings.length === 0 ? (
-                    <div className="p-8 text-center text-[#7E8681] text-xs bg-[#FAF7F2] rounded-xl border border-dashed border-[#EAE5DC]">
-                      Aucune demande reçue pour ce trajet pour le moment.
-                    </div>
-                  ) : (
-                    <div className="divide-y divide-[#F4EFE6]">
-                      {bookings.map((booking) => (
-                        <div
-                          key={booking.id}
-                          className="py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-                        >
-                          <div className="flex items-start gap-3">
-                            <img
-                              src={booking.passenger?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${booking.passenger?.full_name || 'DZ'}`}
-                              alt={booking.passenger?.full_name}
-                              className="w-9 h-9 rounded-full border border-[#EAE5DC] object-cover flex-shrink-0"
-                            />
-                            <div className="space-y-0.5">
-                              <h5 className="text-xs font-bold text-[#141716]">
-                                {booking.passenger?.full_name}
-                              </h5>
-                              <p className="text-[11px] text-[#5A625D] flex flex-wrap items-center gap-1.5">
-                                <span>{booking.seat_count} place{booking.seat_count > 1 ? 's' : ''}</span>
-                                <span>•</span>
-                                <span className={booking.seat_type === 'comfort' ? 'text-[#16382C] font-semibold' : ''}>
-                                  {booking.seat_type === 'comfort' ? 'Siège Confort (+30%)' : 'Standard'}
-                                </span>
-                                <span>•</span>
-                                <span className="font-bold text-[#16382C]">
-                                  Gain net : {booking.driver_payout} DA
-                                </span>
-                              </p>
-                              {booking.rejection_or_cancellation_reason && (
-                                <p className="text-[10px] text-[#7E8681] italic mt-0.5">
-                                  Motif : {booking.rejection_or_cancellation_reason}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
-                            <StatusBadge status={booking.status} size="sm" />
-
-                            {booking.status === 'pending' && (
-                              <div className="flex items-center gap-1.5">
-                                <button
-                                  type="button"
-                                  onClick={() => handleApprove(booking.id)}
-                                  disabled={actionLoading === booking.id || selectedTrip.available_seats < booking.seat_count}
-                                  className="inline-flex items-center gap-1 py-1.5 px-3 rounded-lg bg-[#16382C] hover:bg-[#0F281F] disabled:bg-[#D6D9D7] text-[#FAF7F2] font-bold text-xs shadow-fine transition-colors"
-                                >
-                                  <Check className="w-3.5 h-3.5" />
-                                  <span>Accepter</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => openRejectModal(booking.id)}
-                                  disabled={actionLoading === booking.id}
-                                  className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg bg-[#FCF7F3] hover:bg-[#F8ECE3] text-[#A14114] font-semibold text-xs border border-[#F0D5C3] transition-colors"
-                                >
-                                  <X className="w-3.5 h-3.5" />
-                                  <span>Refuser</span>
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
+              <Link
+                to={`/trips/${selectedTrip.id}/chat`}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:underline"
+              >
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>Messagerie de coordination</span>
+              </Link>
             )}
           </div>
-        </div>
-      )}
 
-      {/* Polite Rejection Modal */}
+          {!selectedTrip ? (
+            <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center text-slate-400">
+              Sélectionnez un trajet pour visualiser et approuver les réservations.
+            </div>
+          ) : (
+            <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-soft-sm space-y-6">
+              {/* Trip Context Banner */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 font-black text-slate-900 text-base">
+                    <span>{selectedTrip.origin_city}</span>
+                    <ArrowRight className="w-4 h-4 text-brand-600" />
+                    <span>{selectedTrip.destination_city}</span>
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Départ : {new Date(selectedTrip.departure_datetime).toLocaleString('fr-DZ')} • {selectedTrip.distance_km} km
+                  </p>
+                </div>
+
+                <Link
+                  to={`/trips/${selectedTrip.id}`}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 hover:text-brand-600"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Voir la fiche</span>
+                </Link>
+              </div>
+
+              {/* Bookings List */}
+              <div className="space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 border-b border-slate-100 pb-2">
+                  Demandes de passagers ({bookings.length})
+                </h3>
+
+                {bookings.length === 0 ? (
+                  <div className="py-12 text-center text-slate-400 space-y-2">
+                    <Users className="w-8 h-8 text-slate-300 mx-auto" />
+                    <p className="text-xs font-bold text-slate-600">Aucune demande reçue pour ce trajet</p>
+                    <p className="text-[11px] text-slate-400">
+                      Les passagers trouveront votre trajet via la recherche inter-wilayas.
+                    </p>
+                  </div>
+                ) : (
+                  bookings.map((b) => (
+                    <div
+                      key={b.id}
+                      className="p-5 rounded-2xl border border-slate-200 bg-white space-y-4 shadow-soft-xs"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={b.passenger?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${b.passenger?.full_name}`}
+                            alt={b.passenger?.full_name}
+                            className="w-10 h-10 rounded-full object-cover border border-slate-200"
+                          />
+                          <div>
+                            <span className="text-sm font-bold text-slate-900 block">{b.passenger?.full_name}</span>
+                            <span className="text-[11px] text-slate-500">{b.passenger?.phone_number || 'Téléphone vérifié'}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <StatusBadge status={b.status} />
+                          <div className="text-right">
+                            <span className="text-sm font-black text-slate-900 tabular-nums block">
+                              {b.total_price} DA
+                            </span>
+                            <span className="text-[10px] text-slate-400">
+                              {b.seat_count} place{b.seat_count > 1 ? 's' : ''} ({b.seat_type === 'comfort' ? 'Confort' : 'Standard'})
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Approval Actions (for pending status) */}
+                      {b.status === 'pending' && (
+                        <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => openRejectModal(b.id)}
+                            disabled={actionLoading === b.id}
+                            className="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs transition-colors"
+                          >
+                            Refuser
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleApprove(b.id)}
+                            disabled={actionLoading === b.id}
+                            className="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-soft-xs transition-colors"
+                          >
+                            {actionLoading === b.id ? 'Validation...' : 'Accepter la réservation'}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Rejection Modal */}
       <Modal
         isOpen={rejectModalOpen}
         onClose={() => setRejectModalOpen(false)}
         title="Refuser la demande de réservation"
       >
         <div className="space-y-4 text-left">
-          <p className="text-xs text-[#5A625D] leading-relaxed">
-            Veuillez indiquer le motif du refus pour en informer poliment le passager :
+          <p className="text-xs text-slate-600 leading-relaxed">
+            Veuillez indiquer un motif poli de refus. Le passager sera notifié et pourra rechercher un autre départ.
           </p>
 
-          <div className="space-y-2">
-            {[
-              "Désolé, indisponibilité imprévue",
-              "Complet hors-ligne (amis / proches)",
-              "Modification de l'horaire de départ",
-              "Bagages trop volumineux pour le véhicule",
-            ].map((reason) => (
-              <label
-                key={reason}
-                className="flex items-center gap-2 p-2.5 rounded-lg border border-[#EAE5DC] hover:bg-[#FAF7F2] cursor-pointer text-xs font-semibold text-[#141716] transition-colors"
-              >
-                <input
-                  type="radio"
-                  name="reject_reason"
-                  checked={rejectReason === reason}
-                  onChange={() => setRejectReason(reason)}
-                  className="text-[#16382C] focus:ring-[#16382C]"
-                />
-                <span>{reason}</span>
-              </label>
-            ))}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-slate-700">Motif du refus</label>
+            <select
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none"
+            >
+              <option value="Désolé, indisponibilité imprévue">Désolé, indisponibilité imprévue</option>
+              <option value="Complet / Véhicule déjà plein">Complet / Véhicule déjà plein</option>
+              <option value="Changement d'horaire ou d'itinéraire">Changement d'horaire ou d'itinéraire</option>
+              <option value="Volume de bagages incompatible">Volume de bagages incompatible</option>
+            </select>
           </div>
 
-          <div className="flex justify-end gap-2.5 pt-4 border-t border-[#F4EFE6]">
+          <div className="flex items-center justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={() => setRejectModalOpen(false)}
-              className="px-4 py-2 rounded-lg border border-[#EAE5DC] text-xs font-semibold text-[#5A625D] hover:bg-[#FAF7F2]"
+              className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50"
             >
               Annuler
             </button>
             <button
               type="button"
-              onClick={confirmReject}
+              onClick={handleConfirmReject}
               disabled={actionLoading !== null}
-              className="px-4 py-2 rounded-lg bg-[#A14114] hover:bg-[#823414] text-white text-xs font-bold transition-colors"
+              className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-soft-xs"
             >
               Confirmer le refus
             </button>
