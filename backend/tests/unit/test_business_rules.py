@@ -1,9 +1,7 @@
 import pytest
-from decimal import Decimal
 from app.services.pricing_service import calculate_pricing
 from app.services.fuel_service import (
     estimate_fuel_and_suggest_price,
-    load_fuel_prices_data,
 )
 from app.services.trip_service import prepare_trip_stops
 

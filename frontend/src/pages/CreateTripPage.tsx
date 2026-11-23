@@ -18,6 +18,7 @@ import {
   Check,
   AlertCircle,
   HelpCircle,
+  Coffee,
 } from 'lucide-react';
 
 export const CreateTripPage: React.FC = () => {
@@ -313,15 +314,15 @@ export const CreateTripPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
               <div className="bg-white p-3 rounded-xl border border-brand-100">
                 <span className="text-slate-400 block text-[10px]">Carburant estimé</span>
-                <span className="font-black text-slate-900 text-base">{currentFuelEstimate.fuelQuantityLiters} Litres</span>
+                <span className="font-black text-slate-900 text-base">{currentFuelEstimate.consumption_liters} Litres</span>
               </div>
               <div className="bg-white p-3 rounded-xl border border-brand-100">
                 <span className="text-slate-400 block text-[10px]">Coût total carburant</span>
-                <span className="font-black text-slate-900 text-base">{currentFuelEstimate.totalFuelCost} DA</span>
+                <span className="font-black text-slate-900 text-base">{currentFuelEstimate.total_fuel_cost} DA</span>
               </div>
               <div className="bg-white p-3 rounded-xl border border-brand-100">
                 <span className="text-slate-400 block text-[10px]">Suggestion conseillée / siège</span>
-                <span className="font-black text-brand-700 text-base">{currentFuelEstimate.suggestedPricePerSeat} DA</span>
+                <span className="font-black text-brand-700 text-base">{currentFuelEstimate.suggested_seat_contribution} DA</span>
               </div>
             </div>
 
@@ -339,7 +340,7 @@ export const CreateTripPage: React.FC = () => {
                 </label>
                 <button
                   type="button"
-                  onClick={() => setBaseSeatPrice(currentFuelEstimate.suggestedPricePerSeat)}
+                  onClick={() => setBaseSeatPrice(Math.round(currentFuelEstimate.suggested_seat_contribution))}
                   className="text-[11px] font-bold text-brand-700 hover:underline"
                 >
                   Appliquer le prix conseillé

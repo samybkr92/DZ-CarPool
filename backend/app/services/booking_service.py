@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any
+from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from app.models.booking import Booking

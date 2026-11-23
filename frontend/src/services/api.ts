@@ -419,7 +419,7 @@ class ApiService {
     } catch {
       const trips = this.getDemoTrips();
       const user = await this.getCurrentUser();
-      const myTrips = trips.filter((t) => t.driver_id === user.id || t.driver.email === user.email);
+      const myTrips = trips.filter((t) => t.driver_id === user.id || t.driver?.email === user.email);
       return myTrips.length > 0 ? myTrips : trips.slice(0, 3);
     }
   }
@@ -440,7 +440,7 @@ class ApiService {
       const isComfort = data.seat_type === 'comfort';
       const unitPrice = isComfort
         ? (trip.passenger_comfort_price || calculatePrices(baseUnitPrice).passengerComfort)
-        : trip.passenger_standard_price;
+        : (trip.passenger_standard_price || calculatePrices(baseUnitPrice).passengerStandard);
       const totalPrice = unitPrice * data.seat_count;
 
       const newBooking: Booking = {
@@ -450,6 +450,11 @@ class ApiService {
         seat_count: data.seat_count,
         seat_type: data.seat_type as any,
         status: 'pending',
+        quoted_base_price: baseUnitPrice * data.seat_count,
+        quoted_commission: Math.round(baseUnitPrice * 0.15 * data.seat_count),
+        quoted_comfort_fee: isComfort ? Math.round(baseUnitPrice * 0.30 * data.seat_count) : 0,
+        quoted_total_price: totalPrice,
+        driver_payout: baseUnitPrice * data.seat_count,
         unit_price: unitPrice,
         total_price: totalPrice,
         created_at: new Date().toISOString(),
@@ -529,6 +534,7 @@ class ApiService {
 
       // Seed a default sample booking for demo
       const defaultTrip = INITIAL_TRIPS[0];
+      const stdPrice = defaultTrip.passenger_standard_price || 1840;
       return [
         {
           id: 101,
@@ -537,8 +543,13 @@ class ApiService {
           seat_count: 1,
           seat_type: 'standard',
           status: 'pending',
-          unit_price: defaultTrip.passenger_standard_price,
-          total_price: defaultTrip.passenger_standard_price,
+          quoted_base_price: defaultTrip.base_seat_price,
+          quoted_commission: Math.round(defaultTrip.base_seat_price * 0.15),
+          quoted_comfort_fee: 0,
+          quoted_total_price: stdPrice,
+          driver_payout: defaultTrip.base_seat_price,
+          unit_price: stdPrice,
+          total_price: stdPrice,
           created_at: new Date().toISOString(),
           trip: defaultTrip,
           passenger: DEMO_USERS.passenger,
@@ -564,6 +575,11 @@ class ApiService {
           seat_count: 1,
           seat_type: 'comfort',
           status: 'pending',
+          quoted_base_price: 1600,
+          quoted_commission: 240,
+          quoted_comfort_fee: 480,
+          quoted_total_price: 2320,
+          driver_payout: 1600,
           unit_price: 2320,
           total_price: 2320,
           created_at: new Date().toISOString(),
@@ -643,10 +659,13 @@ class ApiService {
       const est = estimateFuelCost(params.distance_km, params.fuel_type || 'essence', params.total_seats || 3);
       return {
         distance_km: est.distance_km,
+        total_seats: params.total_seats || 3,
         consumption_liters: est.consumption_liters,
         price_per_liter: est.price_per_liter,
-        total_estimated_cost: est.total_fuel_cost,
-        suggested_seat_price: est.suggested_seat_contribution,
+        total_fuel_cost: est.total_fuel_cost,
+        suggested_seat_contribution: est.suggested_seat_contribution,
+        total_fuel_cost_dzd: est.total_fuel_cost,
+        suggested_seat_price_dzd: est.suggested_seat_contribution,
         fuel_type: est.fuel_type,
         wilaya_name: 'Régional Naftal',
         is_fallback: true,

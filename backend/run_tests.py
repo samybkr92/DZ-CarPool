@@ -7,16 +7,16 @@ backend_dir = os.path.dirname(os.path.abspath(__file__))
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
-from app.core.database import Base, get_db
-from app.main import app
-from tests.unit.test_business_rules import (
+from app.core.database import Base, get_db  # noqa: E402
+from app.main import app  # noqa: E402
+from tests.unit.test_business_rules import (  # noqa: E402
     test_pricing_commission_15_percent,
     test_pricing_trajet_confort_30_percent,
     test_midpoint_break_over_300km_threshold,
     test_fuel_estimate_and_missing_data_resilience,
     test_pricing_validation_errors,
 )
-from tests.integration.test_api_endpoints import (
+from tests.integration.test_api_endpoints import (  # noqa: E402
     test_auth_and_trip_creation_flow,
     test_booking_approval_and_capacity_concurrency,
     test_chat_authorization_security,

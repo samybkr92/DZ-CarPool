@@ -346,7 +346,7 @@ export const DriverDashboardPage: React.FC = () => {
                           <StatusBadge status={b.status} />
                           <div className="text-right">
                             <span className="text-sm font-black text-slate-900 tabular-nums block">
-                              {b.total_price} DA
+                              {b.total_price || b.quoted_total_price} DA
                             </span>
                             <span className="text-[10px] text-slate-400">
                               {b.seat_count} place{b.seat_count > 1 ? 's' : ''} ({b.seat_type === 'comfort' ? 'Confort' : 'Standard'})

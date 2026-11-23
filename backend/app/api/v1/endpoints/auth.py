@@ -1,11 +1,11 @@
-from typing import List, Optional
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security import hash_password, verify_password, create_access_token
 from app.models.user import User
 from app.models.vehicle import Vehicle
-from app.schemas.user import UserCreate, UserLogin, UserUpdate, UserOut, Token
+from app.schemas.user import UserCreate, UserUpdate, UserOut, Token
 from app.schemas.vehicle import VehicleCreate, VehicleOut
 from app.api.deps import get_current_user
 

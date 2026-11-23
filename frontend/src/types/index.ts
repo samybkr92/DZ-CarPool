@@ -12,8 +12,8 @@ export interface User {
   rating_count: number;
   trips_completed_count: number;
   is_active: boolean;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Vehicle {
@@ -26,7 +26,7 @@ export interface Vehicle {
   license_plate?: string;
   comfort_tier: 'standard' | 'suv' | 'premium';
   air_conditioning: boolean;
-  created_at: string;
+  created_at?: string;
 }
 
 export interface TripStop {
@@ -61,12 +61,17 @@ export interface Trip {
   base_seat_price: number;
   comfort_enabled: boolean;
   has_mandatory_rest: boolean;
+  passenger_standard_price?: number;
+  passenger_comfort_price?: number | null;
+  driver_net_payout?: number;
+  platform_commission_rate?: number;
+  comfort_surcharge_rate?: number;
   fuel_estimate_cost?: number;
   suggested_seat_price?: number;
   notes?: string;
   status: 'active' | 'completed' | 'cancelled';
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
   driver?: User;
   vehicle?: Vehicle;
   stops?: TripStop[];
@@ -83,10 +88,12 @@ export interface Booking {
   quoted_commission: number;
   quoted_comfort_fee: number;
   quoted_total_price: number;
+  total_price?: number;
+  unit_price?: number;
   driver_payout: number;
   rejection_or_cancellation_reason?: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
   trip?: Trip;
   passenger?: User;
 }
@@ -116,14 +123,18 @@ export interface PricingBreakdown {
 export interface FuelEstimateResult {
   distance_km: number;
   total_seats: number;
-  wilaya_code: number;
-  wilaya_name: string;
+  wilaya_code?: number;
+  wilaya_name?: string;
   fuel_type: string;
-  fuel_price_per_litre: number;
-  estimated_fuel_litres: number;
-  total_fuel_cost_dzd: number;
-  suggested_seat_price_dzd: number;
-  is_fallback: boolean;
+  fuel_price_per_litre?: number;
+  estimated_fuel_litres?: number;
+  consumption_liters?: number;
+  price_per_liter?: number;
+  total_fuel_cost?: number;
+  suggested_seat_contribution?: number;
+  total_fuel_cost_dzd?: number;
+  suggested_seat_price_dzd?: number;
+  is_fallback?: boolean;
 }
 
 export interface AuthResponse {

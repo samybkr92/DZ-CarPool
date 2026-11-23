@@ -9,8 +9,8 @@ backend_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if backend_path not in sys.path:
     sys.path.insert(0, backend_path)
 
-from app.core.database import Base, get_db
-from app.main import app
+from app.core.database import Base, get_db  # noqa: E402
+from app.main import app  # noqa: E402
 
 TEST_DB_URL = "sqlite:////tmp/test_dz_carpool.db"
 
@@ -50,7 +50,7 @@ def client():
         finally:
             session.close()
 
-    app.dependency_overrides[get_db] = override_db = override_get_db
+    app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()

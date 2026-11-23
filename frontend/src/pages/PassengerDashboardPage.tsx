@@ -87,7 +87,7 @@ export const PassengerDashboardPage: React.FC = () => {
   const confirmedCount = bookings.filter((b) => b.status === 'confirmed').length;
   const totalSpent = bookings
     .filter((b) => b.status === 'confirmed')
-    .reduce((sum, b) => sum + (b.total_price || 0), 0);
+    .reduce((sum, b) => sum + (b.total_price || b.quoted_total_price || 0), 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
@@ -206,7 +206,7 @@ export const PassengerDashboardPage: React.FC = () => {
                     <StatusBadge status={booking.status} />
                     <div className="text-right">
                       <span className="text-lg font-black text-brand-600 tabular-nums block">
-                        {booking.total_price} DA
+                        {booking.total_price || booking.quoted_total_price} DA
                       </span>
                       <span className="text-[10px] text-slate-400">
                         {booking.seat_count} place{booking.seat_count > 1 ? 's' : ''} • {booking.seat_type === 'comfort' ? 'Confort (+30%)' : 'Standard'}

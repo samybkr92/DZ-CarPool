@@ -268,7 +268,7 @@ export const SearchPage: React.FC = () => {
                   <div className="flex md:flex-col justify-between md:items-end items-center pt-4 md:pt-0 border-t md:border-t-0 border-slate-100">
                     <div className="text-left md:text-right">
                       <div className="text-2xl font-black text-brand-600 tabular-nums">
-                        {trip.passenger_standard_price.toLocaleString('fr-DZ')} DA
+                        {(trip.passenger_standard_price ?? Math.round(trip.base_seat_price * 1.15)).toLocaleString('fr-DZ')} DA
                       </div>
                       <span className="text-[10px] text-slate-400 font-medium">TTC tout inclus / place</span>
                       <div className="text-[11px] text-slate-500 font-semibold mt-0.5">

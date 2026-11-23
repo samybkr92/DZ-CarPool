@@ -1,4 +1,3 @@
-import sys
 from datetime import datetime, timezone, timedelta
 from decimal import Decimal
 from app.core.database import SessionLocal, Base, engine

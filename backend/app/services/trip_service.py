@@ -1,7 +1,7 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import List, Optional, Dict, Any
 from sqlalchemy.orm import Session
-from sqlalchemy import or_, and_
+from sqlalchemy import or_
 from app.models.trip import Trip
 from app.models.trip_stop import TripStop
 from app.models.user import User
@@ -172,7 +172,7 @@ def search_trips(
         query = query.filter(Trip.base_seat_price <= max_price)
 
     if comfort_only:
-        query = query.filter(Trip.comfort_enabled == True)
+        query = query.filter(Trip.comfort_enabled.is_(True))
 
     total_count = query.count()
     offset = (page - 1) * limit
