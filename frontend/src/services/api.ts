@@ -28,6 +28,24 @@ class ApiService {
   }
 
   // --- Local Demo Store (Fallback when backend API is unreachable or on static host) ---
+  private getRegisteredUsers(): Array<{ email: string; password?: string; user: User }> {
+    const stored = localStorage.getItem('dz_registered_users');
+    if (!stored) return [];
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return [];
+    }
+  }
+
+  private saveRegisteredUser(entry: { email: string; password?: string; user: User }) {
+    const list = this.getRegisteredUsers().filter(
+      (u) => u.email.toLowerCase() !== entry.email.toLowerCase()
+    );
+    list.push(entry);
+    localStorage.setItem('dz_registered_users', JSON.stringify(list));
+  }
+
   private getDemoTrips(): Trip[] {
     const stored = localStorage.getItem('dz_demo_trips');
     if (!stored) {
@@ -130,17 +148,25 @@ class ApiService {
 
       const contentType = res.headers.get('content-type') || '';
       if (res.ok && !contentType.includes('text/html')) {
-        return await res.json();
+        const data = await res.json();
+        localStorage.setItem('dz_current_user', JSON.stringify(data.user));
+        return data;
       }
     } catch {
-      // Backend unavailable, fallback to demo mode
+      // Backend unavailable or static host, fallback gracefully
     }
 
-    // 2. Demo fallback
+    // 2. Demo fallback & Local Registered Users resolution
     const normalizedEmail = email.toLowerCase().trim();
     let user: User;
 
-    if (normalizedEmail.includes('passager') || normalizedEmail.includes('amina')) {
+    // Check if previously registered locally
+    const registeredList = this.getRegisteredUsers();
+    const existing = registeredList.find((u) => u.email.toLowerCase() === normalizedEmail);
+
+    if (existing) {
+      user = existing.user;
+    } else if (normalizedEmail.includes('passager') || normalizedEmail.includes('amina')) {
       user = DEMO_USERS.passenger;
     } else if (normalizedEmail.includes('driver') || normalizedEmail.includes('conducteur') || normalizedEmail.includes('amine')) {
       user = DEMO_USERS.driver;
@@ -160,9 +186,11 @@ class ApiService {
         trips_completed_count: 8,
         is_active: true,
       };
+      this.saveRegisteredUser({ email: user.email, password, user });
     }
 
     const demoToken = 'dz_demo_token_' + btoa(JSON.stringify({ userId: user.id, email: user.email }));
+    localStorage.setItem('dz_token', demoToken);
     localStorage.setItem('dz_current_user', JSON.stringify(user));
     return {
       access_token: demoToken,
@@ -173,35 +201,43 @@ class ApiService {
 
   async register(data: Record<string, unknown>): Promise<AuthResponse> {
     try {
-      return await this.request<AuthResponse>('/auth/register', {
+      const res = await this.request<AuthResponse>('/auth/register', {
         method: 'POST',
         body: JSON.stringify(data),
       });
+      if (res && res.user) {
+        localStorage.setItem('dz_current_user', JSON.stringify(res.user));
+        return res;
+      }
     } catch {
       // Fallback
-      const newUser: User = {
-        id: Math.floor(Math.random() * 1000) + 50,
-        email: (data.email as string) || 'nouveau@dz-carpool.dz',
-        full_name: (data.full_name as string) || 'Nouveau Membre',
-        phone_number: (data.phone_number as string) || '0550000000',
-        role: (data.role as 'driver' | 'passenger' | 'both') || 'both',
-        bio: (data.bio as string) || 'Membre vérifié DZ-CarPool',
-        avatar_url: (data.avatar_url as string) || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(String(data.full_name || 'DZ'))}`,
-        wilaya_code: (data.wilaya_code as number) || 16,
-        wilaya_name: (data.wilaya_name as string) || 'Alger',
-        rating_avg: 5.0,
-        rating_count: 1,
-        trips_completed_count: 0,
-        is_active: true,
-      };
-      const demoToken = 'dz_demo_token_' + btoa(JSON.stringify({ userId: newUser.id, email: newUser.email }));
-      localStorage.setItem('dz_current_user', JSON.stringify(newUser));
-      return {
-        access_token: demoToken,
-        token_type: 'bearer',
-        user: newUser,
-      };
     }
+
+    const email = ((data.email as string) || 'nouveau@dz-carpool.dz').toLowerCase().trim();
+    const newUser: User = {
+      id: Math.floor(Math.random() * 1000) + 50,
+      email,
+      full_name: (data.full_name as string) || 'Nouveau Membre',
+      phone_number: (data.phone_number as string) || '0550000000',
+      role: (data.role as 'driver' | 'passenger' | 'both') || 'both',
+      bio: (data.bio as string) || 'Membre vérifié DZ-CarPool',
+      avatar_url: (data.avatar_url as string) || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(String(data.full_name || 'DZ'))}`,
+      wilaya_code: (data.wilaya_code as number) || 16,
+      wilaya_name: (data.wilaya_name as string) || 'Alger',
+      rating_avg: 5.0,
+      rating_count: 1,
+      trips_completed_count: 0,
+      is_active: true,
+    };
+    this.saveRegisteredUser({ email, password: data.password as string, user: newUser });
+    const demoToken = 'dz_demo_token_' + btoa(JSON.stringify({ userId: newUser.id, email: newUser.email }));
+    localStorage.setItem('dz_token', demoToken);
+    localStorage.setItem('dz_current_user', JSON.stringify(newUser));
+    return {
+      access_token: demoToken,
+      token_type: 'bearer',
+      user: newUser,
+    };
   }
 
   async getCurrentUser(): Promise<User> {

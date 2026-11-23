@@ -84,12 +84,11 @@ export const DriverDashboardPage: React.FC = () => {
       if (selectedTrip) {
         const updated = await api.getTripBookings(selectedTrip.id);
         setBookings(updated);
-        // Refresh trip data to update available seats
         const tripData = await api.getTrip(selectedTrip.id);
         setSelectedTrip(tripData);
       }
     } catch (err: any) {
-      alert(err.message || "Impossible d'approuver la réservation");
+      alert(err.message || "Erreur lors de l'approbation de la réservation");
     } finally {
       setActionLoading(null);
     }
@@ -122,7 +121,7 @@ export const DriverDashboardPage: React.FC = () => {
   if (authLoading || loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="h-96 rounded-xl bg-white border border-[#E6E0D6] animate-pulse p-8" />
+        <div className="h-96 rounded-xl bg-[#131D2E] border border-[#1E2C42] animate-pulse p-8" />
       </div>
     );
   }
@@ -138,23 +137,23 @@ export const DriverDashboardPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
       {/* 1. Header with Publish CTA */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E6E0D6]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#1E2C42]">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#173C2C] bg-[#E1EDE6] px-2 py-0.5 rounded border border-[#C2DBCF]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#60A5FA] bg-[#172554] px-2 py-0.5 rounded border border-[#2563EB]/40">
               Espace Conducteur Certifié
             </span>
-            <span className="text-xs text-[#8E9389]">•</span>
-            <span className="text-xs text-[#5C6057] font-semibold">{user?.full_name}</span>
+            <span className="text-xs text-slate-500">•</span>
+            <span className="text-xs text-slate-300 font-semibold">{user?.full_name}</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#141613] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Tableau de bord de vos trajets
           </h1>
         </div>
 
         <Link
           to="/trips/create"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#173C2C] hover:bg-[#112E22] text-white font-bold text-xs shadow-sm transition-all"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold text-xs shadow-md shadow-blue-600/30 transition-all"
         >
           <Plus className="w-4 h-4" />
           <span>Nouveau trajet</span>
@@ -163,42 +162,42 @@ export const DriverDashboardPage: React.FC = () => {
 
       {/* 2. Key Metrics Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-[#E6E0D6] shadow-card space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#8E9389] font-bold uppercase tracking-wider">
+        <div className="bg-[#131D2E] p-5 rounded-xl border border-[#1E2C42] shadow-xl space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-400 font-bold uppercase tracking-wider">
             <span>Trajets publiés</span>
-            <Car className="w-4 h-4 text-[#173C2C]" />
+            <Car className="w-4 h-4 text-[#3B82F6]" />
           </div>
-          <div className="text-2xl font-black text-[#141613]">{totalTripsCount}</div>
-          <span className="text-[11px] text-[#5C6057] block">Annonces actives</span>
+          <div className="text-2xl font-black text-white">{totalTripsCount}</div>
+          <span className="text-[11px] text-slate-400 block">Annonces actives</span>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-[#E6E0D6] shadow-card space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#92400E] font-bold uppercase tracking-wider">
+        <div className="bg-[#131D2E] p-5 rounded-xl border border-[#1E2C42] shadow-xl space-y-1">
+          <div className="flex items-center justify-between text-xs text-amber-400 font-bold uppercase tracking-wider">
             <span>Demandes en attente</span>
-            <Clock className="w-4 h-4 text-[#D97706]" />
+            <Clock className="w-4 h-4 text-amber-400" />
           </div>
-          <div className="text-2xl font-black text-[#92400E]">{pendingRequestsCount}</div>
-          <span className="text-[11px] text-[#5C6057] block">Nécessitent votre approbation</span>
+          <div className="text-2xl font-black text-amber-400">{pendingRequestsCount}</div>
+          <span className="text-[11px] text-slate-400 block">Nécessitent votre approbation</span>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-[#E6E0D6] shadow-card space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#173C2C] font-bold uppercase tracking-wider">
+        <div className="bg-[#131D2E] p-5 rounded-xl border border-[#1E2C42] shadow-xl space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#60A5FA] font-bold uppercase tracking-wider">
             <span>Passagers confirmés</span>
-            <CheckCircle2 className="w-4 h-4 text-[#173C2C]" />
+            <CheckCircle2 className="w-4 h-4 text-[#3B82F6]" />
           </div>
-          <div className="text-2xl font-black text-[#173C2C]">{confirmedBookingsCount}</div>
-          <span className="text-[11px] text-[#5C6057] block">Réservations validées</span>
+          <div className="text-2xl font-black text-[#60A5FA]">{confirmedBookingsCount}</div>
+          <span className="text-[11px] text-slate-400 block">Réservations validées</span>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-[#E6E0D6] shadow-card space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#8E9389] font-bold uppercase tracking-wider">
+        <div className="bg-[#131D2E] p-5 rounded-xl border border-[#1E2C42] shadow-xl space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-400 font-bold uppercase tracking-wider">
             <span>Rémunération nette</span>
-            <Wallet className="w-4 h-4 text-[#173C2C]" />
+            <Wallet className="w-4 h-4 text-[#3B82F6]" />
           </div>
-          <div className="text-2xl font-black text-[#173C2C] tabular-nums">
+          <div className="text-2xl font-black text-[#60A5FA] tabular-nums">
             {estimatedNetEarnings.toLocaleString('fr-DZ')} DA
           </div>
-          <span className="text-[11px] text-[#5C6057] block">100% net sans retenue</span>
+          <span className="text-[11px] text-slate-400 block">100% net sans retenue</span>
         </div>
       </div>
 
@@ -206,17 +205,17 @@ export const DriverDashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Published Trips List */}
         <div className="lg:col-span-5 space-y-3">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-[#8E9389] px-1">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">
             Vos annonces publiées ({trips.length})
           </h2>
 
           {trips.length === 0 ? (
-            <div className="bg-white rounded-xl border border-[#E6E0D6] p-8 text-center space-y-3 shadow-card">
-              <Car className="w-8 h-8 text-[#8E9389] mx-auto" />
-              <p className="text-sm font-bold text-[#32362F]">Aucun trajet publié pour l'instant</p>
+            <div className="bg-[#131D2E] rounded-xl border border-[#1E2C42] p-8 text-center space-y-3 shadow-xl">
+              <Car className="w-8 h-8 text-slate-500 mx-auto" />
+              <p className="text-sm font-bold text-white">Aucun trajet publié pour l'instant</p>
               <Link
                 to="/trips/create"
-                className="inline-block text-xs font-bold text-[#173C2C] hover:underline"
+                className="inline-block text-xs font-bold text-[#60A5FA] hover:underline"
               >
                 Créer mon premier trajet
               </Link>
@@ -238,24 +237,30 @@ export const DriverDashboardPage: React.FC = () => {
                     onClick={() => selectTrip(trip)}
                     className={`p-4 rounded-xl border transition-all cursor-pointer space-y-2.5 ${
                       isSelected
-                        ? 'bg-white border-[#173C2C] shadow-elevated ring-1 ring-[#173C2C]'
-                        : 'bg-white border-[#E6E0D6] hover:border-[#D4CCBF] shadow-card'
+                        ? 'bg-[#18253A] border-[#2563EB] shadow-lg shadow-blue-900/30 ring-1 ring-[#2563EB]'
+                        : 'bg-[#131D2E] border-[#1E2C42] hover:border-slate-500 hover:bg-[#18253A]'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 font-bold text-[#141613] text-sm">
+                      <span className="text-sm font-bold text-white flex items-center gap-1.5">
                         <span>{trip.origin_city}</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#173C2C]" />
+                        <ArrowRight className="w-3.5 h-3.5 text-[#3B82F6]" />
                         <span>{trip.destination_city}</span>
-                      </div>
-                      <span className="text-xs font-black text-[#173C2C] tabular-nums">
-                        {trip.base_seat_price} DA net
+                      </span>
+                      <span className="text-xs font-bold text-[#60A5FA] tabular-nums">
+                        {trip.base_seat_price} DA
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-[#5C6057] pt-1 border-t border-[#F3EFE8]">
-                      <span>{depDate}</span>
-                      <span className="font-semibold text-[#32362F]">{trip.available_seats} places libres</span>
+                    <div className="flex items-center justify-between text-xs text-slate-400">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                        <span>{depDate}</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Users className="w-3.5 h-3.5 text-slate-400" />
+                        <span>{trip.available_seats} place{trip.available_seats > 1 ? 's' : ''} libre{trip.available_seats > 1 ? 's' : ''}</span>
+                      </span>
                     </div>
                   </div>
                 );
@@ -264,158 +269,158 @@ export const DriverDashboardPage: React.FC = () => {
           )}
         </div>
 
-        {/* Right: Selected Trip Bookings & Approvals */}
-        <div className="lg:col-span-7 space-y-3">
-          <div className="flex items-center justify-between px-1">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#8E9389]">
-              Gestion des réservations
-            </h2>
-            {selectedTrip && (
-              <Link
-                to={`/trips/${selectedTrip.id}/chat`}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#173C2C] hover:underline"
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                <span>Messagerie de coordination</span>
-              </Link>
-            )}
-          </div>
-
-          {!selectedTrip ? (
-            <div className="bg-white rounded-xl border border-[#E6E0D6] p-12 text-center text-[#8E9389] shadow-card">
-              Sélectionnez un trajet pour visualiser et approuver les réservations.
-            </div>
-          ) : (
-            <div className="bg-white rounded-xl border border-[#E6E0D6] p-6 shadow-card space-y-6">
-              {/* Trip Context Banner */}
-              <div className="p-4 rounded-lg bg-[#FAF8F5] border border-[#E6E0D6] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2 font-extrabold text-[#141613] text-base">
+        {/* Right: Selected Trip Bookings Management */}
+        <div className="lg:col-span-7 space-y-4">
+          {selectedTrip ? (
+            <div className="bg-[#131D2E] rounded-xl border border-[#1E2C42] p-6 shadow-xl space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#1E2C42]">
+                <div>
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <span>{selectedTrip.origin_city}</span>
-                    <ArrowRight className="w-4 h-4 text-[#173C2C]" />
+                    <ArrowRight className="w-4 h-4 text-[#3B82F6]" />
                     <span>{selectedTrip.destination_city}</span>
-                  </div>
-                  <p className="text-xs text-[#5C6057]">
-                    Départ : {new Date(selectedTrip.departure_datetime).toLocaleString('fr-DZ')} • {selectedTrip.distance_km} km
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    {new Date(selectedTrip.departure_datetime).toLocaleString('fr-DZ', { dateStyle: 'medium', timeStyle: 'short' })} • {selectedTrip.distance_km} km
                   </p>
                 </div>
 
-                <Link
-                  to={`/trips/${selectedTrip.id}`}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-[#173C2C] hover:underline"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Voir la fiche</span>
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    to={`/trips/${selectedTrip.id}/chat`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#1E2C42] bg-[#0E1624] text-xs font-bold text-slate-300 hover:text-white hover:border-[#2563EB] transition-colors"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5 text-[#3B82F6]" />
+                    <span>Messages</span>
+                  </Link>
+                  <Link
+                    to={`/trips/${selectedTrip.id}`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#1E2C42] bg-[#0E1624] text-xs font-bold text-slate-300 hover:text-white hover:border-[#2563EB] transition-colors"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Fiche</span>
+                  </Link>
+                </div>
               </div>
 
               {/* Bookings List */}
               <div className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#32362F] border-b border-[#F3EFE8] pb-2">
-                  Demandes de passagers ({bookings.length})
-                </h3>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Demandes de réservation ({bookings.length})
+                </h4>
 
                 {bookings.length === 0 ? (
-                  <div className="py-10 text-center text-[#8E9389] space-y-1">
-                    <Users className="w-7 h-7 text-[#8E9389] mx-auto mb-2" />
-                    <p className="text-xs font-bold text-[#32362F]">Aucune demande reçue pour ce trajet</p>
-                    <p className="text-[11px] text-[#5C6057]">
-                      Les passagers trouveront votre trajet via la recherche inter-wilayas.
-                    </p>
+                  <div className="p-8 rounded-lg bg-[#0E1624] border border-[#1E2C42] text-center space-y-2">
+                    <Users className="w-6 h-6 text-slate-500 mx-auto" />
+                    <p className="text-xs font-bold text-slate-300">Aucune demande reçue pour ce trajet pour le moment.</p>
+                    <p className="text-[11px] text-slate-500">Les nouvelles demandes apparaîtront ici pour approbation manuelle.</p>
                   </div>
                 ) : (
-                  bookings.map((b) => (
-                    <div
-                      key={b.id}
-                      className="p-4 rounded-lg border border-[#E6E0D6] bg-white space-y-3 shadow-subtle"
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={b.passenger?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${b.passenger?.full_name}`}
-                            alt={b.passenger?.full_name}
-                            className="w-9 h-9 rounded-full object-cover border border-[#E6E0D6]"
-                          />
-                          <div>
-                            <span className="text-sm font-bold text-[#141613] block">{b.passenger?.full_name}</span>
-                            <span className="text-[11px] text-[#8E9389]">{b.passenger?.phone_number || 'Téléphone vérifié'}</span>
+                  <div className="space-y-3">
+                    {bookings.map((booking) => (
+                      <div
+                        key={booking.id}
+                        className="p-4 rounded-xl border border-[#1E2C42] bg-[#0E1624] space-y-3"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={booking.passenger?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${booking.passenger?.full_name || 'Passager'}`}
+                              alt={booking.passenger?.full_name || 'Passager'}
+                              className="w-9 h-9 rounded-full object-cover border border-[#2563EB]/40"
+                            />
+                            <div>
+                              <span className="font-bold text-white text-xs block leading-tight">
+                                {booking.passenger?.full_name || 'Passager'}
+                              </span>
+                              <span className="text-[11px] text-slate-400">
+                                {booking.passenger?.phone_number || 'Numéro disponible après validation'}
+                              </span>
+                            </div>
                           </div>
+
+                          <StatusBadge status={booking.status} />
                         </div>
 
-                        <div className="flex items-center gap-3">
-                          <StatusBadge status={b.status} />
-                          <div className="text-right">
-                            <span className="text-sm font-black text-[#141613] tabular-nums block">
-                              {b.total_price || b.quoted_total_price} DA
-                            </span>
-                            <span className="text-[10px] text-[#8E9389]">
-                              {b.seat_count} place{b.seat_count > 1 ? 's' : ''} ({b.seat_type === 'comfort' ? 'Confort' : 'Standard'})
-                            </span>
-                          </div>
+                        <div className="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-[#1E2C42]">
+                          <span>
+                            {booking.seat_count} place{booking.seat_count > 1 ? 's' : ''} ({booking.seat_type === 'comfort' ? 'Confort' : 'Standard'})
+                          </span>
+                          <span className="font-bold text-white tabular-nums">
+                            {(booking.total_price || booking.quoted_total_price || 0).toLocaleString('fr-DZ')} DA
+                          </span>
                         </div>
+
+                        {/* Actions for pending booking */}
+                        {booking.status === 'pending' && (
+                          <div className="flex items-center gap-2 pt-2 border-t border-[#1E2C42]">
+                            <button
+                              type="button"
+                              onClick={() => handleApprove(booking.id)}
+                              disabled={actionLoading === booking.id}
+                              className="flex-1 py-2 px-3 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-blue-600/30 transition-colors"
+                            >
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span>{actionLoading === booking.id ? 'Approbation...' : 'Approuver'}</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => openRejectModal(booking.id)}
+                              disabled={actionLoading === booking.id}
+                              className="py-2 px-3 rounded-lg border border-rose-800 text-rose-300 hover:bg-rose-950/40 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                            >
+                              <XCircle className="w-3.5 h-3.5" />
+                              <span>Refuser</span>
+                            </button>
+                          </div>
+                        )}
                       </div>
-
-                      {/* Approval Actions (for pending status) */}
-                      {b.status === 'pending' && (
-                        <div className="pt-2 border-t border-[#F3EFE8] flex items-center justify-end gap-2">
-                          <button
-                            type="button"
-                            onClick={() => openRejectModal(b.id)}
-                            disabled={actionLoading === b.id}
-                            className="px-3.5 py-1.5 rounded-lg border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs transition-colors"
-                          >
-                            Refuser
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => handleApprove(b.id)}
-                            disabled={actionLoading === b.id}
-                            className="px-4 py-1.5 rounded-lg bg-[#173C2C] hover:bg-[#112E22] text-white font-bold text-xs shadow-subtle transition-colors"
-                          >
-                            {actionLoading === b.id ? 'Validation...' : 'Accepter la réservation'}
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  ))
+                    ))}
+                  </div>
                 )}
               </div>
+            </div>
+          ) : (
+            <div className="bg-[#131D2E] rounded-xl border border-[#1E2C42] p-12 text-center text-slate-400 space-y-2">
+              <Car className="w-8 h-8 text-slate-500 mx-auto" />
+              <p className="text-xs font-bold text-slate-300">Sélectionnez un trajet dans la liste pour gérer ses réservations.</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Rejection Modal */}
+      {/* Reject Reason Modal */}
       <Modal
         isOpen={rejectModalOpen}
         onClose={() => setRejectModalOpen(false)}
         title="Refuser la demande de réservation"
       >
         <div className="space-y-4 text-left">
-          <p className="text-xs text-[#5C6057] leading-relaxed">
-            Veuillez indiquer un motif poli de refus. Le passager sera notifié et pourra rechercher un autre départ.
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Veuillez indiquer un motif de refus qui sera transmis au passager avec la libération immédiate de la place.
           </p>
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-[#32362F]">Motif du refus</label>
+          <div className="space-y-1">
+            <label className="block text-xs font-bold text-slate-200">
+              Motif du refus
+            </label>
             <select
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-[#E6E0D6] bg-[#FAF8F5] text-xs font-semibold text-[#141613] focus:outline-none"
+              className="w-full px-3 py-2.5 rounded-lg border border-[#1E2C42] bg-[#0E1624] text-xs font-bold text-white focus:outline-none focus:border-[#2563EB]"
             >
-              <option value="Désolé, indisponibilité imprévue">Désolé, indisponibilité imprévue</option>
-              <option value="Complet / Véhicule déjà plein">Complet / Véhicule déjà plein</option>
-              <option value="Changement d'horaire ou d'itinéraire">Changement d'horaire ou d'itinéraire</option>
-              <option value="Volume de bagages incompatible">Volume de bagages incompatible</option>
+              <option value="Désolé, indisponibilité imprévue" className="bg-[#131D2E]">Désolé, indisponibilité imprévue</option>
+              <option value="Véhicule complet avec bagages encombrants" className="bg-[#131D2E]">Véhicule complet avec bagages encombrants</option>
+              <option value="Point de rendez-vous non desservi sur cet axe" className="bg-[#131D2E]">Point de rendez-vous non desservi sur cet axe</option>
+              <option value="Modification d'horaire de départ" className="bg-[#131D2E]">Modification d'horaire de départ</option>
             </select>
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-2">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#1E2C42]">
             <button
               type="button"
               onClick={() => setRejectModalOpen(false)}
-              className="px-4 py-2 rounded-lg border border-[#E6E0D6] text-xs font-bold text-[#5C6057] hover:bg-[#FAF8F5]"
+              className="px-4 py-2 rounded-lg border border-[#1E2C42] text-xs font-bold text-slate-400 hover:text-white"
             >
               Annuler
             </button>
@@ -423,9 +428,9 @@ export const DriverDashboardPage: React.FC = () => {
               type="button"
               onClick={handleConfirmReject}
               disabled={actionLoading !== null}
-              className="px-5 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-subtle"
+              className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors"
             >
-              Confirmer le refus
+              {actionLoading !== null ? 'Traitement...' : 'Confirmer le refus'}
             </button>
           </div>
         </div>

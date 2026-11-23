@@ -167,31 +167,31 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-20 text-left">
-      {/* 1. TRAVEL-LED HERO — TRIP SEARCH IS THE CLEAR FOCAL POINT */}
+      {/* 1. TRAVEL-LED HERO — DARK MODE WITH BLUE JEANS ACCENTS */}
       <section className="relative pt-12 sm:pt-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-6">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#173C2C] bg-[#E1EDE6] border border-[#C2DBCF]">
-          <span className="w-2 h-2 rounded-full bg-[#173C2C]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#60A5FA] bg-[#172554] border border-[#2563EB]/40">
+          <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
           <span className="tracking-wide">Réseau National de Mobilité • 58 Wilayas d'Algérie</span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-[#141613] leading-[1.12] max-w-4xl mx-auto">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-white leading-[1.12] max-w-4xl mx-auto">
           Le covoiturage inter-wilayas, <br />
-          <span className="text-[#173C2C] italic">transparent et serein.</span>
+          <span className="text-[#60A5FA] italic">transparent et serein.</span>
         </h1>
 
-        <p className="text-base sm:text-lg text-[#5C6057] max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
           Partagez vos trajets entre villes algériennes avec des conducteurs vérifiés. Tarifs réglementés en Dinars (DZD), commission fixe de 15% et pause sécurité Naftal garantie.
         </p>
 
-        {/* 2. THE SEARCH CONSOLE (CENTRAL & PROMINENT) */}
+        {/* 2. THE SEARCH CONSOLE (DARK ELEVATED SLATE) */}
         <div className="mt-10 relative z-30 text-left">
-          <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-elevated border border-[#E6E0D6]">
+          <div className="bg-[#131D2E] rounded-2xl p-4 sm:p-5 shadow-2xl border border-[#1E2C42]">
             <form onSubmit={handleSearch} className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-0">
               {/* Departure */}
-              <div ref={originRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FAF8F5] transition-colors">
-                <MapPin className="w-5 h-5 text-[#173C2C] flex-shrink-0" />
+              <div ref={originRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#18253A] transition-colors">
+                <MapPin className="w-5 h-5 text-[#3B82F6] flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <label className="block text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     Départ
                   </label>
                   <input
@@ -203,14 +203,14 @@ export const HomePage: React.FC = () => {
                     }}
                     onFocus={() => setShowOriginDropdown(true)}
                     placeholder="Alger, Oran..."
-                    className="w-full bg-transparent text-sm font-bold text-[#141613] focus:outline-none placeholder:text-[#8E9389]"
+                    className="w-full bg-transparent text-sm font-bold text-white focus:outline-none placeholder:text-slate-500"
                   />
                 </div>
 
                 {/* Autocomplete Dropdown */}
                 {showOriginDropdown && filteredOriginWilayas.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-search border border-[#E6E0D6] py-2 z-50 max-h-60 overflow-y-auto">
-                    <div className="px-4 py-1 text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-[#131D2E] rounded-xl shadow-2xl border border-[#1E2C42] py-2 z-50 max-h-60 overflow-y-auto">
+                    <div className="px-4 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-[#1E2C42]">
                       Wilayas correspondantes
                     </div>
                     {filteredOriginWilayas.map((w) => (
@@ -221,12 +221,12 @@ export const HomePage: React.FC = () => {
                           setOrigin(w.name);
                           setShowOriginDropdown(false);
                         }}
-                        className="w-full text-left px-4 py-2 hover:bg-[#F3EFE8] flex items-center justify-between text-xs transition-colors"
+                        className="w-full text-left px-4 py-2 hover:bg-[#18253A] flex items-center justify-between text-xs transition-colors"
                       >
-                        <span className="font-bold text-[#141613]">
+                        <span className="font-bold text-white">
                           {w.code_str} - {w.name}
                         </span>
-                        <span className="text-[#8E9389] font-arabic">{w.name_ar}</span>
+                        <span className="text-slate-400 font-arabic">{w.name_ar}</span>
                       </button>
                     ))}
                   </div>
@@ -234,13 +234,13 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* Hairline Divider */}
-              <div className="hidden lg:block w-px h-10 bg-[#E6E0D6] my-auto" />
+              <div className="hidden lg:block w-px h-10 bg-[#1E2C42] my-auto" />
 
               {/* Destination */}
-              <div ref={destRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FAF8F5] transition-colors">
-                <MapPin className="w-5 h-5 text-rose-600 flex-shrink-0" />
+              <div ref={destRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#18253A] transition-colors">
+                <MapPin className="w-5 h-5 text-rose-500 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <label className="block text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     Destination
                   </label>
                   <input
@@ -252,14 +252,14 @@ export const HomePage: React.FC = () => {
                     }}
                     onFocus={() => setShowDestDropdown(true)}
                     placeholder="Oran, Sétif..."
-                    className="w-full bg-transparent text-sm font-bold text-[#141613] focus:outline-none placeholder:text-[#8E9389]"
+                    className="w-full bg-transparent text-sm font-bold text-white focus:outline-none placeholder:text-slate-500"
                   />
                 </div>
 
                 {/* Autocomplete Dropdown */}
                 {showDestDropdown && filteredDestWilayas.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-search border border-[#E6E0D6] py-2 z-50 max-h-60 overflow-y-auto">
-                    <div className="px-4 py-1 text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-[#131D2E] rounded-xl shadow-2xl border border-[#1E2C42] py-2 z-50 max-h-60 overflow-y-auto">
+                    <div className="px-4 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-[#1E2C42]">
                       Wilayas correspondantes
                     </div>
                     {filteredDestWilayas.map((w) => (
@@ -270,12 +270,12 @@ export const HomePage: React.FC = () => {
                           setDestination(w.name);
                           setShowDestDropdown(false);
                         }}
-                        className="w-full text-left px-4 py-2 hover:bg-[#F3EFE8] flex items-center justify-between text-xs transition-colors"
+                        className="w-full text-left px-4 py-2 hover:bg-[#18253A] flex items-center justify-between text-xs transition-colors"
                       >
-                        <span className="font-bold text-[#141613]">
+                        <span className="font-bold text-white">
                           {w.code_str} - {w.name}
                         </span>
-                        <span className="text-[#8E9389] font-arabic">{w.name_ar}</span>
+                        <span className="text-slate-400 font-arabic">{w.name_ar}</span>
                       </button>
                     ))}
                   </div>
@@ -283,29 +283,29 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* Hairline Divider */}
-              <div className="hidden lg:block w-px h-10 bg-[#E6E0D6] my-auto" />
+              <div className="hidden lg:block w-px h-10 bg-[#1E2C42] my-auto" />
 
               {/* Date */}
-              <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FAF8F5] transition-colors">
-                <Calendar className="w-5 h-5 text-[#173C2C] flex-shrink-0" />
+              <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#18253A] transition-colors">
+                <Calendar className="w-5 h-5 text-[#3B82F6] flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <label className="block text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                       Date
                     </label>
                     <div className="flex gap-1.5">
                       <button
                         type="button"
                         onClick={setDateToday}
-                        className="text-[10px] text-[#173C2C] hover:underline font-bold"
+                        className="text-[10px] text-[#60A5FA] hover:underline font-bold"
                       >
                         Aujourd'hui
                       </button>
-                      <span className="text-[10px] text-[#8E9389]">•</span>
+                      <span className="text-[10px] text-slate-600">•</span>
                       <button
                         type="button"
                         onClick={setDateTomorrow}
-                        className="text-[10px] text-[#173C2C] hover:underline font-bold"
+                        className="text-[10px] text-[#60A5FA] hover:underline font-bold"
                       >
                         Demain
                       </button>
@@ -315,39 +315,39 @@ export const HomePage: React.FC = () => {
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-transparent text-sm font-bold text-[#141613] focus:outline-none cursor-pointer"
+                    className="w-full bg-transparent text-sm font-bold text-white focus:outline-none cursor-pointer"
                   />
                 </div>
               </div>
 
               {/* Hairline Divider */}
-              <div className="hidden lg:block w-px h-10 bg-[#E6E0D6] my-auto" />
+              <div className="hidden lg:block w-px h-10 bg-[#1E2C42] my-auto" />
 
               {/* Passengers */}
-              <div className="flex-initial sm:w-40 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FAF8F5] transition-colors">
-                <Users className="w-5 h-5 text-[#173C2C] flex-shrink-0" />
+              <div className="flex-initial sm:w-40 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#18253A] transition-colors">
+                <Users className="w-5 h-5 text-[#3B82F6] flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <label className="block text-[10px] font-bold text-[#8E9389] uppercase tracking-wider">
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     Passagers
                   </label>
                   <select
                     value={seats}
                     onChange={(e) => setSeats(Number(e.target.value))}
-                    className="w-full bg-transparent text-sm font-bold text-[#141613] focus:outline-none cursor-pointer"
+                    className="w-full bg-transparent text-sm font-bold text-white focus:outline-none cursor-pointer"
                   >
-                    <option value={1}>1 passager</option>
-                    <option value={2}>2 passagers</option>
-                    <option value={3}>3 passagers</option>
-                    <option value={4}>4 passagers</option>
+                    <option value={1} className="bg-[#131D2E] text-white">1 passager</option>
+                    <option value={2} className="bg-[#131D2E] text-white">2 passagers</option>
+                    <option value={3} className="bg-[#131D2E] text-white">3 passagers</option>
+                    <option value={4} className="bg-[#131D2E] text-white">4 passagers</option>
                   </select>
                 </div>
               </div>
 
-              {/* Search Button */}
+              {/* Search Button (Blue Jeans Accent) */}
               <div className="p-1">
                 <button
                   type="submit"
-                  className="w-full lg:w-auto px-8 py-4 rounded-xl bg-[#173C2C] hover:bg-[#112E22] text-white font-bold text-sm shadow-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full lg:w-auto px-8 py-4 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold text-sm shadow-lg shadow-blue-600/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   <Search className="w-4 h-4" />
                   <span>Rechercher</span>
@@ -358,7 +358,7 @@ export const HomePage: React.FC = () => {
 
           {/* Quick Route Shortcuts */}
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
-            <span className="text-[#8E9389] font-medium">Liaisons fréquentes :</span>
+            <span className="text-slate-500 font-medium">Liaisons fréquentes :</span>
             {[
               { from: 'Alger', to: 'Oran' },
               { from: 'Alger', to: 'Constantine' },
@@ -373,7 +373,7 @@ export const HomePage: React.FC = () => {
                   setOrigin(route.from);
                   setDestination(route.to);
                 }}
-                className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#F3EFE8] border border-[#E6E0D6] text-[#32362F] font-semibold shadow-subtle transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-[#131D2E] hover:bg-[#18253A] border border-[#1E2C42] hover:border-[#2563EB] text-slate-300 font-semibold transition-colors"
               >
                 {route.from} ➔ {route.to}
               </button>
@@ -385,42 +385,42 @@ export const HomePage: React.FC = () => {
       {/* 2. REGULATORY & TRUST METRICS STRIP */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-5 rounded-xl bg-white border border-[#E6E0D6] shadow-subtle space-y-2">
-            <div className="w-8 h-8 rounded-lg bg-[#E1EDE6] text-[#173C2C] flex items-center justify-center">
-              <ShieldCheck className="w-4 h-4" />
+          <div className="p-5 rounded-xl bg-[#131D2E] border border-[#1E2C42] space-y-2">
+            <div className="w-8 h-8 rounded-lg bg-[#172554] text-[#60A5FA] flex items-center justify-center border border-[#2563EB]/30">
+              <ShieldCheck className="w-4 h-4 text-[#3B82F6]" />
             </div>
-            <h3 className="text-sm font-bold text-[#141613]">15% Commission Fixe</h3>
-            <p className="text-xs text-[#5C6057] leading-relaxed">
+            <h3 className="text-sm font-bold text-white">15% Commission Fixe</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
               Frais de service plafonnés à 15%. Aucun supplément imprévu lors du paiement en Dinars (DZD).
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-white border border-[#E6E0D6] shadow-subtle space-y-2">
-            <div className="w-8 h-8 rounded-lg bg-[#FEF3C7] text-[#92400E] flex items-center justify-center">
-              <Coffee className="w-4 h-4" />
+          <div className="p-5 rounded-xl bg-[#131D2E] border border-[#1E2C42] space-y-2">
+            <div className="w-8 h-8 rounded-lg bg-amber-950/60 text-amber-400 flex items-center justify-center border border-amber-500/30">
+              <Coffee className="w-4 h-4 text-amber-400" />
             </div>
-            <h3 className="text-sm font-bold text-[#141613]">Pause Naftal &gt;300 km</h3>
-            <p className="text-xs text-[#5C6057] leading-relaxed">
+            <h3 className="text-sm font-bold text-white">Pause Naftal &gt;300 km</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
               Halte de sécurité de 15 minutes en station autoroutière Naftal obligatoire sur les longues distances.
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-white border border-[#E6E0D6] shadow-subtle space-y-2">
-            <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center">
-              <Sparkles className="w-4 h-4" />
+          <div className="p-5 rounded-xl bg-[#131D2E] border border-[#1E2C42] space-y-2">
+            <div className="w-8 h-8 rounded-lg bg-purple-950/60 text-purple-400 flex items-center justify-center border border-purple-500/30">
+              <Sparkles className="w-4 h-4 text-purple-400" />
             </div>
-            <h3 className="text-sm font-bold text-[#141613]">Option Trajet Confort</h3>
-            <p className="text-xs text-[#5C6057] leading-relaxed">
+            <h3 className="text-sm font-bold text-white">Option Trajet Confort</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
               Supplément de 30% pour voyager avec 2 passagers maximum à l'arrière du véhicule.
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-white border border-[#E6E0D6] shadow-subtle space-y-2">
-            <div className="w-8 h-8 rounded-lg bg-[#E1EDE6] text-[#173C2C] flex items-center justify-center">
-              <Fuel className="w-4 h-4" />
+          <div className="p-5 rounded-xl bg-[#131D2E] border border-[#1E2C42] space-y-2">
+            <div className="w-8 h-8 rounded-lg bg-[#172554] text-[#60A5FA] flex items-center justify-center border border-[#2563EB]/30">
+              <Fuel className="w-4 h-4 text-[#3B82F6]" />
             </div>
-            <h3 className="text-sm font-bold text-[#141613]">Barème Naftal Intégré</h3>
-            <p className="text-xs text-[#5C6057] leading-relaxed">
+            <h3 className="text-sm font-bold text-white">Barème Naftal Intégré</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
               Estimation automatique basée sur 8 L / 100 km et les prix officiels du carburant en Algérie.
             </p>
           </div>
@@ -429,18 +429,18 @@ export const HomePage: React.FC = () => {
 
       {/* 3. FEATURED CORRIDORS — EDITORIAL TRANSPORT TICKETS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 border-b border-[#E6E0D6] pb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 border-b border-[#1E2C42] pb-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#141613] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
               Liaisons régulières & départs fréquents
             </h2>
-            <p className="text-xs sm:text-sm text-[#5C6057] mt-1">
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">
               Consultez les trajets populaires inter-wilayas avec décomposition transparente du prix.
             </p>
           </div>
           <Link
             to="/search"
-            className="text-xs font-bold text-[#173C2C] hover:text-[#112E22] flex items-center gap-1 group"
+            className="text-xs font-bold text-[#60A5FA] hover:text-white flex items-center gap-1 group"
           >
             <span>Voir tous les trajets</span>
             <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -452,58 +452,58 @@ export const HomePage: React.FC = () => {
             <div
               key={i}
               onClick={() => navigate(`/search?origin=${route.from}&destination=${route.to}`)}
-              className="group bg-white rounded-2xl border border-[#E6E0D6] p-6 shadow-card hover:shadow-elevated hover:border-[#173C2C] transition-all cursor-pointer flex flex-col justify-between space-y-5"
+              className="group bg-[#131D2E] rounded-2xl border border-[#1E2C42] p-6 shadow-xl hover:border-[#2563EB] hover:bg-[#18253A] transition-all cursor-pointer flex flex-col justify-between space-y-5"
             >
               {/* Route Itinerary Line */}
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-xl font-serif font-bold text-[#141613]">
+                    <span className="text-xl font-serif font-bold text-white">
                       {route.from}
                     </span>
-                    <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-[#FAF8F5] border border-[#E6E0D6] text-[#5C6057]">
+                    <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-[#0E1624] border border-[#1E2C42] text-slate-300">
                       W.{route.fromCode}
                     </span>
-                    <ArrowRight className="w-4 h-4 text-[#8E9389]" />
-                    <span className="text-xl font-serif font-bold text-[#141613]">
+                    <ArrowRight className="w-4 h-4 text-slate-500" />
+                    <span className="text-xl font-serif font-bold text-white">
                       {route.to}
                     </span>
-                    <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-[#FAF8F5] border border-[#E6E0D6] text-[#5C6057]">
+                    <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-[#0E1624] border border-[#1E2C42] text-slate-300">
                       W.{route.toCode}
                     </span>
                   </div>
-                  <div className="text-xs text-[#5C6057] flex items-center gap-2">
+                  <div className="text-xs text-slate-400 flex items-center gap-2">
                     <span>{route.dist}</span>
                     <span>•</span>
                     <span>~{route.time}</span>
                     <span>•</span>
-                    <span>Départ quotidien <strong>{route.departureTime}</strong></span>
+                    <span>Départ quotidien <strong className="text-white">{route.departureTime}</strong></span>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-2xl font-bold text-[#173C2C] tabular-nums block font-serif">
+                  <span className="text-2xl font-bold text-[#60A5FA] tabular-nums block font-serif">
                     {route.price}
                   </span>
-                  <span className="text-[10px] text-[#8E9389] block">
+                  <span className="text-[10px] text-slate-500 block">
                     TTC tout inclus / place
                   </span>
-                  <span className="text-[11px] text-[#5C6057] block mt-0.5">
+                  <span className="text-[11px] text-slate-400 block mt-0.5">
                     Base conducteur : {route.basePrice}
                   </span>
                 </div>
               </div>
 
               {/* Feature Badges */}
-              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#F3EFE8]">
+              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#1E2C42]">
                 {route.restStop && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-950/60 text-amber-400 border border-amber-500/30">
                     <Coffee className="w-3.5 h-3.5" />
                     <span>Halte Naftal 15 min incluse</span>
                   </span>
                 )}
                 {route.comfort && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-purple-950/60 text-purple-400 border border-purple-500/30">
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>Option Confort disponible (+30%)</span>
                   </span>
@@ -511,29 +511,29 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* Driver & Booking Footer */}
-              <div className="pt-3 border-t border-[#F3EFE8] flex items-center justify-between text-xs">
+              <div className="pt-3 border-t border-[#1E2C42] flex items-center justify-between text-xs">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#173C2C] text-white flex items-center justify-center font-bold text-xs">
+                  <div className="w-8 h-8 rounded-full bg-[#2563EB] text-white flex items-center justify-center font-bold text-xs shadow-md shadow-blue-600/30">
                     {route.driver.charAt(0)}
                   </div>
                   <div>
-                    <span className="font-bold text-[#141613] block leading-tight">
+                    <span className="font-bold text-white block leading-tight">
                       {route.driver}
                     </span>
-                    <span className="text-[11px] text-[#8E9389]">
+                    <span className="text-[11px] text-slate-400">
                       {route.car}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1 font-bold text-xs text-[#141613]">
-                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                  <div className="flex items-center gap-1 font-bold text-xs text-white">
+                    <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                     <span>{route.rating}</span>
-                    <span className="text-[#8E9389] font-normal">({route.reviews})</span>
+                    <span className="text-slate-400 font-normal">({route.reviews})</span>
                   </div>
 
-                  <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#173C2C] text-white font-bold text-xs group-hover:bg-[#112E22] transition-colors shadow-subtle">
+                  <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#2563EB] text-white font-bold text-xs group-hover:bg-[#1D4ED8] transition-colors shadow-md shadow-blue-600/30">
                     <span>Réserver</span>
                     <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </span>
@@ -545,47 +545,47 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 4. HOW IT WORKS (COMMENT ÇA MARCHE) */}
-      <section className="bg-white border-y border-[#E6E0D6] py-16">
+      <section className="bg-[#0D1522] border-y border-[#1E2C42] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#173C2C]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#60A5FA]">
               Simplicité & Rigueur
             </span>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#141613]">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
               Comment fonctionne DZ-CarPool
             </h2>
-            <p className="text-xs sm:text-sm text-[#5C6057]">
+            <p className="text-xs sm:text-sm text-slate-400">
               Un service de transport partagé pensé pour la réalité des 58 wilayas d'Algérie.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-2xl border border-[#E6E0D6] bg-[#FAF8F5] space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[#173C2C] text-white flex items-center justify-center font-bold text-sm">
+            <div className="p-6 rounded-2xl border border-[#1E2C42] bg-[#131D2E] space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[#2563EB] text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-600/30">
                 01
               </div>
-              <h3 className="text-base font-bold text-[#141613]">1. Trouvez votre trajet</h3>
-              <p className="text-xs text-[#5C6057] leading-relaxed">
+              <h3 className="text-base font-bold text-white">1. Trouvez votre trajet</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
                 Renseignez votre ville de départ et votre destination. Comparez les horaires, les modèles de véhicules et les profils de conducteurs certifiés.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl border border-[#E6E0D6] bg-[#FAF8F5] space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[#173C2C] text-white flex items-center justify-center font-bold text-sm">
+            <div className="p-6 rounded-2xl border border-[#1E2C42] bg-[#131D2E] space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[#2563EB] text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-600/30">
                 02
               </div>
-              <h3 className="text-base font-bold text-[#141613]">2. Tarif transparent en Dinars</h3>
-              <p className="text-xs text-[#5C6057] leading-relaxed">
+              <h3 className="text-base font-bold text-white">2. Tarif transparent en Dinars</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
                 Le montant est décomposé à l'écran : prix net conducteur, 15% de commission de service, et supplément optionnel de 30% pour l'option Confort.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl border border-[#E6E0D6] bg-[#FAF8F5] space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[#173C2C] text-white flex items-center justify-center font-bold text-sm">
+            <div className="p-6 rounded-2xl border border-[#1E2C42] bg-[#131D2E] space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[#2563EB] text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-600/30">
                 03
               </div>
-              <h3 className="text-base font-bold text-[#141613]">3. Halte Naftal & Coordination</h3>
-              <p className="text-xs text-[#5C6057] leading-relaxed">
+              <h3 className="text-base font-bold text-white">3. Halte Naftal & Coordination</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
                 Pause sécurité obligatoire de 15 minutes en station Naftal au-delà de 300 km et messagerie privée intégrée pour coordonner le rendez-vous.
               </p>
             </div>
@@ -595,23 +595,23 @@ export const HomePage: React.FC = () => {
 
       {/* 5. DRIVER CALL TO ACTION BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-[#0A1C14] text-white p-8 sm:p-12 border border-[#173C2C] shadow-elevated relative overflow-hidden">
+        <div className="rounded-2xl bg-[#0B1322] text-white p-8 sm:p-12 border border-[#1E2C42] shadow-2xl relative overflow-hidden">
           <div className="relative z-10 max-w-2xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-bold text-[#8FBFA9] bg-[#173C2C] border border-[#2D6A4F]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-bold text-[#60A5FA] bg-[#172554] border border-[#2563EB]/40">
               <Fuel className="w-3.5 h-3.5" />
               <span>Conducteurs : Amortissez vos frais de carburant</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight">
               Vous prenez la route ? <br />
-              <span className="text-[#8FBFA9] italic">Partagez vos places libres.</span>
+              <span className="text-[#60A5FA] italic">Partagez vos places libres.</span>
             </h2>
-            <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
               Publiez votre trajet en 2 minutes. Notre simulateur intègre automatiquement le barème officiel Naftal (8 L / 100 km) pour suggérer un prix par place transparent et équitable.
             </p>
             <div className="pt-2">
               <Link
                 to="/trips/create"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-[#0A1C14] hover:bg-[#FAF8F5] font-bold text-xs transition-all shadow-sm"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold text-xs transition-all shadow-lg shadow-blue-600/30"
               >
                 <span>Publier un trajet maintenant</span>
                 <ArrowRight className="w-4 h-4" />

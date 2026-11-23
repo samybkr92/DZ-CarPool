@@ -4,15 +4,15 @@
 
 @layer base {
   :root {
-    --bg-canvas: #FAF8F5;
-    --text-primary: #141613;
-    --border-color: #E6E0D6;
-    --forest-primary: #173C2C;
+    --bg-canvas: #0B0F17;
+    --text-primary: #F8FAFC;
+    --border-color: #1E2C42;
+    --jeans-primary: #2563EB;
   }
 
   html {
-    background-color: #FAF8F5;
-    color: #141613;
+    background-color: #0B0F17;
+    color: #F8FAFC;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -20,8 +20,8 @@
 
   body {
     font-family: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Arabic', sans-serif;
-    background-color: #FAF8F5;
-    color: #141613;
+    background-color: #0B0F17;
+    color: #F8FAFC;
     margin: 0;
     min-height: 100vh;
   }
@@ -56,18 +56,18 @@
   }
 }
 
-/* Crafted Warm Scrollbar */
+/* Crafted Dark Denim Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF8F5;
+  background: #0B0F17;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D4CCBF;
+  background: #1E2C42;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B8ADA0;
+  background: #2563EB;
 }

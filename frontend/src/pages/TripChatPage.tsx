@@ -89,7 +89,7 @@ export const TripChatPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16">
-        <div className="h-96 rounded-xl bg-white border border-[#E6E0D6] animate-pulse p-8 shadow-card" />
+        <div className="h-96 rounded-xl bg-[#131D2E] border border-[#1E2C42] animate-pulse p-8 shadow-xl" />
       </div>
     );
   }
@@ -97,21 +97,21 @@ export const TripChatPage: React.FC = () => {
   if (error) {
     return (
       <div className="max-w-md mx-auto px-4 py-24 text-center space-y-4">
-        <div className="p-8 bg-rose-50 text-[#141613] rounded-xl border border-rose-200 space-y-3 shadow-subtle">
-          <div className="w-12 h-12 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center mx-auto">
-            <AlertCircle className="w-6 h-6" />
+        <div className="p-8 bg-rose-950/60 text-white rounded-xl border border-rose-800 space-y-3 shadow-xl">
+          <div className="w-12 h-12 rounded-lg bg-rose-900/80 text-rose-300 flex items-center justify-center mx-auto">
+            <AlertCircle className="w-6 h-6 text-rose-400" />
           </div>
-          <h2 className="text-base font-bold text-[#141613]">Accès réservé aux membres du trajet</h2>
-          <p className="text-xs text-[#5C6057] leading-relaxed">
+          <h2 className="text-base font-bold text-white">Accès réservé aux membres du trajet</h2>
+          <p className="text-xs text-slate-300 leading-relaxed">
             Seuls le conducteur et les passagers ayant une réservation confirmée pour ce trajet peuvent accéder à ce fil de discussion.
           </p>
         </div>
         <button
           onClick={() => navigate('/search')}
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#173C2C] hover:underline"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#60A5FA] hover:underline"
         >
           <ChevronLeft className="w-4 h-4" />
-          Retourner aux recherches
+          <span>Retourner aux recherches</span>
         </button>
       </div>
     );
@@ -121,25 +121,25 @@ export const TripChatPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-5 text-left">
       {/* Route context header */}
       {trip && (
-        <div className="bg-white rounded-xl border border-[#E6E0D6] p-5 sm:p-6 shadow-card flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="bg-[#131D2E] rounded-xl border border-[#1E2C42] p-5 sm:p-6 shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-[11px] font-bold text-[#173C2C] tracking-wide uppercase">
-              <ShieldCheck className="w-4 h-4 text-[#173C2C]" />
+            <div className="flex items-center gap-2 text-[11px] font-bold text-[#60A5FA] tracking-wide uppercase">
+              <ShieldCheck className="w-4 h-4 text-[#3B82F6]" />
               <span>Messagerie Interne du Trajet</span>
             </div>
-            <h1 className="text-xl font-extrabold text-[#141613] flex items-center gap-2.5">
+            <h1 className="text-xl font-extrabold text-white flex items-center gap-2.5">
               <span>{trip.origin_city}</span>
-              <ArrowRight className="w-4 h-4 text-[#173C2C]" />
+              <ArrowRight className="w-4 h-4 text-[#3B82F6]" />
               <span>{trip.destination_city}</span>
             </h1>
-            <p className="text-xs text-[#5C6057]">
-              Départ : {new Date(trip.departure_datetime).toLocaleString('fr-DZ', { dateStyle: 'medium', timeStyle: 'short' })} • Conducteur : <strong className="text-[#141613] font-semibold">{trip.driver?.full_name}</strong>
+            <p className="text-xs text-slate-400">
+              Départ : {new Date(trip.departure_datetime).toLocaleString('fr-DZ', { dateStyle: 'medium', timeStyle: 'short' })} • Conducteur : <strong className="text-white font-semibold">{trip.driver?.full_name}</strong>
             </p>
           </div>
 
           <Link
             to={`/trips/${trip.id}`}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[#E6E0D6] bg-[#FAF8F5] text-xs font-bold text-[#32362F] hover:bg-[#F3EFE8] transition-colors shadow-subtle"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[#1E2C42] bg-[#0E1624] text-xs font-bold text-slate-300 hover:text-white hover:border-[#2563EB] transition-colors shadow-sm"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>Fiche trajet</span>
@@ -148,22 +148,19 @@ export const TripChatPage: React.FC = () => {
       )}
 
       {/* Messages Scroll Area */}
-      <div className="bg-white rounded-xl border border-[#E6E0D6] shadow-card p-5 sm:p-6 h-[540px] flex flex-col justify-between">
-        <div className="overflow-y-auto space-y-4 pr-2">
+      <div className="bg-[#131D2E] rounded-xl border border-[#1E2C42] p-6 shadow-xl space-y-4">
+        <div className="h-96 overflow-y-auto space-y-4 pr-2">
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center text-[#8E9389] py-20 space-y-3">
-              <div className="w-12 h-12 rounded-lg bg-[#FAF8F5] border border-[#E6E0D6] flex items-center justify-center text-[#8E9389]">
-                <MessageCircle className="w-6 h-6" />
-              </div>
-              <p className="text-sm font-bold text-[#32362F]">Aucun message pour l'instant</p>
-              <p className="text-xs text-[#5C6057] max-w-sm leading-relaxed">
-                Utilisez cette messagerie sécurisée pour convenir du point de rendez-vous exact, des bagages ou synchroniser l'heure de départ.
-              </p>
+            <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-2">
+              <MessageCircle className="w-8 h-8 text-slate-500" />
+              <p className="text-xs font-semibold text-slate-300">Aucun message pour ce trajet pour le moment.</p>
+              <p className="text-[11px] text-slate-500">Posez vos questions sur le point de rendez-vous ou les bagages.</p>
             </div>
           ) : (
             messages.map((msg) => {
               const isMe = msg.sender_id === user?.id;
-              const timeString = new Date(msg.created_at).toLocaleTimeString('fr-DZ', {
+              const senderName = msg.sender?.full_name || (isMe ? 'Moi' : 'Membre');
+              const msgTime = new Date(msg.created_at).toLocaleTimeString('fr-DZ', {
                 hour: '2-digit',
                 minute: '2-digit',
               });
@@ -173,15 +170,17 @@ export const TripChatPage: React.FC = () => {
                   key={msg.id}
                   className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} space-y-1`}
                 >
-                  <span className="text-[10px] font-semibold text-[#8E9389] px-1">
-                    {msg.sender?.full_name || 'Membre'} • {timeString}
-                  </span>
+                  <div className="flex items-center gap-1.5 text-[10px] text-slate-400 px-1">
+                    <span className="font-bold text-white">{senderName}</span>
+                    <span>•</span>
+                    <span>{msgTime}</span>
+                  </div>
 
                   <div
-                    className={`max-w-md rounded-lg px-4 py-2.5 text-xs leading-relaxed ${
+                    className={`max-w-md px-4 py-2.5 rounded-2xl text-xs leading-relaxed ${
                       isMe
-                        ? 'bg-[#173C2C] text-white rounded-br-none shadow-subtle font-medium'
-                        : 'bg-[#F3EFE8] text-[#141613] rounded-bl-none font-medium'
+                        ? 'bg-[#2563EB] text-white rounded-br-none shadow-md shadow-blue-600/30'
+                        : 'bg-[#18253A] border border-[#1E2C42] text-slate-200 rounded-bl-none'
                     }`}
                   >
                     {msg.content}
@@ -193,22 +192,22 @@ export const TripChatPage: React.FC = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Composer Form */}
-        <form onSubmit={handleSendMessage} className="pt-4 border-t border-[#F3EFE8] flex gap-2">
+        {/* Input Message Form */}
+        <form onSubmit={handleSendMessage} className="pt-4 border-t border-[#1E2C42] flex items-center gap-2">
           <input
             type="text"
             value={inputContent}
             onChange={(e) => setInputContent(e.target.value)}
-            placeholder="Écrivez un message de coordination..."
-            className="flex-1 rounded-lg border border-[#E6E0D6] bg-[#FAF8F5] px-4 py-2.5 text-xs font-medium text-[#141613] placeholder-[#8E9389] focus:bg-white focus:outline-none focus:border-[#173C2C] transition-colors"
+            placeholder="Écrire un message pour coordonner le trajet..."
+            className="flex-1 px-4 py-2.5 rounded-lg border border-[#1E2C42] bg-[#0E1624] text-xs font-medium text-white placeholder:text-slate-500 focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]"
           />
           <button
             type="submit"
             disabled={sending || !inputContent.trim()}
-            className="px-5 py-2.5 rounded-lg bg-[#173C2C] hover:bg-[#112E22] disabled:bg-[#FAF8F5] disabled:text-[#8E9389] text-white font-bold text-xs flex items-center gap-2 transition-all shadow-subtle"
+            className="px-5 py-2.5 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-40 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-600/30 transition-all active:scale-[0.98]"
           >
-            <Send className="w-3.5 h-3.5" />
             <span>Envoyer</span>
+            <Send className="w-3.5 h-3.5" />
           </button>
         </form>
       </div>
