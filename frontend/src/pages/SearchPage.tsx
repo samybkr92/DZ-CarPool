@@ -3,21 +3,20 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../services/api';
 import { Trip } from '../types';
-import { WILAYAS, calculatePrices } from '../utils/algeriaData';
+import { calculatePrices } from '../utils/algeriaData';
 import {
   Search,
   MapPin,
   Calendar,
-  Users,
   Coffee,
   Sparkles,
   ArrowRight,
-  ShieldCheck,
   Car,
   Filter,
-  CheckCircle2,
   Navigation,
   Clock,
+  ShieldCheck,
+  ChevronRight,
 } from 'lucide-react';
 
 export const SearchPage: React.FC = () => {
@@ -85,32 +84,32 @@ export const SearchPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
       {/* 1. Refined Search & Filter Header */}
-      <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 shadow-sm space-y-5">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="bg-white rounded-2xl border border-[#EAE5DC] p-5 sm:p-6 shadow-fine space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#F4EFE6]">
           <div>
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#141716] tracking-tight">
               {t('search.title', 'Trajets Disponibles')}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 flex items-center gap-2">
+            <p className="text-xs text-[#5A625D] mt-1 flex items-center gap-2">
               {originCity || destinationCity ? (
                 <span className="flex items-center gap-1.5 flex-wrap">
-                  Résultats pour <strong className="text-emerald-700">{originCity || 'Toute ville'}</strong>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 inline" />
-                  <strong className="text-emerald-700">{destinationCity || 'Toute ville'}</strong>
-                  {dateParam && <span className="text-slate-400">• {dateParam}</span>}
+                  Résultats pour <strong className="text-[#16382C]">{originCity || 'Toute wilaya'}</strong>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#ADB3AF] inline" />
+                  <strong className="text-[#16382C]">{destinationCity || 'Toute wilaya'}</strong>
+                  {dateParam && <span className="text-[#7E8681]">• {dateParam}</span>}
                 </span>
               ) : (
-                'Tous les trajets actifs vérifiés à travers les wilayas algériennes'
+                'Trajets réguliers inter-wilayas vérifiés en Dinars Algériens (DZD)'
               )}
             </p>
           </div>
 
           <div className="flex items-center gap-2 text-xs">
-            <span className="font-semibold text-slate-500">Trier par :</span>
+            <span className="font-semibold text-[#7E8681]">Trier par :</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="py-2 px-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-800 focus:outline-none focus:border-emerald-600"
+              className="py-1.5 px-3 rounded-lg border border-[#EAE5DC] bg-[#FAF7F2] text-xs font-semibold text-[#141716] focus:outline-none focus:border-[#16382C]"
             >
               <option value="departure">Heure de départ</option>
               <option value="price">Prix le plus bas</option>
@@ -119,43 +118,43 @@ export const SearchPage: React.FC = () => {
         </div>
 
         {/* Inline Quick Search Refinement */}
-        <form onSubmit={handleUpdateSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5">
-          <div className="lg:col-span-4 flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <MapPin className="w-4 h-4 text-emerald-700 flex-shrink-0" />
+        <form onSubmit={handleUpdateSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2">
+          <div className="lg:col-span-4 flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#EAE5DC]">
+            <MapPin className="w-4 h-4 text-[#16382C] flex-shrink-0" />
             <input
               type="text"
               value={inputOrigin}
               onChange={(e) => setInputOrigin(e.target.value)}
               placeholder="Ville de départ (ex: Alger)..."
-              className="w-full bg-transparent text-xs font-semibold text-slate-900 focus:outline-none placeholder:text-slate-400"
+              className="w-full bg-transparent text-xs font-semibold text-[#141716] focus:outline-none placeholder:text-[#ADB3AF]"
             />
           </div>
 
-          <div className="lg:col-span-4 flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <Navigation className="w-4 h-4 text-emerald-700 flex-shrink-0" />
+          <div className="lg:col-span-4 flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#EAE5DC]">
+            <Navigation className="w-4 h-4 text-[#16382C] flex-shrink-0" />
             <input
               type="text"
               value={inputDestination}
               onChange={(e) => setInputDestination(e.target.value)}
               placeholder="Ville d'arrivée (ex: Oran)..."
-              className="w-full bg-transparent text-xs font-semibold text-slate-900 focus:outline-none placeholder:text-slate-400"
+              className="w-full bg-transparent text-xs font-semibold text-[#141716] focus:outline-none placeholder:text-[#ADB3AF]"
             />
           </div>
 
-          <div className="lg:col-span-2 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <Calendar className="w-4 h-4 text-emerald-700 flex-shrink-0" />
+          <div className="lg:col-span-2 flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#EAE5DC]">
+            <Calendar className="w-4 h-4 text-[#16382C] flex-shrink-0" />
             <input
               type="date"
               value={inputDate}
               onChange={(e) => setInputDate(e.target.value)}
-              className="w-full bg-transparent text-xs font-semibold text-slate-900 focus:outline-none cursor-pointer"
+              className="w-full bg-transparent text-xs font-semibold text-[#141716] focus:outline-none cursor-pointer"
             />
           </div>
 
           <div className="lg:col-span-2">
             <button
               type="submit"
-              className="w-full h-full py-2.5 px-4 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 shadow-xs active:scale-95"
+              className="w-full h-full py-2.5 px-4 rounded-xl bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-fine active:scale-[0.98]"
             >
               <Search className="w-3.5 h-3.5" />
               <span>Actualiser</span>
@@ -164,35 +163,35 @@ export const SearchPage: React.FC = () => {
         </form>
 
         {/* Filter Badges Pill Row */}
-        <div className="flex flex-wrap items-center gap-2.5 pt-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1">
-            <Filter className="w-3.5 h-3.5 text-emerald-700" />
+        <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+          <span className="font-bold text-[#7E8681] uppercase tracking-wider text-[10px] flex items-center gap-1 mr-1">
+            <Filter className="w-3 h-3 text-[#16382C]" />
             Filtres :
           </span>
 
           <button
             type="button"
             onClick={() => setComfortOnly(!comfortOnly)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
               comfortOnly
-                ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
-                : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-600'
+                ? 'bg-[#16382C] text-[#FAF7F2] border-[#16382C] shadow-fine'
+                : 'bg-white text-[#303632] border-[#EAE5DC] hover:border-[#16382C]'
             }`}
           >
-            <Sparkles className={`w-3.5 h-3.5 ${comfortOnly ? 'text-amber-300' : 'text-amber-500'}`} />
+            <Sparkles className={`w-3.5 h-3.5 ${comfortOnly ? 'text-[#FAF7F2]' : 'text-[#D96B27]'}`} />
             <span>Option Confort (+30%)</span>
           </button>
 
           <button
             type="button"
             onClick={() => setRestStopOnly(!restStopOnly)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
               restStopOnly
-                ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
-                : 'bg-white text-slate-700 border-slate-200 hover:border-amber-600'
+                ? 'bg-[#A14114] text-[#FAF7F2] border-[#A14114] shadow-fine'
+                : 'bg-white text-[#303632] border-[#EAE5DC] hover:border-[#A14114]'
             }`}
           >
-            <Coffee className={`w-3.5 h-3.5 ${restStopOnly ? 'text-white' : 'text-amber-600'}`} />
+            <Coffee className={`w-3.5 h-3.5 ${restStopOnly ? 'text-[#FAF7F2]' : 'text-[#A14114]'}`} />
             <span>Pause Naftal obligatoire (&gt; 300 km)</span>
           </button>
 
@@ -203,44 +202,44 @@ export const SearchPage: React.FC = () => {
                 setComfortOnly(false);
                 setRestStopOnly(false);
               }}
-              className="text-xs text-slate-500 hover:text-rose-700 underline ml-2"
+              className="text-xs text-[#A14114] hover:underline ml-2"
             >
-              Réinitialiser les filtres
+              Effacer les filtres
             </button>
           )}
         </div>
       </div>
 
-      {/* 2. Results List with High Scannability */}
+      {/* 2. Scannable Ticket Ledger */}
       {loading ? (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {[1, 2, 3].map((n) => (
-            <div key={n} className="h-44 rounded-3xl bg-white border border-slate-200 p-6 animate-pulse space-y-4">
-              <div className="h-4 bg-slate-100 rounded w-1/4" />
-              <div className="h-8 bg-slate-100 rounded w-1/2" />
-              <div className="h-4 bg-slate-100 rounded w-1/3" />
+            <div key={n} className="h-40 rounded-2xl bg-white border border-[#EAE5DC] p-6 animate-pulse space-y-4">
+              <div className="h-4 bg-[#F4EFE6] rounded w-1/4" />
+              <div className="h-8 bg-[#F4EFE6] rounded w-1/2" />
+              <div className="h-4 bg-[#F4EFE6] rounded w-1/3" />
             </div>
           ))}
         </div>
       ) : error ? (
-        <div className="rounded-3xl bg-rose-50 border border-rose-200 p-8 text-center text-rose-800 space-y-2">
+        <div className="rounded-2xl bg-[#FCF7F3] border border-[#F0D5C3] p-8 text-center text-[#A14114] space-y-2">
           <p className="font-bold">{error}</p>
           <button
             onClick={() => fetchTrips()}
-            className="text-xs font-bold text-emerald-700 underline"
+            className="text-xs font-bold text-[#16382C] underline"
           >
             Réessayer
           </button>
         </div>
       ) : sortedTrips.length === 0 ? (
-        <div className="rounded-3xl bg-white border border-slate-200 p-12 text-center space-y-4 shadow-sm">
-          <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+        <div className="rounded-2xl bg-white border border-[#EAE5DC] p-12 text-center space-y-4 shadow-fine">
+          <div className="w-12 h-12 rounded-lg bg-[#E2EDE6] text-[#16382C] flex items-center justify-center mx-auto border border-[#C4DBCD]">
             <Search className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <p className="text-base font-bold text-slate-900">{t('search.no_results', 'Aucun trajet correspondant')}</p>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              {t('search.no_results_sub', 'Essayez d’élargir vos filtres de recherche ou de modifier votre date de départ.')}
+            <p className="text-base font-bold text-[#141716]">{t('search.no_results', 'Aucun trajet correspondant')}</p>
+            <p className="text-xs text-[#5A625D] max-w-md mx-auto">
+              {t('search.no_results_sub', 'Essayez d’élargir vos filtres ou de sélectionner une autre date.')}
             </p>
           </div>
           <button
@@ -252,19 +251,19 @@ export const SearchPage: React.FC = () => {
               setComfortOnly(false);
               setRestStopOnly(false);
             }}
-            className="inline-flex items-center gap-2 py-2.5 px-5 rounded-xl bg-emerald-700 text-white text-xs font-bold hover:bg-emerald-800 transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 py-2.5 px-5 rounded-lg bg-[#16382C] text-[#FAF7F2] text-xs font-bold hover:bg-[#0F281F] transition-colors shadow-fine"
           >
             <span>Voir tous les trajets disponibles</span>
           </button>
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider px-1">
-            <span>{sortedTrips.length} trajet{sortedTrips.length > 1 ? 's' : ''} trouvé{sortedTrips.length > 1 ? 's' : ''}</span>
-            <span>Prix TTC par passager (commission 15% incluse)</span>
+          <div className="flex items-center justify-between text-xs font-semibold text-[#7E8681] px-1">
+            <span>{sortedTrips.length} trajet{sortedTrips.length > 1 ? 's' : ''} disponible{sortedTrips.length > 1 ? 's' : ''}</span>
+            <span>Prix TTC par siège (commission plateforme 15% incluse)</span>
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-3.5">
             {sortedTrips.map((trip) => {
               const prices = calculatePrices(trip.base_seat_price);
               const standardPrice = trip.passenger_standard_price || prices.passengerStandard;
@@ -296,52 +295,52 @@ export const SearchPage: React.FC = () => {
                 <div
                   key={trip.id}
                   onClick={() => navigate(`/trips/${trip.id}`)}
-                  className="group cursor-pointer rounded-3xl bg-white border border-slate-200 hover:border-emerald-600 hover:shadow-lg transition-all p-5 sm:p-6 flex flex-col lg:flex-row justify-between gap-6 items-stretch lg:items-center"
+                  className="group cursor-pointer rounded-2xl bg-white border border-[#EAE5DC] hover:border-[#16382C] hover:shadow-card transition-all p-5 sm:p-6 flex flex-col lg:flex-row justify-between gap-6 items-stretch lg:items-center"
                 >
-                  {/* Left: Travel Route Timeline */}
+                  {/* Left: Route Timeline & Stations */}
                   <div className="space-y-4 flex-1">
-                    {/* Time & Route Bar */}
+                    {/* Time & Route */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                       {/* Departure */}
-                      <div className="flex sm:flex-col items-baseline sm:items-start justify-between sm:justify-start gap-1">
-                        <span className="text-xl font-black text-slate-900 tabular-nums">
+                      <div className="flex sm:flex-col items-baseline sm:items-start justify-between sm:justify-start gap-0.5">
+                        <span className="text-xl font-extrabold text-[#141716] tabular-nums">
                           {depTimeString}
                         </span>
                         <div className="text-right sm:text-left">
-                          <span className="text-sm font-bold text-slate-900 block">
+                          <span className="text-xs sm:text-sm font-bold text-[#141716] block">
                             {trip.origin_city}
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium truncate max-w-[180px] block">
+                          <span className="text-[11px] text-[#7E8681] truncate max-w-[200px] block">
                             {trip.origin_address.split(',')[0]}
                           </span>
                         </div>
                       </div>
 
                       {/* Timeline Duration Track */}
-                      <div className="hidden sm:flex flex-col items-center px-2 flex-shrink-0 min-w-[130px]">
-                        <span className="text-[10px] font-bold text-slate-500 tracking-wider">
+                      <div className="hidden sm:flex flex-col items-center px-2 flex-shrink-0 min-w-[140px]">
+                        <span className="text-[10px] font-semibold text-[#7E8681]">
                           {durationHours}h{durationMins > 0 ? ` ${durationMins}m` : ''}
                         </span>
                         <div className="w-full flex items-center my-1.5">
-                          <div className="w-2.5 h-2.5 rounded-full bg-emerald-700" />
-                          <div className="flex-1 h-0.5 bg-slate-200 border-t border-dashed border-emerald-600" />
-                          <ArrowRight className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
+                          <div className="w-2 h-2 rounded-full bg-[#16382C]" />
+                          <div className="flex-1 h-0.5 bg-[#EAE5DC] border-t border-dashed border-[#16382C]" />
+                          <ArrowRight className="w-3.5 h-3.5 text-[#16382C] flex-shrink-0" />
                         </div>
-                        <span className="text-[10px] text-slate-400 font-medium">
+                        <span className="text-[10px] text-[#ADB3AF]">
                           {trip.distance_km} km
                         </span>
                       </div>
 
                       {/* Arrival */}
-                      <div className="flex sm:flex-col items-baseline sm:items-start justify-between sm:justify-start gap-1">
-                        <span className="text-xl font-black text-slate-900 tabular-nums">
+                      <div className="flex sm:flex-col items-baseline sm:items-start justify-between sm:justify-start gap-0.5">
+                        <span className="text-xl font-extrabold text-[#141716] tabular-nums">
                           {arrTimeString}
                         </span>
                         <div className="text-right sm:text-left">
-                          <span className="text-sm font-bold text-slate-900 block">
+                          <span className="text-xs sm:text-sm font-bold text-[#141716] block">
                             {trip.destination_city}
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium truncate max-w-[180px] block">
+                          <span className="text-[11px] text-[#7E8681] truncate max-w-[200px] block">
                             {trip.destination_address.split(',')[0]}
                           </span>
                         </div>
@@ -349,67 +348,67 @@ export const SearchPage: React.FC = () => {
                     </div>
 
                     {/* Driver Profile & Badges Row */}
-                    <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                    <div className="pt-3 border-t border-[#F4EFE6] flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
                         <img
                           src={trip.driver?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${trip.driver?.full_name || 'DZ'}`}
                           alt={trip.driver?.full_name}
-                          className="w-9 h-9 rounded-full border border-slate-200 object-cover"
+                          className="w-8 h-8 rounded-full border border-[#EAE5DC] object-cover"
                         />
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="text-xs font-bold text-slate-900">
+                            <span className="text-xs font-bold text-[#141716]">
                               {trip.driver?.full_name}
                             </span>
-                            <span className="text-[11px] font-semibold text-emerald-700">
+                            <span className="text-[11px] font-semibold text-[#16382C]">
                               ★ {trip.driver?.rating_avg || 4.8}
                             </span>
                           </div>
                           {trip.vehicle && (
-                            <span className="text-[10px] text-slate-500 flex items-center gap-1">
-                              <Car className="w-3 h-3 text-slate-400" />
+                            <span className="text-[10px] text-[#7E8681] flex items-center gap-1">
+                              <Car className="w-3 h-3 text-[#ADB3AF]" />
                               {trip.vehicle.make} {trip.vehicle.model}
                               {trip.vehicle.air_conditioning && (
-                                <span className="text-emerald-700 ml-1">• Climatisé</span>
+                                <span className="text-[#16382C] ml-1">• Climatisé</span>
                               )}
                             </span>
                           )}
                         </div>
                       </div>
 
-                      {/* Badges for Safety & Comfort */}
+                      {/* Safety & Comfort Badges */}
                       <div className="flex items-center gap-2 flex-wrap">
                         {trip.has_mandatory_rest && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
-                            <Coffee className="w-3 h-3 text-amber-600" />
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#A14114] bg-[#F8ECE3] px-2 py-0.5 rounded border border-[#F0D5C3]">
+                            <Coffee className="w-3 h-3" />
                             Pause 15 min (&gt; 300 km)
                           </span>
                         )}
 
                         {trip.comfort_enabled && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
-                            <Sparkles className="w-3 h-3 text-emerald-600" />
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#16382C] bg-[#E2EDE6] px-2 py-0.5 rounded border border-[#C4DBCD]">
+                            <Sparkles className="w-3 h-3" />
                             Confort (+30%)
                           </span>
                         )}
 
-                        {/* Available Seats Pill with visual dot */}
+                        {/* Available Seats Pill */}
                         <span
-                          className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg border ${
+                          className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded border ${
                             trip.available_seats > 1
-                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                              ? 'bg-[#E2EDE6] text-[#16382C] border-[#C4DBCD]'
                               : trip.available_seats === 1
-                              ? 'bg-amber-50 text-amber-800 border-amber-200'
-                              : 'bg-rose-50 text-rose-800 border-rose-200'
+                              ? 'bg-[#F8ECE3] text-[#A14114] border-[#F0D5C3]'
+                              : 'bg-[#FCF7F3] text-[#A14114] border-[#F0D5C3]'
                           }`}
                         >
                           <span
-                            className={`w-2 h-2 rounded-full ${
+                            className={`w-1.5 h-1.5 rounded-full ${
                               trip.available_seats > 1
-                                ? 'bg-emerald-600'
+                                ? 'bg-[#16382C]'
                                 : trip.available_seats === 1
-                                ? 'bg-amber-500'
-                                : 'bg-rose-600'
+                                ? 'bg-[#D96B27]'
+                                : 'bg-[#A14114]'
                             }`}
                           />
                           <span>
@@ -423,34 +422,39 @@ export const SearchPage: React.FC = () => {
                   </div>
 
                   {/* Right: Boarding Pass Pricing & Action */}
-                  <div className="lg:border-l lg:border-slate-100 lg:pl-6 flex flex-col justify-between items-start lg:items-end gap-3 min-w-[190px]">
+                  <div className="lg:border-l lg:border-[#F4EFE6] lg:pl-6 flex flex-col justify-between items-start lg:items-end gap-3 min-w-[190px]">
                     <div className="text-left lg:text-right">
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
+                      <span className="text-[10px] text-[#7E8681] font-semibold uppercase tracking-wider block">
                         Tarif Standard (TTC)
                       </span>
-                      <div className="flex items-baseline gap-1.5 lg:justify-end">
-                        <span className="text-2xl font-black text-emerald-800 tabular-nums">
+                      <div className="flex items-baseline gap-1 lg:justify-end">
+                        <span className="text-2xl font-black text-[#16382C] tabular-nums">
                           {standardPrice} DA
                         </span>
                       </div>
-                      <span className="text-[10px] text-slate-400 font-medium block">
-                        Base: {trip.base_seat_price} DA + 15%
+                      <span className="text-[10px] text-[#7E8681] font-medium block">
+                        Base net: {trip.base_seat_price} DA + 15%
                       </span>
 
                       {comfortPrice && (
-                        <div className="mt-1 pt-1 border-t border-slate-100 text-[11px] text-slate-500 font-semibold">
-                          Confort: <strong className="text-slate-900">{comfortPrice} DA</strong>
-                        </div>
+                        <span className="text-[10px] font-semibold text-[#5A625D] block mt-0.5">
+                          Option Confort : <strong className="text-[#141716]">{comfortPrice} DA</strong>
+                        </span>
                       )}
                     </div>
 
-                    <button
-                      type="button"
-                      className="w-full lg:w-auto py-2.5 px-5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs group-hover:shadow-md active:scale-95"
-                    >
-                      <span>Voir & Réserver</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    <div className="w-full lg:w-auto">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/trips/${trip.id}`);
+                        }}
+                        className="w-full lg:w-auto py-2.5 px-5 rounded-lg bg-[#16382C] group-hover:bg-[#0F281F] text-[#FAF7F2] font-bold text-xs shadow-fine transition-all flex items-center justify-center gap-1.5 active:scale-[0.98]"
+                      >
+                        <span>Voir & Réserver</span>
+                        <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );

@@ -17,7 +17,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' })
     case 'pending':
       return (
         <span
-          className={`inline-flex items-center gap-1.5 font-bold rounded-md bg-[#FFF8EB] text-[#8D5B04] border border-[#FDE68A] ${sizeClasses}`}
+          className={`inline-flex items-center gap-1.5 font-bold rounded-full bg-[#FCF7F3] text-[#A14114] border border-[#D96B27]/30 ${sizeClasses}`}
         >
           <Clock className={iconSize} />
           <span>{t('booking.status_pending', 'En attente')}</span>
@@ -26,7 +26,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' })
     case 'confirmed':
       return (
         <span
-          className={`inline-flex items-center gap-1.5 font-bold rounded-md bg-[#ECFDF3] text-[#0E5E3A] border border-[#A6F4C5] ${sizeClasses}`}
+          className={`inline-flex items-center gap-1.5 font-bold rounded-full bg-[#E2EDE6] text-[#16382C] border border-[#16382C]/20 ${sizeClasses}`}
         >
           <CheckCircle2 className={iconSize} />
           <span>{t('booking.status_confirmed', 'Confirmée')}</span>
@@ -35,7 +35,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' })
     case 'rejected':
       return (
         <span
-          className={`inline-flex items-center gap-1.5 font-bold rounded-md bg-[#FEF3F2] text-[#B42318] border border-[#FECDCA] ${sizeClasses}`}
+          className={`inline-flex items-center gap-1.5 font-bold rounded-full bg-[#FEF3F2] text-[#9E1C1C] border border-[#FECDCA] ${sizeClasses}`}
         >
           <XCircle className={iconSize} />
           <span>{t('booking.status_rejected', 'Refusée')}</span>
@@ -44,7 +44,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' })
     case 'cancelled':
       return (
         <span
-          className={`inline-flex items-center gap-1.5 font-bold rounded-md bg-[#F8F9FA] text-[#4F5E68] border border-[#E4E9EC] ${sizeClasses}`}
+          className={`inline-flex items-center gap-1.5 font-bold rounded-full bg-[#F5F1E9] text-[#5A625D] border border-[#EAE5DC] ${sizeClasses}`}
         >
           <AlertCircle className={iconSize} />
           <span>{t('booking.status_cancelled', 'Annulée')}</span>
@@ -53,7 +53,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' })
     case 'completed':
       return (
         <span
-          className={`inline-flex items-center gap-1.5 font-bold rounded-md bg-[#EFF8FF] text-[#175CD3] border border-[#B2DDFF] ${sizeClasses}`}
+          className={`inline-flex items-center gap-1.5 font-bold rounded-full bg-[#F5F1E9] text-[#141716] border border-[#EAE5DC] ${sizeClasses}`}
         >
           <CheckCheck className={iconSize} />
           <span>{t('booking.status_completed', 'Terminé')}</span>

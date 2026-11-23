@@ -8,12 +8,10 @@ import {
   Mail,
   User,
   Phone,
-  MapPin,
-  Car,
-  AlertCircle,
   ShieldCheck,
   ArrowRight,
-  UserCheck,
+  AlertCircle,
+  Check,
 } from 'lucide-react';
 
 export const RegisterPage: React.FC = () => {
@@ -56,61 +54,61 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[90vh] flex items-stretch bg-slate-50">
+    <div className="min-h-[90vh] flex items-stretch bg-[#FAF7F2]">
       {/* Left Column: Visual Algerian Context */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-slate-950 text-white flex-col justify-between p-12 overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-[#16382C] text-[#FAF7F2] flex-col justify-between p-12 overflow-hidden text-left">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1506015391300-4802dc74de2e?auto=format&fit=crop&w=1600&q=80"
             alt="Ponts de Constantine Algérie"
-            className="w-full h-full object-cover object-center opacity-40 mix-blend-luminosity scale-105"
+            className="w-full h-full object-cover object-center opacity-30 mix-blend-luminosity scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-emerald-950/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0F281F] via-[#16382C]/80 to-[#16382C]/60" />
         </div>
 
         <div className="relative z-10 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-lg">
-            <Car className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-lg bg-[#FAF7F2] text-[#16382C] flex items-center justify-center shadow-fine font-serif font-bold italic text-lg">
+            DZ
           </div>
           <div>
-            <span className="text-xl font-black tracking-tight">
-              DZ<span className="text-emerald-400">-CarPool</span>
+            <span className="text-xl font-bold tracking-tight text-[#FAF7F2]">
+              DZ-CarPool
             </span>
-            <p className="text-[11px] text-slate-400 font-medium">Inscription Membre Officiel</p>
+            <p className="text-[11px] text-[#C4DBCD] font-medium">Inscription Membre Officiel</p>
           </div>
         </div>
 
         <div className="relative z-10 space-y-5 max-w-lg">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-white/10 backdrop-blur-md border border-white/15 text-emerald-300">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-[#C4DBCD] border border-white/15">
+            <ShieldCheck className="w-4 h-4 text-[#97C0A7]" />
             <span>Communauté Algérienne Vérifiée</span>
           </div>
 
-          <h2 className="text-3xl lg:text-4xl font-black tracking-tight leading-tight">
+          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
             Partagez vos trajets, réduisez vos dépenses de carburant.
           </h2>
 
-          <p className="text-sm text-slate-300 leading-relaxed">
+          <p className="text-sm text-[#C4DBCD] leading-relaxed">
             Créez votre profil en 1 minute. Vous pourrez publier des trajets entre wilayas, réserver des sièges en toute sécurité et communiquer directement avec les conducteurs via la messagerie intégrée.
           </p>
 
-          <div className="space-y-2.5 pt-2 text-xs text-slate-300">
+          <div className="space-y-2.5 pt-2 text-xs text-[#C4DBCD]">
             <div className="flex items-center gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-[11px]">✓</span>
+              <span className="w-4 h-4 rounded-full bg-[#E2EDE6] text-[#16382C] flex items-center justify-center font-bold text-[10px]">✓</span>
               <span>Profils et avis authentiques avec historique complet</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-[11px]">✓</span>
-              <span>Barème carburant Naftal officiel calculé automatiquement</span>
+              <span className="w-4 h-4 rounded-full bg-[#E2EDE6] text-[#16382C] flex items-center justify-center font-bold text-[10px]">✓</span>
+              <span>Barème officiel carburants Naftal calculé automatiquement</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-[11px]">✓</span>
+              <span className="w-4 h-4 rounded-full bg-[#E2EDE6] text-[#16382C] flex items-center justify-center font-bold text-[10px]">✓</span>
               <span>Pause détente de 15 minutes garantie sur trajets &gt; 300 km</span>
             </div>
           </div>
         </div>
 
-        <div className="relative z-10 text-xs text-slate-400">
+        <div className="relative z-10 text-xs text-[#97C0A7]">
           Rejoignez des milliers de voyageurs à travers les 58 wilayas d'Algérie.
         </div>
       </div>
@@ -119,17 +117,17 @@ export const RegisterPage: React.FC = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12">
         <div className="max-w-md w-full space-y-6">
           <div className="space-y-1.5 text-left">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#141716] tracking-tight">
               Créer un compte
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500">
+            <p className="text-xs sm:text-sm text-[#5A625D]">
               Renseignez vos coordonnées pour accéder aux trajets et réservations.
             </p>
           </div>
 
           {error && (
-            <div className="p-3.5 bg-rose-50 text-rose-800 rounded-xl border border-rose-200 text-xs font-semibold flex items-center gap-2.5">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600" />
+            <div className="p-3 bg-[#FCF7F3] text-[#A14114] rounded-lg border border-[#F0D5C3] text-xs font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}
@@ -137,13 +135,13 @@ export const RegisterPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-4 text-left">
             {/* Role selector pill */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-slate-700">Votre rôle principal</label>
-              <div className="grid grid-cols-3 gap-2 p-1 bg-slate-100 rounded-xl border border-slate-200">
+              <label className="block text-xs font-bold text-[#303632]">Votre rôle principal</label>
+              <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#F4EFE6] rounded-xl border border-[#EAE5DC]">
                 <button
                   type="button"
                   onClick={() => setRole('both')}
                   className={`py-2 text-xs font-bold rounded-lg transition-all ${
-                    role === 'both' ? 'bg-white text-emerald-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                    role === 'both' ? 'bg-white text-[#16382C] shadow-fine' : 'text-[#5A625D] hover:text-[#141716]'
                   }`}
                 >
                   Les deux
@@ -152,7 +150,7 @@ export const RegisterPage: React.FC = () => {
                   type="button"
                   onClick={() => setRole('driver')}
                   className={`py-2 text-xs font-bold rounded-lg transition-all ${
-                    role === 'driver' ? 'bg-white text-emerald-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                    role === 'driver' ? 'bg-white text-[#16382C] shadow-fine' : 'text-[#5A625D] hover:text-[#141716]'
                   }`}
                 >
                   Conducteur
@@ -161,7 +159,7 @@ export const RegisterPage: React.FC = () => {
                   type="button"
                   onClick={() => setRole('passenger')}
                   className={`py-2 text-xs font-bold rounded-lg transition-all ${
-                    role === 'passenger' ? 'bg-white text-emerald-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                    role === 'passenger' ? 'bg-white text-[#16382C] shadow-fine' : 'text-[#5A625D] hover:text-[#141716]'
                   }`}
                 >
                   Passager
@@ -171,85 +169,82 @@ export const RegisterPage: React.FC = () => {
 
             {/* Name */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-slate-700">Nom et prénom</label>
+              <label className="block text-xs font-bold text-[#303632]">Nom et prénom</label>
               <div className="relative">
-                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                <User className="w-4 h-4 text-[#7E8681] absolute left-3 top-3" />
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Ex: Yacine Benmansour"
+                  placeholder="Ex: Karim Ferhani"
+                  className="w-full rounded-xl border border-[#EAE5DC] bg-white py-2.5 pl-9 pr-3 text-xs font-medium text-[#141716] focus:outline-none focus:border-[#16382C]"
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
 
             {/* Email */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-slate-700">Adresse email</label>
+              <label className="block text-xs font-bold text-[#303632]">Adresse email</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                <Mail className="w-4 h-4 text-[#7E8681] absolute left-3 top-3" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="yacine@exemple.dz"
+                  placeholder="nom@exemple.dz"
+                  className="w-full rounded-xl border border-[#EAE5DC] bg-white py-2.5 pl-9 pr-3 text-xs font-medium text-[#141716] focus:outline-none focus:border-[#16382C]"
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
 
-            {/* Phone & Wilaya in 2 columns */}
+            {/* Phone & Wilaya grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-700">Téléphone algérien</label>
+                <label className="block text-xs font-bold text-[#303632]">Numéro de téléphone</label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <Phone className="w-4 h-4 text-[#7E8681] absolute left-3 top-3" />
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="0550123456"
+                    className="w-full rounded-xl border border-[#EAE5DC] bg-white py-2.5 pl-9 pr-3 text-xs font-medium text-[#141716] focus:outline-none focus:border-[#16382C]"
                     required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 transition-all"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-700">Wilaya de résidence</label>
-                <div className="relative">
-                  <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 pointer-events-none" />
-                  <select
-                    value={wilayaCode}
-                    onChange={(e) => setWilayaCode(Number(e.target.value))}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 transition-all cursor-pointer"
-                  >
-                    {WILAYAS.map((w) => (
-                      <option key={w.code} value={w.code}>
-                        {w.code_str} - {w.name} ({w.name_ar})
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <label className="block text-xs font-bold text-[#303632]">Wilaya de résidence</label>
+                <select
+                  value={wilayaCode}
+                  onChange={(e) => setWilayaCode(Number(e.target.value))}
+                  className="w-full rounded-xl border border-[#EAE5DC] bg-white py-2.5 px-3 text-xs font-medium text-[#141716] focus:outline-none focus:border-[#16382C] cursor-pointer"
+                >
+                  {WILAYAS.map((w) => (
+                    <option key={w.code} value={w.code}>
+                      {w.code_str} - {w.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
             {/* Password */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-slate-700">Mot de passe</label>
+              <label className="block text-xs font-bold text-[#303632]">Mot de passe</label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                <Lock className="w-4 h-4 text-[#7E8681] absolute left-3 top-3" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Minimum 6 caractères"
-                  required
                   minLength={6}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 transition-all placeholder:text-slate-400"
+                  className="w-full rounded-xl border border-[#EAE5DC] bg-white py-2.5 pl-9 pr-3 text-xs font-medium text-[#141716] focus:outline-none focus:border-[#16382C]"
+                  required
                 />
               </div>
             </div>
@@ -257,16 +252,22 @@ export const RegisterPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold text-xs rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 active:scale-[0.99] mt-2"
+              className="w-full py-3 px-4 rounded-xl bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] font-bold text-xs shadow-fine active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
-              <span>{loading ? 'Création en cours...' : 'Créer mon compte'}</span>
-              {!loading && <ArrowRight className="w-4 h-4" />}
+              {loading ? (
+                <span>Création de votre compte...</span>
+              ) : (
+                <>
+                  <span>Créer mon compte membre</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </>
+              )}
             </button>
           </form>
 
-          <div className="text-center text-xs text-slate-500 pt-3 border-t border-slate-200">
-            Vous avez déjà un compte ?{' '}
-            <Link to="/login" className="font-extrabold text-emerald-700 hover:text-emerald-800 hover:underline">
+          <div className="pt-4 border-t border-[#EAE5DC] text-center text-xs text-[#5A625D]">
+            <span>Vous avez déjà un compte ? </span>
+            <Link to="/login" className="font-bold text-[#16382C] hover:underline">
               Se connecter
             </Link>
           </div>

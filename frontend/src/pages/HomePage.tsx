@@ -12,12 +12,11 @@ import {
   Sparkles,
   ArrowRight,
   Car,
-  CheckCircle2,
   ArrowRightLeft,
   Navigation,
-  Compass,
   Clock,
   Fuel,
+  Check,
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
@@ -100,7 +99,7 @@ export const HomePage: React.FC = () => {
       time: '4h 30m',
       price: '1 840 DA',
       base: '1 600 DA',
-      tag: 'A1 Ouest • Côtière',
+      axis: 'Autoroute A1 Ouest',
       comfort: true,
       rest: true,
       image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
@@ -114,7 +113,7 @@ export const HomePage: React.FC = () => {
       time: '4h 20m',
       price: '1 725 DA',
       base: '1 500 DA',
-      tag: 'A1 Est • Gorges du Rhumel',
+      axis: 'Autoroute A1 Est',
       comfort: true,
       rest: true,
       image: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?auto=format&fit=crop&w=800&q=80',
@@ -128,7 +127,7 @@ export const HomePage: React.FC = () => {
       time: '2h 50m',
       price: '1 150 DA',
       base: '1 000 DA',
-      tag: 'Hauts Plateaux • A1',
+      axis: 'Hauts Plateaux',
       comfort: true,
       rest: false,
       image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80',
@@ -142,405 +141,377 @@ export const HomePage: React.FC = () => {
       time: '1h 40m',
       price: '690 DA',
       base: '600 DA',
-      tag: 'Grand Ouest • RN22',
+      axis: 'RN22 Ouest',
       comfort: false,
       rest: false,
       image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     },
-    {
-      from: 'Constantine',
-      fromCode: '25',
-      to: 'Annaba',
-      toCode: '23',
-      dist: '160 km',
-      time: '1h 50m',
-      price: '805 DA',
-      base: '700 DA',
-      tag: 'Liaison Nord-Est',
-      comfort: true,
-      rest: false,
-      image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      from: 'Alger',
-      fromCode: '16',
-      to: 'Ghardaïa',
-      toCode: '47',
-      dist: '600 km',
-      time: '7h 00m',
-      price: '2 875 DA',
-      base: '2 500 DA',
-      tag: 'Porte du Sahara • RN1',
-      comfort: true,
-      rest: true,
-      image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
-    },
   ];
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-24">
-      {/* 1. HERO SECTION: Refined Algerian Travel Aesthetic */}
-      <section className="relative bg-slate-950 text-white overflow-visible pt-14 sm:pt-20 pb-20 sm:pb-28">
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <img
-            src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2000&q=80"
-            alt="Voyage en Algérie"
-            className="w-full h-full object-cover object-center opacity-30 mix-blend-luminosity scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-emerald-950/40" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Réseau National de Covoiturage • 58 Wilayas</span>
-            </div>
-
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12]">
-              La route d’Algérie, <br />
-              <span className="text-emerald-400">partagée avec sérénité.</span>
-            </h1>
-
-            <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-              Voyagez entre wilayas à prix équitable. Conducteurs vérifiés, halte de repos réglementaire de 15 min (&gt; 300 km) et transparence tarifaire en Dinars Algériens.
-            </p>
+    <div className="space-y-20 sm:space-y-28 pb-28 text-left">
+      {/* 1. HERO SECTION: Architectural & Warm Ivory Typography */}
+      <section className="pt-12 sm:pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center space-y-5">
+          {/* Subtle Eyebrow */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold text-[#16382C] bg-[#E2EDE6] border border-[#C4DBCD]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#16382C]" />
+            <span>Réseau National de Covoiturage • 58 Wilayas</span>
           </div>
 
-          {/* Focal Point: Modern Search Box with Wilaya Autocomplete */}
-          <div className="mt-8 sm:mt-12 max-w-4xl mx-auto relative z-30">
-            <div className="bg-white rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-slate-200 text-slate-900">
-              <form onSubmit={handleSearch} className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-0">
-                {/* Segment 1: Departure Origin */}
-                <div ref={originRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors">
-                  <MapPin className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-                  <div className="flex-1 min-w-0 text-left">
-                    <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
-                      Départ (Wilaya / Ville)
-                    </label>
-                    <input
-                      type="text"
-                      value={origin}
-                      onChange={(e) => {
-                        setOrigin(e.target.value);
-                        setShowOriginDropdown(true);
-                      }}
-                      onFocus={() => setShowOriginDropdown(true)}
-                      placeholder="D'où partez-vous ?"
-                      className="w-full bg-transparent text-sm font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
-                    />
-                  </div>
+          {/* Main Headline: Editorial, confident, no generic templates */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#141716] leading-[1.12]">
+            Le covoiturage inter-wilayas, <br />
+            <span className="font-serif italic font-normal text-[#16382C]">pensé avec exigence.</span>
+          </h1>
 
-                  {/* Origin Dropdown */}
-                  {showOriginDropdown && filteredOriginWilayas.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
-                      <div className="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase">Wilayas suggérées</div>
-                      {filteredOriginWilayas.map((w) => (
-                        <button
-                          key={w.code}
-                          type="button"
-                          onClick={() => {
-                            setOrigin(w.name);
-                            setShowOriginDropdown(false);
-                          }}
-                          className="w-full px-4 py-2.5 text-left text-xs font-bold text-slate-800 hover:bg-emerald-50 hover:text-emerald-800 flex items-center justify-between"
-                        >
-                          <span className="flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-md bg-slate-100 text-slate-700 flex items-center justify-center font-extrabold text-[10px]">
-                              {w.code_str}
-                            </span>
-                            <span>{w.name}</span>
+          <p className="text-sm sm:text-base text-[#5A625D] max-w-2xl mx-auto leading-relaxed">
+            Reliez les grandes villes algériennes en toute sérénité. Conducteurs vérifiés, halte de repos réglementaire de 15 minutes au-delà de 300 km et transparence tarifaire en Dinars (DZD).
+          </p>
+        </div>
+
+        {/* 2. THE SEARCH INSTRUMENT */}
+        <div className="mt-10 sm:mt-12 max-w-4xl mx-auto relative z-30">
+          <div className="bg-white rounded-2xl p-2 sm:p-2.5 shadow-card border border-[#EAE5DC]">
+            <form onSubmit={handleSearch} className="flex flex-col lg:flex-row items-stretch lg:items-center gap-1.5 lg:gap-0">
+              {/* Segment 1: Origin */}
+              <div ref={originRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FAF7F2] transition-colors">
+                <MapPin className="w-4 h-4 text-[#16382C] flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <label className="block text-[10px] font-bold text-[#7E8681] uppercase tracking-wider">
+                    Départ (Wilaya / Ville)
+                  </label>
+                  <input
+                    type="text"
+                    value={origin}
+                    onChange={(e) => {
+                      setOrigin(e.target.value);
+                      setShowOriginDropdown(true);
+                    }}
+                    onFocus={() => setShowOriginDropdown(true)}
+                    placeholder="D'où partez-vous ?"
+                    className="w-full bg-transparent text-xs sm:text-sm font-semibold text-[#141716] focus:outline-none placeholder:text-[#ADB3AF]"
+                  />
+                </div>
+
+                {/* Autocomplete Dropdown */}
+                {showOriginDropdown && filteredOriginWilayas.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-dropdown border border-[#EAE5DC] py-1.5 z-50 max-h-60 overflow-y-auto">
+                    <div className="px-3.5 py-1 text-[10px] font-bold text-[#7E8681] uppercase tracking-wider">
+                      Wilayas suggérées
+                    </div>
+                    {filteredOriginWilayas.map((w) => (
+                      <button
+                        key={w.code}
+                        type="button"
+                        onClick={() => {
+                          setOrigin(w.name);
+                          setShowOriginDropdown(false);
+                        }}
+                        className="w-full px-3.5 py-2 text-left text-xs font-semibold text-[#303632] hover:bg-[#FAF7F2] hover:text-[#16382C] flex items-center justify-between"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded bg-[#F4EFE6] text-[#434A46] flex items-center justify-center font-bold text-[10px]">
+                            {w.code_str}
                           </span>
-                          <span className="text-[11px] text-slate-400 font-normal">{w.name_ar}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Swap button (desktop) */}
-                <div className="hidden lg:flex items-center justify-center">
-                  <button
-                    type="button"
-                    onClick={handleSwap}
-                    className="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-100 border border-slate-200 text-slate-600 hover:text-emerald-800 flex items-center justify-center transition-all -mx-2 z-10"
-                    title="Inverser les villes"
-                  >
-                    <ArrowRightLeft className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-
-                <div className="hidden lg:block w-px h-10 bg-slate-200" />
-
-                {/* Segment 2: Destination */}
-                <div ref={destRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors">
-                  <Navigation className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-                  <div className="flex-1 min-w-0 text-left">
-                    <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
-                      Destination
-                    </label>
-                    <input
-                      type="text"
-                      value={destination}
-                      onChange={(e) => {
-                        setDestination(e.target.value);
-                        setShowDestDropdown(true);
-                      }}
-                      onFocus={() => setShowDestDropdown(true)}
-                      placeholder="Où allez-vous ?"
-                      className="w-full bg-transparent text-sm font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
-                    />
+                          <span>{w.name}</span>
+                        </span>
+                        <span className="text-[11px] text-[#7E8681] font-arabic">{w.name_ar}</span>
+                      </button>
+                    ))}
                   </div>
+                )}
+              </div>
 
-                  {/* Destination Dropdown */}
-                  {showDestDropdown && filteredDestWilayas.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
-                      <div className="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase">Wilayas suggérées</div>
-                      {filteredDestWilayas.map((w) => (
-                        <button
-                          key={w.code}
-                          type="button"
-                          onClick={() => {
-                            setDestination(w.name);
-                            setShowDestDropdown(false);
-                          }}
-                          className="w-full px-4 py-2.5 text-left text-xs font-bold text-slate-800 hover:bg-emerald-50 hover:text-emerald-800 flex items-center justify-between"
-                        >
-                          <span className="flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-md bg-slate-100 text-slate-700 flex items-center justify-center font-extrabold text-[10px]">
-                              {w.code_str}
-                            </span>
-                            <span>{w.name}</span>
-                          </span>
-                          <span className="text-[11px] text-slate-400 font-normal">{w.name_ar}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="hidden lg:block w-px h-10 bg-slate-200" />
-
-                {/* Segment 3: Date */}
-                <div className="w-full lg:w-44 flex items-center gap-2.5 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors">
-                  <Calendar className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-                  <div className="flex-1 min-w-0 text-left">
-                    <div className="flex items-center justify-between">
-                      <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
-                        Date
-                      </label>
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={setDateToday}
-                          className="text-[9px] font-bold text-emerald-700 hover:underline"
-                        >
-                          Auj.
-                        </button>
-                        <span className="text-slate-300">•</span>
-                        <button
-                          type="button"
-                          onClick={setDateTomorrow}
-                          className="text-[9px] font-bold text-emerald-700 hover:underline"
-                        >
-                          Demain
-                        </button>
-                      </div>
-                    </div>
-                    <input
-                      type="date"
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
-                      className="w-full bg-transparent text-xs font-bold text-slate-900 focus:outline-none cursor-pointer"
-                    />
-                  </div>
-                </div>
-
-                <div className="hidden lg:block w-px h-10 bg-slate-200" />
-
-                {/* Segment 4: Passengers */}
-                <div className="w-full lg:w-28 flex items-center gap-2.5 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors cursor-pointer">
-                  <Users className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-                  <div className="flex-1 min-w-0 text-left">
-                    <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
-                      Places
-                    </label>
-                    <select
-                      value={seats}
-                      onChange={(e) => setSeats(parseInt(e.target.value, 10))}
-                      className="w-full bg-transparent text-xs font-bold text-slate-900 focus:outline-none cursor-pointer"
-                    >
-                      {[1, 2, 3, 4].map((n) => (
-                        <option key={n} value={n}>
-                          {n} pers.
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Submit Action Button */}
-                <div className="p-1">
-                  <button
-                    type="submit"
-                    className="w-full lg:w-auto h-12 lg:h-12 px-7 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2 flex-shrink-0"
-                  >
-                    <Search className="w-4 h-4 text-white" strokeWidth={2.5} />
-                    <span>Rechercher</span>
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Quick Wilaya Pills */}
-            <div className="mt-4 flex items-center justify-center gap-2 flex-wrap text-xs">
-              <span className="text-slate-400 font-semibold text-[11px]">Départs fréquents :</span>
-              {['Alger', 'Oran', 'Constantine', 'Sétif', 'Annaba', 'Tlemcen'].map((name) => (
+              {/* Swap Button */}
+              <div className="hidden lg:flex items-center justify-center">
                 <button
-                  key={name}
                   type="button"
-                  onClick={() => {
-                    if (!origin) setOrigin(name);
-                    else setDestination(name);
-                  }}
-                  className="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold border border-white/10 backdrop-blur-sm transition-colors"
+                  onClick={handleSwap}
+                  className="w-8 h-8 rounded-full bg-[#FAF7F2] hover:bg-[#EAE5DC] border border-[#EAE5DC] text-[#5A625D] hover:text-[#141716] flex items-center justify-center transition-all -mx-2 z-10"
+                  title="Inverser les villes"
                 >
-                  {name}
+                  <ArrowRightLeft className="w-3.5 h-3.5" />
                 </button>
-              ))}
-            </div>
+              </div>
+
+              <div className="hidden lg:block w-px h-10 bg-[#EAE5DC]" />
+
+              {/* Segment 2: Destination */}
+              <div ref={destRef} className="relative flex-1 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FAF7F2] transition-colors">
+                <Navigation className="w-4 h-4 text-[#16382C] flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <label className="block text-[10px] font-bold text-[#7E8681] uppercase tracking-wider">
+                    Destination
+                  </label>
+                  <input
+                    type="text"
+                    value={destination}
+                    onChange={(e) => {
+                      setDestination(e.target.value);
+                      setShowDestDropdown(true);
+                    }}
+                    onFocus={() => setShowDestDropdown(true)}
+                    placeholder="Où allez-vous ?"
+                    className="w-full bg-transparent text-xs sm:text-sm font-semibold text-[#141716] focus:outline-none placeholder:text-[#ADB3AF]"
+                  />
+                </div>
+
+                {/* Destination Dropdown */}
+                {showDestDropdown && filteredDestWilayas.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-dropdown border border-[#EAE5DC] py-1.5 z-50 max-h-60 overflow-y-auto">
+                    <div className="px-3.5 py-1 text-[10px] font-bold text-[#7E8681] uppercase tracking-wider">
+                      Wilayas suggérées
+                    </div>
+                    {filteredDestWilayas.map((w) => (
+                      <button
+                        key={w.code}
+                        type="button"
+                        onClick={() => {
+                          setDestination(w.name);
+                          setShowDestDropdown(false);
+                        }}
+                        className="w-full px-3.5 py-2 text-left text-xs font-semibold text-[#303632] hover:bg-[#FAF7F2] hover:text-[#16382C] flex items-center justify-between"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded bg-[#F4EFE6] text-[#434A46] flex items-center justify-center font-bold text-[10px]">
+                            {w.code_str}
+                          </span>
+                          <span>{w.name}</span>
+                        </span>
+                        <span className="text-[11px] text-[#7E8681] font-arabic">{w.name_ar}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="hidden lg:block w-px h-10 bg-[#EAE5DC]" />
+
+              {/* Segment 3: Date */}
+              <div className="w-full lg:w-44 flex items-center gap-2.5 px-4 py-3 rounded-xl hover:bg-[#FAF7F2] transition-colors">
+                <Calendar className="w-4 h-4 text-[#16382C] flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[10px] font-bold text-[#7E8681] uppercase tracking-wider">
+                      Date
+                    </label>
+                    <div className="flex items-center gap-1.5 text-[10px]">
+                      <button
+                        type="button"
+                        onClick={setDateToday}
+                        className="font-semibold text-[#16382C] hover:underline"
+                      >
+                        Auj.
+                      </button>
+                      <span className="text-[#C8BEAD]">•</span>
+                      <button
+                        type="button"
+                        onClick={setDateTomorrow}
+                        className="font-semibold text-[#16382C] hover:underline"
+                      >
+                        Demain
+                      </button>
+                    </div>
+                  </div>
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full bg-transparent text-xs font-semibold text-[#141716] focus:outline-none cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              <div className="hidden lg:block w-px h-10 bg-[#EAE5DC]" />
+
+              {/* Segment 4: Seats */}
+              <div className="w-full lg:w-28 flex items-center gap-2 px-4 py-3 rounded-xl hover:bg-[#FAF7F2] transition-colors">
+                <Users className="w-4 h-4 text-[#16382C] flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <label className="block text-[10px] font-bold text-[#7E8681] uppercase tracking-wider">
+                    Places
+                  </label>
+                  <select
+                    value={seats}
+                    onChange={(e) => setSeats(parseInt(e.target.value, 10))}
+                    className="w-full bg-transparent text-xs font-semibold text-[#141716] focus:outline-none cursor-pointer"
+                  >
+                    {[1, 2, 3, 4].map((n) => (
+                      <option key={n} value={n}>
+                        {n} pers.
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Search Submit Action Button */}
+              <div className="p-1">
+                <button
+                  type="submit"
+                  className="w-full lg:w-auto h-12 px-7 rounded-xl bg-[#16382C] hover:bg-[#0F281F] text-[#FAF7F2] font-bold text-xs shadow-fine active:scale-[0.98] transition-all flex items-center justify-center gap-2 flex-shrink-0"
+                >
+                  <Search className="w-4 h-4" />
+                  <span>Rechercher</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Quick Wilaya Pills */}
+          <div className="mt-4 flex items-center justify-center gap-2 flex-wrap text-xs text-[#5A625D]">
+            <span className="font-semibold text-[11px] text-[#7E8681]">Liaisons rapides :</span>
+            {['Alger', 'Oran', 'Constantine', 'Sétif', 'Annaba', 'Tlemcen', 'Ghardaïa'].map((name) => (
+              <button
+                key={name}
+                type="button"
+                onClick={() => {
+                  if (!origin) setOrigin(name);
+                  else setDestination(name);
+                }}
+                className="px-2.5 py-1 rounded-md bg-white hover:bg-[#EAE5DC] text-[#303632] text-[11px] font-medium border border-[#EAE5DC] shadow-fine transition-colors"
+              >
+                {name}
+              </button>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 2. THREE KEY CORE GUARANTEES */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-10 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all space-y-3 text-left">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100">
-              <ShieldCheck className="w-6 h-6 text-emerald-700" />
-            </div>
-            <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
-              Validation Manuelle du Conducteur
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Le conducteur approuve ou refuse explicitement chaque demande de siège. Vos réservations sont confirmées de manière transparente avant le voyage.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all space-y-3 text-left">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-100">
-              <Coffee className="w-6 h-6 text-amber-600" />
-            </div>
-            <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
-              Pause Sécurité 15 Min (&gt; 300 km)
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Pour tout trajet inter-wilayas supérieur à 300 km, une halte obligatoire de 15 minutes au point médian en station Naftal est automatiquement planifiée.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all space-y-3 text-left">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100">
-              <Sparkles className="w-6 h-6 text-emerald-700" />
-            </div>
-            <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
-              Option Trajet Confort (+30%)
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Voyagez détendu avec le siège passager avant garanti sans personne au milieu à l’arrière. Supplément de 30% affiché en toute clarté.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. FEATURED ITINERARIES / BOARDING PASS CARDS */}
+      {/* 3. CORE GUARANTEES (DZ-CARPOOL BUSINESS RULES) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {/* Card 1: Approval */}
+          <div className="p-6 rounded-2xl bg-white border border-[#EAE5DC] shadow-fine space-y-3">
+            <div className="w-10 h-10 rounded-lg bg-[#E2EDE6] text-[#16382C] flex items-center justify-center border border-[#C4DBCD]">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-[#141716] tracking-tight">
+              Validation Manuelle par le Conducteur
+            </h3>
+            <p className="text-xs text-[#5A625D] leading-relaxed">
+              Chaque demande fait l’objet d’une approbation explicite. La réservation atomique avec contrôle de concurrence garantit qu’aucune place n’est doublement allouée.
+            </p>
+          </div>
+
+          {/* Card 2: Rest Stop */}
+          <div className="p-6 rounded-2xl bg-white border border-[#EAE5DC] shadow-fine space-y-3">
+            <div className="w-10 h-10 rounded-lg bg-[#F8ECE3] text-[#A14114] flex items-center justify-center border border-[#F0D5C3]">
+              <Coffee className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-[#141716] tracking-tight">
+              Halte Sécurité 15 Min (&gt; 300 km)
+            </h3>
+            <p className="text-xs text-[#5A625D] leading-relaxed">
+              Pour tout trajet supérieur à 300 km sur le réseau autoroutier, une pause obligatoire de 15 minutes en station Naftal est automatiquement intégrée à l’itinéraire.
+            </p>
+          </div>
+
+          {/* Card 3: Pricing */}
+          <div className="p-6 rounded-2xl bg-white border border-[#EAE5DC] shadow-fine space-y-3">
+            <div className="w-10 h-10 rounded-lg bg-[#FAF7F2] text-[#16382C] flex items-center justify-center border border-[#EAE5DC]">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-[#141716] tracking-tight">
+              Option Confort (+30%) & Commission 15%
+            </h3>
+            <p className="text-xs text-[#5A625D] leading-relaxed">
+              Arithmétique transparente : le prix passager inclut 15% de commission. L’option Confort garantit le siège avant sans personne au milieu avec un supplément clair de 30%.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. CURATED AXES (EDITORIAL TRAVEL PHOTO CARDS) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-600" />
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-2 h-2 rounded-full bg-[#16382C]" />
+              <span className="text-xs font-bold uppercase tracking-wider text-[#16382C]">
                 Liaisons Régulières
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Axes Majeurs Inter-Wilayas
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#141716] tracking-tight">
+              Grands Axes Inter-Wilayas
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Trajets réguliers sur les grands axes autoroutiers avec prix certifiés en Dinars.
+            <p className="text-xs sm:text-sm text-[#5A625D] mt-1">
+              Trajets fréquents vérifiés sur le réseau autoroutier national.
             </p>
           </div>
 
           <button
             onClick={() => navigate('/search')}
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-emerald-700 hover:text-emerald-800 self-start sm:self-auto"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#16382C] hover:underline self-start sm:self-auto"
           >
-            <span>Voir tous les trajets</span>
+            <span>Explorer tous les trajets</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredRoutes.map((route, idx) => (
             <div
               key={idx}
               onClick={() => navigate(`/search?origin=${route.from}&destination=${route.to}`)}
-              className="group cursor-pointer rounded-3xl bg-white border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all flex flex-col justify-between overflow-hidden text-left"
+              className="group cursor-pointer rounded-2xl bg-white border border-[#EAE5DC] hover:border-[#16382C] hover:shadow-card transition-all flex flex-col justify-between overflow-hidden"
             >
-              <div className="h-44 overflow-hidden relative">
+              {/* Image with 16:9 aspect crop */}
+              <div className="h-40 overflow-hidden relative bg-[#F4EFE6]">
                 <img
                   src={route.image}
                   alt={`${route.from} vers ${route.to}`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-black/20" />
-                <span className="absolute top-3 left-3 text-[10px] font-extrabold text-white bg-slate-950/70 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/20">
-                  {route.tag}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#141716]/80 via-transparent to-transparent" />
+                <span className="absolute top-2.5 left-2.5 text-[10px] font-semibold text-[#FAF7F2] bg-[#141716]/70 backdrop-blur-sm px-2 py-0.5 rounded border border-white/10">
+                  {route.axis}
                 </span>
 
                 {route.rest && (
-                  <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-bold text-amber-200 bg-amber-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-amber-500/30">
-                    <Coffee className="w-3 h-3 text-amber-400" />
+                  <span className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 text-[10px] font-semibold text-[#FAF7F2] bg-[#A14114]/85 backdrop-blur-sm px-2 py-0.5 rounded border border-white/10">
+                    <Coffee className="w-3 h-3 text-[#F0D5C3]" />
                     Pause 15 min
                   </span>
                 )}
 
-                <div className="absolute bottom-3 left-4 right-4 text-white">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-black">{route.from}</span>
-                      <ArrowRight className="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-transform" />
-                      <span className="text-lg font-black">{route.to}</span>
+                <div className="absolute bottom-2.5 left-3 right-3 text-[#FAF7F2]">
+                  <div className="flex items-center justify-between text-sm font-bold">
+                    <div className="flex items-center gap-1.5">
+                      <span>[{route.fromCode}] {route.from}</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#97C0A7]" />
+                      <span>[{route.toCode}] {route.to}</span>
                     </div>
-                    <span className="text-xs font-semibold text-slate-300">
-                      {route.dist}
-                    </span>
                   </div>
+                  <span className="text-[11px] text-[#D6D9D7]">
+                    {route.dist} • {route.time}
+                  </span>
                 </div>
               </div>
 
-              <div className="p-5 flex items-center justify-between border-t border-slate-100">
+              {/* Price Details */}
+              <div className="p-4 flex items-center justify-between border-t border-[#F4EFE6]">
                 <div>
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
-                    Prix par passager (+15% inclus)
+                  <span className="text-[10px] text-[#7E8681] font-semibold uppercase tracking-wider block">
+                    Passager (TTC)
                   </span>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-xl font-black text-emerald-700 tabular-nums">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-lg font-bold text-[#141716] tabular-nums">
                       {route.price}
                     </span>
-                    <span className="text-[11px] text-slate-400 font-medium">
-                      (Base: {route.base})
+                    <span className="text-[10px] text-[#7E8681]">
+                      (Net: {route.base})
                     </span>
                   </div>
                 </div>
 
                 {route.comfort ? (
-                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
-                    Confort dispo
+                  <span className="text-[10px] font-bold text-[#16382C] bg-[#E2EDE6] px-2 py-0.5 rounded border border-[#C4DBCD]">
+                    Confort +30%
                   </span>
                 ) : (
-                  <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                  <span className="text-[10px] font-medium text-[#7E8681] bg-[#FAF7F2] px-2 py-0.5 rounded border border-[#EAE5DC]">
                     Standard
                   </span>
                 )}
@@ -550,29 +521,29 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. DRIVER PUBLISH BANNER */}
+      {/* 5. DRIVER CALL TO ACTION: Matte Forest Tone */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-slate-900 text-white p-8 sm:p-12 border border-slate-800 shadow-xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 text-left">
-          <div className="max-w-2xl space-y-3 z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-              <Car className="w-3.5 h-3.5 text-emerald-400" />
-              Conducteurs & Automobilistes en Algérie
+        <div className="rounded-2xl bg-[#16382C] text-[#FAF7F2] p-8 sm:p-12 border border-[#276243] shadow-card flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="max-w-2xl space-y-3">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider text-[#97C0A7] bg-[#0F281F]">
+              <Car className="w-3.5 h-3.5" />
+              Automobilistes & Conducteurs
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
-              Des sièges libres sur votre trajet ? Partagez vos frais.
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight leading-tight">
+              Vous prenez la route ? Partagez vos frais de carburant.
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Notre calculateur intègre le barème officiel Naftal (Essence, Gasoil, GPL) pour vous recommander un prix par siège équitable. Vous gardez 100% de votre prix de base.
+            <p className="text-xs sm:text-sm text-[#C4DBCD] leading-relaxed">
+              Publiez votre annonce en quelques secondes. Notre barème officiel Naftal estime automatiquement votre consommation (8L/100km) et vous suggère une contribution par siège équitable. Vous conservez 100% de votre prix net.
             </p>
           </div>
 
-          <div className="z-10 flex-shrink-0 w-full lg:w-auto">
+          <div className="flex-shrink-0 w-full lg:w-auto">
             <button
               onClick={() => navigate('/trips/create')}
-              className="w-full sm:w-auto py-3.5 px-7 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 active:scale-95"
+              className="w-full sm:w-auto py-3.5 px-7 rounded-xl bg-white hover:bg-[#FAF7F2] text-[#16382C] font-bold text-xs shadow-fine transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
             >
-              <Car className="w-4 h-4 text-white" />
-              <span>Publier un trajet maintenant</span>
+              <Car className="w-4 h-4 text-[#16382C]" />
+              <span>Publier un trajet conducteur</span>
             </button>
           </div>
         </div>
